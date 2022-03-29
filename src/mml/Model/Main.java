@@ -1,4 +1,4 @@
-package mml.Base;
+package mml.Model;
 
 public class Main {
 
