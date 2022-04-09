@@ -26,12 +26,12 @@ public class AccountManager {
     public static UserAccount GetCurrentUser(){
         return CurrentUser;
     }
-    public boolean CheckValidUsername(String username){
+    public boolean CheckValidUserPass(String input){
         //check for null
-        if(username == null) return false;
+        if(input == null) return false;
         //this is honestly a really nice Regex, gotten online
         Pattern p = Pattern.compile(UserPassRegex);
-        if(p.matcher(username).matches()) return true;
+        if(p.matcher(input).matches()) return true;
         else return false;
     }
     private String GenerateUniqueUserID(){
@@ -66,7 +66,7 @@ public class AccountManager {
         LogInUser(id);
         if(CurrentUser == null) return LoginStatus.Failed_AccountExistError;
         //check password
-        if(!(CurrentUser.CheckPassword(password))) return LoginStatus.Failed_IncorrectPassword;
+        if(!(CurrentUser.CheckPassword(password))) { LogOutUser(); return LoginStatus.Failed_IncorrectPassword;}
         return LoginStatus.Complete;
     }
     public boolean CreateUser(String username, String password){
@@ -80,7 +80,10 @@ public class AccountManager {
             return false;
         }
     }
-
+    public void OnExit(){
+        LogOutUser();
+        SaveToJson();
+    }
     private void SaveToJson(){
         JsonFile.WriteData(GsonHolder.Instance.Gson.toJson(UserIDs));
     }
