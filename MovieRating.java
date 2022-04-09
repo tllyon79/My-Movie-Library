@@ -16,9 +16,6 @@ public class MovieRating {
 
 // rate movie method
 
-
-    double
-
     void RateMovie() {
         double RateCount;       //counts total number of user ratings to calculate global rating
         double PreRating;    //stores total of all ratings before averaging
