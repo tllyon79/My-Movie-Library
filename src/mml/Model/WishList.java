@@ -1,17 +1,24 @@
+import mml.Model.Movie;
+import mml.Model.Search;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class WishList { // model for wishlist
 
+    private List<String> MovieIDs;
+    private transient List<Movie> Movies;
+    public WishList()
     {
-
-        List<Movie> WishList+i = new ArrayList<Movie>();  //creates empty list that contains movie objects
-
-        i++;  //each wishlist is named "Wishlist" i to give them a unique name, i iterates after each new wishlist is made
+        MovieIDs = new ArrayList<String>();
+        Movies = new ArrayList<Movie>();  //creates empty list that contains movie objects
     }
 
-    public void AddMovie()   {
+    public void AddMovie(String movieId)   {
 
-//scan in user inputted movie to add to wishlist
+        //scan in user inputted movie to add to wishlist
 
-        WishList+i.add(scanned in object);
+        Movies.add(scanned in object);
 
     }
 
@@ -55,24 +62,12 @@ public class WishList { // model for wishlist
         return search;
 
     }
-
-
     public List<Movie> Filter()   {
 
-//scan in user input for filter
-//similar to above but different criteria
+        //scan in user input for filter
+        //similar to above but different criteria
+        return Search.FilterList()
 
-        List<Movie> filter = new ArrayList<Movie>();
-
-        for (loop through selected wishlist){
-
-            if(input == Movie.getYear() || input == Movie.getGenre){
-                filter.add(Movie);
-            }
-
-        }
-
-        return filter;
 
     }
 
