@@ -1,6 +1,8 @@
 package mml.Model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Movie {
     private String Title;
@@ -26,4 +28,34 @@ public class Movie {
     private String BoxOffice;
     private String Production;
     private String Website;
+
+    public String getTitle(){
+        return Title;
+    }
+
+    public String getYear(){
+        return Year;
+    }
+
+    public List<String> getActors(){
+        if (Actors.equals("N/A")){
+            return null;
+        }
+        return Arrays.asList(Actors.split("\\s*,\\s*"));
+    }
+
+    public String getDirector(){
+        return Director;
+    }
+
+    public String getGenre(){
+        return Genre;
+    }
+
+    public String getPlot(){
+        if (Plot.equals("N/A")){
+            return "No Plot Summary Available";
+        }
+        return Plot;
+    }
 }
