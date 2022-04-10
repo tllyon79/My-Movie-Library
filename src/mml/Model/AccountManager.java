@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class AccountManager {
-    public static AccountManager Instance = new AccountManager();
+    private static AccountManager Instance = new AccountManager();
     private static Type DictType = new TypeToken<Map<String,String>>(){}.getType();
     private static Type UserType = new TypeToken<UserAccount>(){}.getType();
     private JSONData JsonFile;
@@ -19,8 +19,12 @@ public class AccountManager {
 
     private AccountManager(){
         JsonFile = new JSONData("UserData.json",false);
-        UserIDs = GsonHolder.Instance.Gson.fromJson(JsonFile.GetData(),DictType);
+        UserIDs = GsonHolder.GetInstance().Gson.fromJson(JsonFile.GetData(),DictType);
         rng = new Random();
+    }
+
+    public static AccountManager GetInstance() {
+        return Instance;
     }
 
     public static UserAccount GetCurrentUser(){
@@ -48,7 +52,7 @@ public class AccountManager {
     }
     public void LogInUser(String user){
         JSONData userData = new JSONData(new StringBuilder("Users/").append(user).append(".json").toString(),false);
-        UserAccount userA = GsonHolder.Instance.Gson.fromJson(userData.GetData(),UserType);
+        UserAccount userA = GsonHolder.GetInstance().Gson.fromJson(userData.GetData(),UserType);
         if(userA != null){
             CurrentUser = userA;
         }
@@ -57,7 +61,7 @@ public class AccountManager {
         UserAccount user = CurrentUser;
         CurrentUser = null;
         JSONData userData = new JSONData(new StringBuilder("Users/").append(user.UserID).append(".json").toString(),false);
-        userData.WriteData(GsonHolder.Instance.Gson.toJson(user));
+        userData.WriteData(GsonHolder.GetInstance().Gson.toJson(user));
     }
     public LoginStatus AttemptLogIn(String username, String password){
         //first "log in" and confirm login based on user account
@@ -73,7 +77,7 @@ public class AccountManager {
         try {
             UserAccount user = new UserAccount(username, password, GenerateUniqueUserID(), new ArrayList<>(), new HashMap<>());
             JSONData userData = new JSONData(new StringBuilder("Users/").append(user.UserID).append(".json").toString(), false);
-            userData.WriteData(GsonHolder.Instance.Gson.toJson(user));
+            userData.WriteData(GsonHolder.GetInstance().Gson.toJson(user));
             return true;
         }
         catch (Exception ex){
@@ -85,7 +89,7 @@ public class AccountManager {
         SaveToJson();
     }
     private void SaveToJson(){
-        JsonFile.WriteData(GsonHolder.Instance.Gson.toJson(UserIDs));
+        JsonFile.WriteData(GsonHolder.GetInstance().Gson.toJson(UserIDs));
     }
 
 }
