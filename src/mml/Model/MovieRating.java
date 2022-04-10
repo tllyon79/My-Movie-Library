@@ -1,10 +1,10 @@
-import java.util.Scanner;
+package mml.Model;
+
+import java.util.*;
 
 public class MovieRating {
-    {
-        private double MovieRatings;
-        private String ReviewList;
-    }
+    private double MovieRatings;
+    private LinkedList<String> ReviewList;
 
     public double getRating() {
         return MovieRatings;
@@ -22,19 +22,19 @@ public class MovieRating {
 
 //scan in user rating 1-5
 
-        system.out.printf("Enter a rating from 1 to 5");
+        System.out.println("Enter a rating from 1 to 5");
 
         Scanner rater = new Scanner(System.in);
-        double userRate = input.nextDouble();
+        double userRate = rater.nextDouble();
 
         if (userRate < 1 || userRate > 5) {
-            system.out.printf("Invalid entry, please enter a rating from 1 to 5");
+            System.out.printf("Invalid entry, please enter a rating from 1 to 5");
         } else {
-            system.out.printf("Thanks for rating!");
+            System.out.printf("Thanks for rating!");
 
-            RateCount++; //increments as ratings are added.
-            PreRating = PreRating + userRate;  //PreRating stores total of all ratings , and will be averaged with RateCount
-            MovieRatings = PreRating / RateCount; //Stores average overall rating for a movie
+            //RateCount++; //increments as ratings are added.
+            //PreRating = PreRating + userRate;  //PreRating stores total of all ratings , and will be averaged with RateCount
+            //MovieRatings = PreRating / RateCount; //Stores average overall rating for a movie
         }
     }
 
@@ -42,12 +42,12 @@ public class MovieRating {
 
         LinkedList<String> ReviewList = new LinkedList<>();
 
-        system.out.printf("Please enter a review.");
+        System.out.println("Please enter a review.");
 //scan in user review and add to review list
 
         Scanner reviewer = new Scanner(System.in);
-        input.nextLine();  //might need this to escape 'nextDouble' above
-        String userReview = input.nextLine();
+        reviewer.nextLine();  //might need this to escape 'nextDouble' above
+        String userReview = reviewer.nextLine();
 
         ReviewList.add(userReview);  //adds user review to the user review list
 

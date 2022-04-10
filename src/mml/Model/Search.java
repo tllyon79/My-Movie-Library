@@ -38,5 +38,7 @@ public class Search {
 
     public static MovieList SortList(MovieList m, SortType s){
         //do nothing until implemented
+        MovieList sortedList = new MovieList();
+        return sortedList;
     }
 }

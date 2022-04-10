@@ -2,21 +2,21 @@ package mml.Model;
 
 import java.util.Comparator;
 
-public class SortByGenre implements Comparator<Movie> {
+class SortByGenre implements Comparator<Movie> {
 
     @Override
     public int compare(Movie o1, Movie o2) {
         return o1.getGenre().compareTo(o2.getGenre());
     }
 }
-public class SortByTitle implements Comparator<Movie> {
+class SortByTitle implements Comparator<Movie> {
 
     @Override
     public int compare(Movie o1, Movie o2) {
         return o1.getTitle().compareTo(o2.getTitle());
     }
 }
-public class SortByTitleInverse implements Comparator<Movie> {
+class SortByTitleInverse implements Comparator<Movie> {
 
     @Override
     public int compare(Movie o1, Movie o2) {
@@ -24,7 +24,7 @@ public class SortByTitleInverse implements Comparator<Movie> {
     }
 }
 //user rating? website rating?
-public class SortByRating implements Comparator<Movie> {
+class SortByRating implements Comparator<Movie> {
 
     @Override
     public int compare(Movie o1, Movie o2) {
@@ -45,7 +45,7 @@ public class SortByRating implements Comparator<Movie> {
         return (int)((num1/den1) - (num2/den2));
     }
 }
-public class SortByRatingInverse implements Comparator<Movie> {
+class SortByRatingInverse implements Comparator<Movie> {
 
     @Override
     public int compare(Movie o1, Movie o2) {
@@ -67,7 +67,7 @@ public class SortByRatingInverse implements Comparator<Movie> {
     }
 }
 
-public class SortByYear implements Comparator<Movie> {
+class SortByYear implements Comparator<Movie> {
 
     @Override
     public int compare(Movie o1, Movie o2) {
