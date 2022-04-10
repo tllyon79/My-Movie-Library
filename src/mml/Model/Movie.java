@@ -58,4 +58,16 @@ public class Movie {
         }
         return Plot;
     }
+
+    public String getAgeRating(){
+        return Rated;
+    }
+
+    public String getMovieId(){
+        return imdbID;
+    }
+
+    public ArrayList<WebsiteRating> getWebsiteRatings(){
+        return Ratings;
+    }
 }

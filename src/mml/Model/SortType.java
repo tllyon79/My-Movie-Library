@@ -6,6 +6,6 @@ public enum SortType {
     AlphabeticalInverse,
     RatingLow,
     RatingHigh,
-    ReleaseDate
+    Year
 
 }
