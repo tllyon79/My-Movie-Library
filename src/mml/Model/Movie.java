@@ -37,12 +37,13 @@ public class Movie {
         return Year;
     }
 
-    public List<String> getActors(){
+    /*public List<String> getActors(){
         if (Actors.equals("N/A")){
             return null;
         }
         return Arrays.asList(Actors.split("\\s*,\\s*"));
-    }
+    }*/
+    public String getActors() { return Actors; };
 
     public String getDirector(){
         return Director;
@@ -70,4 +71,10 @@ public class Movie {
     public ArrayList<WebsiteRating> getWebsiteRatings(){
         return Ratings;
     }
+
+    public String getPoster() { return Poster; }
+
+    public String getReleased() { return Released; }
+
+    public String getLanguage() { return Language; }
 }
