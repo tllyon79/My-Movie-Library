@@ -33,6 +33,12 @@ public class MovieList {
         Movies.remove(m);
     }
 
+    public MovieList DeepClone(){
+        ArrayList<Movie> movies = (ArrayList<Movie>) Movies.clone();
+        MovieList clone = new MovieList(movies);
+        return clone;
+    }
+
     public int getSize(){
         return Movies.size();
     }

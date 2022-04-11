@@ -61,4 +61,8 @@ public class WishList { // model for wishlist
 
 
     }
+
+    public MovieList Sort(SortType s){
+        return Search.SortList(Movies,s);
+    }
 }
