@@ -11,6 +11,8 @@ public class WishList { // model for wishlist
     private MovieList Movies;
     public WishList()
     {
+        WishlistTitle = "New Wishlist";
+        WishlistDescription = "";
         Movies = new MovieList();  //creates empty list that contains movie objects
     }
 

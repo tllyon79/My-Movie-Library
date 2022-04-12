@@ -50,14 +50,14 @@ public class AccountManager {
             return out;
         }
     }
-    public void LogInUser(String user){
+    private void LogInUser(String user){
         JSONData userData = new JSONData(new StringBuilder("Users/").append(user).append(".json").toString(),false);
         UserAccount userA = GsonHolder.GetInstance().Gson.fromJson(userData.GetData(),UserType);
         if(userA != null){
             CurrentUser = userA;
         }
     }
-    public void LogOutUser(){
+    private void LogOutUser(){
         UserAccount user = CurrentUser;
         CurrentUser = null;
         JSONData userData = new JSONData(new StringBuilder("Users/").append(user.UserID).append(".json").toString(),false);

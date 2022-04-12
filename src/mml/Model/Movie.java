@@ -44,12 +44,18 @@ public class Movie {
         return Arrays.asList(Actors.split("\\s*,\\s*"));
     }
 
-    public String getDirector(){
-        return Director;
+    public List<String> getDirector(){
+        if (Director.equals("N/A")){
+            return null;
+        }
+        return Arrays.asList(Director.split("\\s*,\\s*"));
     }
 
-    public String getGenre(){
-        return Genre;
+    public List<String> getGenre(){
+        if (Genre.equals("N/A")){
+            return null;
+        }
+        return Arrays.asList(Genre.split("\\s*,\\s*"));
     }
 
     public String getPlot(){

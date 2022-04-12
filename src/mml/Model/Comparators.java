@@ -1,12 +1,24 @@
 package mml.Model;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Comparator;
 
 class SortByGenre implements Comparator<Movie> {
 
     @Override
     public int compare(Movie o1, Movie o2) {
-        return o1.getGenre().compareTo(o2.getGenre());
+        List<String> g1 = o1.getGenre();
+        List<String> g2 = o2.getGenre();
+        Collections.sort(g1);
+        Collections.sort(g2);
+        //now do comparisons on the first nonequal genre
+        for (int i = 0; i < Math.min(g1.size(),g2.size()); i++) {
+            if(g1.get(i).compareTo(g2.get(i)) != 0){
+                return g1.get(i).compareTo(g2.get(i));
+            }
+        }
+        return 0;
     }
 }
 class SortByTitle implements Comparator<Movie> {

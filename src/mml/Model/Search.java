@@ -30,7 +30,7 @@ public class Search {
     public static MovieList FilterList(MovieList m, FilterType t, String input){
         Stream<Movie> movies = m.viewMovieList().stream();
         switch(t){
-            case Actor -> movies = movies.filter(movie -> input.equals(movie.getActors())); //this isn't really gonna work
+            case Actor -> movies = movies.filter(movie -> movie.getActors().contains(input));
             case Genre -> movies = movies.filter(movie -> input.equals(movie.getGenre()));
             case Director -> movies = movies.filter(movie -> input.equals(movie.getDirector()));
             case AgeRating -> movies = movies.filter(movie -> input.equals(movie.getAgeRating()));
