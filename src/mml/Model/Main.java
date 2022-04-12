@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 
 public class Main {
+    public static final boolean IsTestingModel = false;
     public static void main(String[] args) {
 	// write your code here
         // Changes style of UI elements to possibly look better, can keep or get rid of
@@ -26,7 +27,7 @@ public class Main {
         for (int i = 0; i < args.length; i++) {
             System.out.println(args[i]);
         }
-
+      
         Gson gson = new Gson();
         JSONData json = new JSONData("SampleMovieFile.json",true);
         ArrayList<Movie> movies = gson.fromJson(json.GetData(),new TypeToken<ArrayList<Movie>>(){}.getType());
@@ -38,5 +39,9 @@ public class Main {
         MoviePage movie = new MoviePage(movies.get(2));
         frame.setContentPane(movie.getGUI());
         frame.setVisible(true);
+      
+        if(IsTestingModel){
+            ModelTesting.MainFunction();
+        }
     }
 }

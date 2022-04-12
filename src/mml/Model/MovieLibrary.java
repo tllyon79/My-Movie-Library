@@ -18,6 +18,11 @@ public class MovieLibrary{
         return Search.FindMovieInList(MasterList, movieID);
     }
 
+    public MovieList GetMasterList(){
+        //we go ahead and clone here to ensure no "data loss"
+        return MasterList.DeepClone();
+    }
+
     public static MovieLibrary GetInstance() {
         return Instance;
     }

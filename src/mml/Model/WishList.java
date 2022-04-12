@@ -11,6 +11,8 @@ public class WishList { // model for wishlist
     private MovieList Movies;
     public WishList()
     {
+        WishlistTitle = "New Wishlist";
+        WishlistDescription = "";
         Movies = new MovieList();  //creates empty list that contains movie objects
     }
 
@@ -60,5 +62,9 @@ public class WishList { // model for wishlist
         return Search.FilterList(Movies,f,input);
 
 
+    }
+
+    public MovieList Sort(SortType s){
+        return Search.SortList(Movies,s);
     }
 }

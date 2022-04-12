@@ -7,10 +7,10 @@ public class UserAccount {
     public String UserID;
     public String Username;
     private String Password;
-    public ArrayList<Object> Wishlists; //TODO:edit to Wishlist once it is implemented
-    public Map<String,Object> Ratings; //TODO:edit to MovieRating once it is implemented
+    public ArrayList<WishList> Wishlists; //TODO:edit to Wishlist once it is implemented
+    public Map<String,MovieRating> Ratings; //TODO:edit to MovieRating once it is implemented
 
-    public UserAccount(String username, String password,String userID, ArrayList<Object> wishlists, Map<String,Object> ratings){
+    public UserAccount(String username, String password,String userID, ArrayList<WishList> wishlists, Map<String,MovieRating> ratings){
         Username = username;
         Password = password;
         UserID = userID;
@@ -26,23 +26,24 @@ public class UserAccount {
     public void ChangePassword(String input){
         Password = input;
     }
-    public ArrayList<Object> GetWishlists(){
+    public ArrayList<WishList> GetWishlists(){
         return Wishlists;
     }
-    /*
-     public void AddWishlist(Wishlist w)
+
+     public void AddWishlist(WishList w)
      {
         Wishlists.add(w);
      }
 
-     public void RemoveWishlist(Wishlist w)
+     public void RemoveWishlist(WishList w)
      {
         Wishlists.remove(w);
      }
+    /*
+     public MovieRating GetRating(String movieID) {
 
-     public MovieRating GetRating(string movieID){
+     }*/
 
-    */
     public void SaveRating(){
         //TODO:finish with rating
     }

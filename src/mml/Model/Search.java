@@ -1,6 +1,8 @@
 package mml.Model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,7 +30,7 @@ public class Search {
     public static MovieList FilterList(MovieList m, FilterType t, String input){
         Stream<Movie> movies = m.viewMovieList().stream();
         switch(t){
-            case Actor -> movies = movies.filter(movie -> input.equals(movie.getActors())); //this isn't really gonna work
+            case Actor -> movies = movies.filter(movie -> movie.getActors().contains(input));
             case Genre -> movies = movies.filter(movie -> input.equals(movie.getGenre()));
             case Director -> movies = movies.filter(movie -> input.equals(movie.getDirector()));
             case AgeRating -> movies = movies.filter(movie -> input.equals(movie.getAgeRating()));
@@ -38,7 +40,19 @@ public class Search {
 
     public static MovieList SortList(MovieList m, SortType s){
         //do nothing until implemented
-        MovieList sortedList = new MovieList();
+        ArrayList<Movie> movies = (ArrayList<Movie>) m.viewMovieList().clone(); //don't need a "deep clone" since the movie objects are effectively singletons without reference
+        Comparator<Movie> comparator = null;
+        switch(s){
+            case Genre -> comparator = new SortByGenre();
+            case Alphabetical -> comparator = new SortByTitle();
+            case AlphabeticalInverse -> comparator = new SortByTitleInverse();
+            case RatingHigh -> comparator = new SortByRatingInverse();
+            case RatingLow -> comparator = new SortByRating();
+            case Year -> comparator = new SortByYear();
+
+        }
+        Collections.sort(movies,comparator);
+        MovieList sortedList = new MovieList(movies);
         return sortedList;
     }
 }
