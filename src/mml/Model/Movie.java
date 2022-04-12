@@ -121,4 +121,8 @@ public class Movie {
     public String getImdbRating(){
         return imdbRating;
     }
+
+    public void setTitle(String title){
+        Title = title;
+    }
 }

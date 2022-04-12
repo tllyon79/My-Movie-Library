@@ -38,7 +38,8 @@ public class Main {
 
         MovieList testMovies = new MovieList(movies);
         MovieLibraryPage testPage = new MovieLibraryPage(testMovies);
-        frame.setContentPane(testPage.getGUI());
+        navigationBar persistingToolbar = new navigationBar(testPage.getGUI());
+        frame.setContentPane(persistingToolbar.getGUI());
         frame.setVisible(true);
       
         if(IsTestingModel){
