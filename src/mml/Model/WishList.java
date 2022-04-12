@@ -1,39 +1,75 @@
+package mml.Model;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class WishList { // model for wishlist
 
-    {
+    private String wlName;
 
-        List<Movie> WishList+i = new ArrayList<Movie>();  //creates empty list that contains movie objects
+    {
+        //force user inputted name for each wishlist
+        Scanner namer = new Scanner(System.in);
+        wlName = input.nextLine();
+
+        List<Movie> wlName = new ArrayList<Movie>(); //creates wishlist with given name
+
+        /*
+        int i=0;
+
+        List<Movie> WishList + i = new ArrayList<Movie>();  //creates empty list that contains movie objects
 
         i++;  //each wishlist is named "Wishlist" i to give them a unique name, i iterates after each new wishlist is made
+        */
     }
 
     public void AddMovie()   {
 
 //scan in user inputted movie to add to wishlist
+        Scanner adder = new Scanner(System.in);
+        String movName =  input.nextLine();
 
-        WishList+i.add(scanned in object);
+        /**loop through movielist
+         * for (int i=0; i<movielist; i++)
+         * {
+         *     if(movName == movie.getTitle(){
+         *     wlName.add (movie)
+         *
+         *     }
+         *
+         * }
+         *
+         */
 
+        //WishList.add(movName);
     }
-
 
     public void RemoveMovie()   {
 
 //scan in user input to remove movie from wishlist
+        Scanner remover = new Scanner(System.in);
+        String movName =  input.nextLine();
 
-//peek through list to find matching input and remove? or does java know to remove classes
-// by name like strings?
-
-//WishList+i.remove (input)
-
+        /**loop through wishlist
+         * for (int i=0; i<wlName; i++)
+         * {
+         *     if(movName == movie.getTitle(){
+         *     wlName.remove(movie);
+         *
+         *     }
+         *
+         * }
+         *
+         */
     }
 
-    public int getSize(WishList)   {  //returns size of wishlist
-        wsize = WishList.size();   //sets wsize = to size of selected wishlist
-
-        return wsize;
+    public int getSize()   {  //returns size of wishlist
+        return wlName.size();
     }
 
 
+  /*
     public List<Movie> Search()   {
 
 //scan in user input for keyword
@@ -55,8 +91,10 @@ public class WishList { // model for wishlist
         return search;
 
     }
+*/
 
 
+    /*
     public List<Movie> Filter()   {
 
 //scan in user input for filter
@@ -75,7 +113,7 @@ public class WishList { // model for wishlist
         return filter;
 
     }
-
+*/
 
     public void Save()   {
 
@@ -83,13 +121,9 @@ public class WishList { // model for wishlist
 
     }
 
-public List<WishList> ()   {
+public List<WishList>    {
 
 //probably need to specify Which wishlist lol
-
-        return WishList;
-
+        return wlName;
     }
-
-
 }
