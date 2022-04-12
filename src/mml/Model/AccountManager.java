@@ -8,8 +8,8 @@ import java.util.regex.Pattern;
 
 public class AccountManager {
     private static AccountManager Instance = new AccountManager();
-    private static Type DictType = new TypeToken<Map<String,String>>(){}.getType();
-    private static Type UserType = new TypeToken<UserAccount>(){}.getType();
+    private static Type DictType;
+    private static Type UserType;
     private JSONData JsonFile;
     private Map<String,String> UserIDs;
     private Random rng;
@@ -18,8 +18,11 @@ public class AccountManager {
     private static UserAccount CurrentUser = null;
 
     private AccountManager(){
+        DictType = new TypeToken<Map<String,String>>(){}.getType();
+        UserType = new TypeToken<UserAccount>(){}.getType();
         JsonFile = new JSONData("UserData.json",false);
         UserIDs = GsonHolder.GetInstance().Gson.fromJson(JsonFile.GetData(),DictType);
+        if(UserIDs == null) UserIDs = new HashMap<>();
         rng = new Random();
     }
 
@@ -76,6 +79,7 @@ public class AccountManager {
     public boolean CreateUser(String username, String password){
         try {
             UserAccount user = new UserAccount(username, password, GenerateUniqueUserID(), new ArrayList<>(), new HashMap<>());
+            UserIDs.putIfAbsent(user.Username,user.UserID);
             JSONData userData = new JSONData(new StringBuilder("Users/").append(user.UserID).append(".json").toString(), false);
             userData.WriteData(GsonHolder.GetInstance().Gson.toJson(user));
             return true;
