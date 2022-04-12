@@ -85,6 +85,7 @@ public class Movie {
     public String getLanguage() { return Language; }
 
     public ImageIcon createPoster(String posterURL){
+        ImageIcon posterIcon;
         try {
             String destinationFile = "src/poster.jpg";
             URL url = new URL(posterURL);
@@ -100,12 +101,14 @@ public class Movie {
 
             is.close();
             os.close();
+
+            posterIcon = new ImageIcon(new ImageIcon("src/poster.jpg").getImage()
+                    .getScaledInstance(300, 445, Image.SCALE_DEFAULT));
         }
         catch (Exception e){
-            System.out.println("File Exception Occurred");
+            posterIcon = new ImageIcon(new ImageIcon("src/defaultPoster.jpg").getImage()
+                    .getScaledInstance(300, 445, Image.SCALE_DEFAULT));
         }
-        ImageIcon posterIcon = new ImageIcon(new ImageIcon("src/poster.jpg").getImage()
-                .getScaledInstance(300, 445, Image.SCALE_DEFAULT));
         return posterIcon;
     }
 }
