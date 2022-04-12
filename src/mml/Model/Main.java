@@ -35,8 +35,9 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300,300);
 
-        MoviePage movie = new MoviePage(movies.get(2));
-        frame.setContentPane(movie.getGUI());
+        MovieList testMovies = new MovieList(movies);
+        MovieLibraryPage testPage = new MovieLibraryPage(testMovies);
+        frame.setContentPane(testPage.getGUI());
         frame.setVisible(true);
     }
 }
