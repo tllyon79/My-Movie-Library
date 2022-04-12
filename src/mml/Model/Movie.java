@@ -117,4 +117,8 @@ public class Movie {
         }
         return posterIcon;
     }
+
+    public String getImdbRating(){
+        return imdbRating;
+    }
 }
