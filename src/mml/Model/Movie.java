@@ -1,5 +1,11 @@
 package mml.Model;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -83,4 +89,32 @@ public class Movie {
     public String getReleased() { return Released; }
 
     public String getLanguage() { return Language; }
+
+    public ImageIcon createPoster(String posterURL){
+        ImageIcon posterIcon;
+        try {
+            String destinationFile = "src/poster.jpg";
+            URL url = new URL(posterURL);
+            InputStream is = url.openStream();
+            OutputStream os = new FileOutputStream(destinationFile);
+
+            byte[] b = new byte[2048];
+            int length;
+
+            while ((length = is.read(b)) != -1) {
+                os.write(b, 0, length);
+            }
+
+            is.close();
+            os.close();
+
+            posterIcon = new ImageIcon(new ImageIcon("src/poster.jpg").getImage()
+                    .getScaledInstance(300, 445, Image.SCALE_DEFAULT));
+        }
+        catch (Exception e){
+            posterIcon = new ImageIcon(new ImageIcon("src/defaultPoster.jpg").getImage()
+                    .getScaledInstance(300, 445, Image.SCALE_DEFAULT));
+        }
+        return posterIcon;
+    }
 }
