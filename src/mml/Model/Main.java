@@ -41,6 +41,8 @@ public class Main {
         navigationBar persistingToolbar = new navigationBar(testPage.getGUI());
         frame.setContentPane(persistingToolbar.getGUI());
         frame.setVisible(true);
+
+        //frame.setContentPane(persistingToolbar.changeGUI(new MoviePage(movies.get(2)).getGUI()));
       
         if(IsTestingModel){
             ModelTesting.MainFunction();
