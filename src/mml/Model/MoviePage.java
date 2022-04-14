@@ -23,12 +23,10 @@ public class MoviePage {
     private JLabel plotLabel;
     private JTextArea textArea1;
     private Movie movie;
-    private String posterURL;
 
     public MoviePage(Movie movie){
         this.movieTitle.setText(movie.getTitle());
         this.movieScore.setText("5.0");
-        this.posterURL = movie.getPoster();
         this.directorLabel.setText(directorLabel.getText() + movie.getDirector());
         if (movie.getReleased() != "N/A"){
             this.releasedLabel.setText(releasedLabel.getText() + movie.getReleased());
@@ -42,7 +40,6 @@ public class MoviePage {
         this.plotLabel.setText(plotLabel.getText() + movie.getPlot());
         this.textArea1.setText(movie.getPlot());
         this.movie = movie;
-        this.posterURL = movie.getPoster();
     }
 
     public JComponent getGUI(){
@@ -50,7 +47,7 @@ public class MoviePage {
                 .getScaledInstance(20, 20, Image.SCALE_SMOOTH));
         starIcon.setIcon(imageIcon);
 
-        moviePoster.setIcon(movie.createPoster(posterURL));
+        moviePoster.setIcon(movie.getPoster());
         moviePoster.setText("");
 
         textArea1.setEditable(false);

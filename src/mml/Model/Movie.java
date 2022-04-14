@@ -34,6 +34,7 @@ public class Movie {
     private String BoxOffice;
     private String Production;
     private String Website;
+    transient private ImageIcon posterIcon;
 
     public String getTitle(){
         return Title;
@@ -84,17 +85,16 @@ public class Movie {
         return Ratings;
     }
 
-    public String getPoster() { return Poster; }
+    public ImageIcon getPoster() { return posterIcon; }
 
     public String getReleased() { return Released; }
 
     public String getLanguage() { return Language; }
 
-    public ImageIcon createPoster(String posterURL){
-        ImageIcon posterIcon;
+    public void createPoster(){
         try {
-            String destinationFile = "src/Images/poster.jpg";
-            URL url = new URL(posterURL);
+            String destinationFile = "src/Images/Posters/" + Title + ".jpg";
+            URL url = new URL(Poster);
             InputStream is = url.openStream();
             OutputStream os = new FileOutputStream(destinationFile);
 
@@ -108,14 +108,13 @@ public class Movie {
             is.close();
             os.close();
 
-            posterIcon = new ImageIcon(new ImageIcon("src/Images/poster.jpg").getImage()
+            posterIcon = new ImageIcon(new ImageIcon(destinationFile).getImage()
                     .getScaledInstance(300, 445, Image.SCALE_DEFAULT));
         }
         catch (Exception e){
             posterIcon = new ImageIcon(new ImageIcon("src/Images/defaultPoster.jpg").getImage()
                     .getScaledInstance(300, 445, Image.SCALE_DEFAULT));
         }
-        return posterIcon;
     }
 
     public String getImdbRating(){

@@ -90,7 +90,7 @@ public class MovieLibraryPage {
 
             miniScore.setText(" " + movie.getImdbRating());
 
-            ImageIcon mini = new ImageIcon(movie.createPoster(movie.getPoster())
+            ImageIcon mini = new ImageIcon(movie.getPoster()
                     .getImage().getScaledInstance(200,400, Image.SCALE_SMOOTH));
             miniPoster.setIcon(mini);
             miniPoster.setText("");
