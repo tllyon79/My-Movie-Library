@@ -18,7 +18,7 @@ public class UserAccount {
         Ratings = ratings;
     }
     public boolean CheckPassword(String input){
-        if(input == Password){
+        if(input.equals(Password)){
             return true;
         }
         else return false;

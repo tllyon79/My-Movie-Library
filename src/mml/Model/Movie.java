@@ -38,7 +38,9 @@ public class Movie {
     public String getTitle(){
         return Title;
     }
-
+    public void setTitle(String input){
+        Title = input;
+    }
     public String getYear(){
         return Year;
     }
