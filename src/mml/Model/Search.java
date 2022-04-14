@@ -31,8 +31,8 @@ public class Search {
         Stream<Movie> movies = m.viewMovieList().stream();
         switch(t){
             case Actor -> movies = movies.filter(movie -> movie.getActors().contains(input));
-            case Genre -> movies = movies.filter(movie -> input.equals(movie.getGenre()));
-            case Director -> movies = movies.filter(movie -> input.equals(movie.getDirector()));
+            case Genre -> movies = movies.filter(movie -> movie.getGenre().contains(input));
+            case Director -> movies = movies.filter(movie -> movie.getDirector().contains(input));
             case AgeRating -> movies = movies.filter(movie -> input.equals(movie.getAgeRating()));
         }
         return new MovieList((ArrayList<Movie>) movies.collect(Collectors.toList()));
