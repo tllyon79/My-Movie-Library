@@ -46,7 +46,7 @@ public class MoviePage {
     }
 
     public JComponent getGUI(){
-        ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/star.png").getImage()
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Images/Icons/star.png").getImage()
                 .getScaledInstance(20, 20, Image.SCALE_SMOOTH));
         starIcon.setIcon(imageIcon);
 

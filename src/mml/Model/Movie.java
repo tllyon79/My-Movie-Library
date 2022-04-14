@@ -93,7 +93,7 @@ public class Movie {
     public ImageIcon createPoster(String posterURL){
         ImageIcon posterIcon;
         try {
-            String destinationFile = "src/poster.jpg";
+            String destinationFile = "src/Images/poster.jpg";
             URL url = new URL(posterURL);
             InputStream is = url.openStream();
             OutputStream os = new FileOutputStream(destinationFile);
@@ -108,11 +108,11 @@ public class Movie {
             is.close();
             os.close();
 
-            posterIcon = new ImageIcon(new ImageIcon("src/poster.jpg").getImage()
+            posterIcon = new ImageIcon(new ImageIcon("src/Images/poster.jpg").getImage()
                     .getScaledInstance(300, 445, Image.SCALE_DEFAULT));
         }
         catch (Exception e){
-            posterIcon = new ImageIcon(new ImageIcon("src/defaultPoster.jpg").getImage()
+            posterIcon = new ImageIcon(new ImageIcon("src/Images/defaultPoster.jpg").getImage()
                     .getScaledInstance(300, 445, Image.SCALE_DEFAULT));
         }
         return posterIcon;
