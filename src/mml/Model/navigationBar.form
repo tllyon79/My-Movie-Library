@@ -9,10 +9,12 @@
     <children>
       <component id="6ba07" class="javax.swing.JLabel" binding="mmlLabel">
         <constraints>
-          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.25" weighty="0.0"/>
         </constraints>
         <properties>
+          <horizontalAlignment value="0"/>
+          <horizontalTextPosition value="0"/>
           <text value="MML"/>
         </properties>
       </component>
@@ -42,10 +44,12 @@
       </component>
       <component id="2857f" class="javax.swing.JLabel" binding="accountIconLabel">
         <constraints>
-          <grid row="2" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
+          <grid row="2" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.25" weighty="0.0"/>
         </constraints>
         <properties>
+          <horizontalAlignment value="0"/>
+          <horizontalTextPosition value="0"/>
           <text value="Account"/>
         </properties>
       </component>

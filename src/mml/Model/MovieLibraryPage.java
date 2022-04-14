@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MovieLibraryPage {
     private JPanel movieLibraryPage;
@@ -12,9 +14,11 @@ public class MovieLibraryPage {
     private JPanel moviesPanel;
     private JScrollPane libraryScroll;
     private MovieList movies;
+    private navigationBar navBar;
 
-    public MovieLibraryPage(MovieList movieList){
+    public MovieLibraryPage(MovieList movieList, navigationBar nav){
         movies = movieList;
+        navBar = nav;
     }
 
     public JComponent getGUI(){
@@ -59,8 +63,16 @@ public class MovieLibraryPage {
         private JLabel miniStar;
         private Movie movie;
 
-        public miniMovies(Movie movie){
-            this.movie = movie;
+        public miniMovies(Movie givenMovie) {
+            this.movie = givenMovie;
+            miniPoster.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    navBar.changePage(new MoviePage(movie).getGUI());
+
+                    super.mouseClicked(e);
+                }
+            });
         }
 
         public JComponent getMiniMovieGUI(){
@@ -71,7 +83,7 @@ public class MovieLibraryPage {
             miniTitle.setBackground(new Color(214,217,223));
             miniTitle.setFont(new Font(Font.SERIF, Font.BOLD, 20));
 
-            ImageIcon star = new ImageIcon(new ImageIcon("src/star.png").getImage()
+            ImageIcon star = new ImageIcon(new ImageIcon("src/Images/Icons/star.png").getImage()
                     .getScaledInstance(20, 20, Image.SCALE_SMOOTH));
             miniStar.setIcon(star);
             miniStar.setText("");
