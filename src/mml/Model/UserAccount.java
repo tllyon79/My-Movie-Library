@@ -39,12 +39,13 @@ public class UserAccount {
      {
         Wishlists.remove(w);
      }
-    /*
+
      public MovieRating GetRating(String movieID) {
+        if(Ratings.containsKey(movieID)) return Ratings.get(movieID);
+        else return null;
+     }
 
-     }*/
-
-    public void SaveRating(){
-        //TODO:finish with rating
+    public void SetRating(MovieRating rating, String movieId){
+        Ratings.put(movieId,rating);
     }
 }
