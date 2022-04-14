@@ -26,9 +26,20 @@ public class ModelTesting {
             list.AddMovie("tt1905041");
             list.AddMovie("tt0232500");
             AccountManager.GetCurrentUser().AddWishlist(list);
+            //add some ratings to these movies
+            MovieRating rating = new MovieRating("tt0100669",AccountManager.GetCurrentUser().UserID);
+            rating.SetRating(5);
+            rating.SetReview("This is a good movie.");
+            AccountManager.GetCurrentUser().SetRating(rating,"tt0100669");
+            RatingManager.GetInstance().UpdateRatings("tt0100669",AccountManager.GetCurrentUser().UserID);
         }
         System.out.println(AccountManager.GetCurrentUser().Username);
         System.out.println(AccountManager.GetCurrentUser().UserID);
+        for (MovieRating rating: RatingManager.GetInstance().GetRatingsByMovie("tt0100669")) {
+            System.out.println(rating.GetRating());
+            System.out.println(rating.GetReview());
+        }
         AccountManager.GetInstance().OnExit();
+        RatingManager.GetInstance().OnExit();
     }
 }
