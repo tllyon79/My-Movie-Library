@@ -2,6 +2,7 @@ package mml.Model;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -34,6 +35,7 @@ public class Movie {
     private String BoxOffice;
     private String Production;
     private String Website;
+
     transient private ImageIcon posterIcon;
 
     public String getTitle(){
@@ -46,12 +48,6 @@ public class Movie {
         return Year;
     }
 
-    /*public List<String> getActors(){
-        if (Actors.equals("N/A")){
-            return null;
-        }
-        return Arrays.asList(Actors.split("\\s*,\\s*"));
-    }*/
     public String getActors() { return Actors; };
 
     public List<String> getDirector(){
@@ -87,43 +83,48 @@ public class Movie {
         return Ratings;
     }
 
-    public ImageIcon getPoster() { return posterIcon; }
+    public ImageIcon getPoster() {
+        return posterIcon;
+    }
 
     public String getReleased() { return Released; }
 
     public String getLanguage() { return Language; }
 
     public void createPoster(){
-        try {
-            String destinationFile = "src/Images/Posters/" + Title + ".jpg";
-            URL url = new URL(Poster);
-            InputStream is = url.openStream();
-            OutputStream os = new FileOutputStream(destinationFile);
-
-            byte[] b = new byte[2048];
-            int length;
-
-            while ((length = is.read(b)) != -1) {
-                os.write(b, 0, length);
-            }
-
-            is.close();
-            os.close();
-
-            posterIcon = new ImageIcon(new ImageIcon(destinationFile).getImage()
+        File posterFile = new File("src/Images/Posters/" + Title);
+        if (posterFile.exists()){
+            posterIcon = new ImageIcon(new ImageIcon(posterFile.getPath()).getImage()
                     .getScaledInstance(300, 445, Image.SCALE_DEFAULT));
         }
-        catch (Exception e){
-            posterIcon = new ImageIcon(new ImageIcon("src/Images/defaultPoster.jpg").getImage()
-                    .getScaledInstance(300, 445, Image.SCALE_DEFAULT));
+        else {
+            try {
+                String destinationFile = "src/Images/Posters/" + Title;
+                URL url = new URL(Poster);
+                InputStream is = url.openStream();
+                OutputStream os = new FileOutputStream(destinationFile);
+
+                byte[] b = new byte[2048];
+                int length;
+
+                while ((length = is.read(b)) != -1) {
+                    os.write(b, 0, length);
+                }
+
+                is.close();
+                os.close();
+
+                posterIcon = new ImageIcon(new ImageIcon(destinationFile).getImage()
+                        .getScaledInstance(300, 445, Image.SCALE_DEFAULT));
+            }
+            catch (Exception e){
+                posterIcon = new ImageIcon(new ImageIcon("src/Images/defaultPoster.jpg").getImage()
+                        .getScaledInstance(300, 445, Image.SCALE_DEFAULT));
+            }
         }
     }
 
     public String getImdbRating(){
         return imdbRating;
-    }
-
-    public void setTitle(String title){
-        Title = title;
     }
 }

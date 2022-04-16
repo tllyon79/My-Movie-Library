@@ -2,7 +2,9 @@ package mml.Model;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;import java.awt.event.ContainerAdapter;
+import java.awt.event.*;
+
+import static mml.Model.Search.SearchList;
 
 public class navigationBar {
     private JPanel navigationBarPanel;
@@ -12,8 +14,35 @@ public class navigationBar {
     private JLabel accountIconLabel;
     private JPanel pagePanel;
 
-    public navigationBar(){
+    private static navigationBar Instance = new navigationBar();
+
+    public static navigationBar getInstance(){
+        return Instance;
+    }
+
+    private navigationBar(){
         //this.pagePanel.add(page);
+        mmlLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                changePage(new MovieLibraryPage().getGUI());
+
+                super.mouseClicked(e);
+            }
+        });
+        searchBarTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (searchBarTextField.hasFocus() && e.getKeyCode() == KeyEvent.VK_ENTER){
+                    if (!searchBarTextField.getText().isEmpty()){
+                        MovieList searchResults = SearchList(MovieLibrary.GetInstance().GetMasterList(), searchBarTextField.getText());
+                        MovieLibraryPage.getInstance().changeList(searchResults);
+                        changePage(MovieLibraryPage.getInstance().getGUI());
+                    }
+                }
+                super.keyPressed(e);
+            }
+        });
     }
 
     public JComponent getGUI(){

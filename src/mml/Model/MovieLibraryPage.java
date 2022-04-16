@@ -1,11 +1,9 @@
 package mml.Model;
 
 import javax.swing.*;
-import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.util.ArrayList;
 
 public class MovieLibraryPage {
     private JPanel movieLibraryPage;
@@ -13,44 +11,153 @@ public class MovieLibraryPage {
     private JComboBox sortBox;
     private JPanel moviesPanel;
     private JScrollPane libraryScroll;
+    private JPanel paginationPanel;
+    private JButton leftArrowButton;
+    private JButton rightArrowButton;
+    private JLabel pageLabel;
     private MovieList movies;
-    private navigationBar navBar;
+    private int page = 1;
 
-    public MovieLibraryPage(MovieList movieList, navigationBar nav){
-        movies = movieList;
-        navBar = nav;
+    private static MovieLibraryPage Instance = new MovieLibraryPage();
+
+    public static MovieLibraryPage getInstance(){
+        return Instance;
+    }
+
+    public MovieLibraryPage(){
+        movies = MovieLibrary.GetInstance().GetMasterList();
+
+        leftArrowButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                previousPage();
+                super.mouseClicked(e);
+            }
+        });
+        rightArrowButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                nextPage();
+                super.mouseClicked(e);
+            }
+        });
+
+        ItemListener itemListener = new ItemListener() {
+            public void itemStateChanged(ItemEvent event) {
+                /*int state = itemEvent.getStateChange();
+                System.out.println((state == ItemEvent.SELECTED) ? "Selected" : "Deselected");
+                System.out.println("Item: " + itemEvent.getItem());
+                ItemSelectable is = itemEvent.getItemSelectable();
+                System.out.println(is);*/
+                if (event.getItem().equals("Alphabetically")){
+                    movies = Search.SortList(movies, SortType.Alphabetical);
+                }
+                if (event.getItem().equals("Rating: High to Low")){
+                    movies = Search.SortList(movies, SortType.RatingHigh);
+                }
+                if (event.getItem().equals("Rating: Low to High")){
+                    movies = Search.SortList(movies, SortType.RatingLow);
+                }
+                if (event.getItem().equals("Year")){
+                    movies = Search.SortList(movies, SortType.Year);
+                }
+                getGUI();
+            }
+        };
+        sortBox.addItemListener(itemListener);
+    }
+
+    public JComponent changeList(MovieList newList){
+        movies = newList;
+        page = 1;
+        return getGUI();
+    }
+
+    public MovieList createPageList(){
+        MovieList shortenedList = new MovieList();
+        for (int i = 20 * (page - 1); i < 20 * page; i++){
+            if (i < movies.getSize()) {
+                shortenedList.AddMovie(movies.viewMovieList().get(i));
+            }
+            else break;
+        }
+        return shortenedList;
+    }
+
+    public void nextPage(){
+        int pages;
+        if (movies.getSize() % 20 != 0){
+            pages = movies.getSize()/20 + 1;
+        }
+        else {
+            pages = movies.getSize()/20;
+        }
+        if (page < pages){
+            page++;
+            getGUI();
+        }
+    }
+
+    public void previousPage(){
+        if (page > 1){
+            page--;
+            getGUI();
+        }
     }
 
     public JComponent getGUI(){
         int i;
-        if (movies.getSize()%5 == 0){
-            i = movies.getSize()/5;
-        }
+        MovieList visibleMovies = createPageList();
+        if (visibleMovies.getSize() == 20) { i = 4; }
         else {
-            i = movies.getSize()/5+1;
+            if (visibleMovies.getSize() % 5 == 0) {
+                i = visibleMovies.getSize() / 5;
+            } else {
+                i = visibleMovies.getSize() / 5 + 1;
+            }
         }
-        int j = 5;
         int movieCount = 0;
 
+        moviesPanel.removeAll();
         moviesPanel.setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
-
-        libraryScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        constraints.insets = new Insets(0,30,0,30);
 
         for(int m = 0; m < i; m++) {
-            for(int n = 0; n < j; n++) {
-                if (movieCount < movies.getSize()) {
-                    constraints.gridy = m;
-                    constraints.gridx = n;
-                    constraints.insets = new Insets(0,30,0,30);
-                    moviesPanel.add(new miniMovies(movies.viewMovieList().get(movieCount)).getMiniMovieGUI(), constraints);
+            for(int n = 0; n < 5; n++) {
+                constraints.gridx = n;
+                constraints.gridy = m;
+                if (movieCount < visibleMovies.getSize()) {
+                    moviesPanel.add(new miniMovies(visibleMovies.viewMovieList().get(movieCount)).getMiniMovieGUI(), constraints);
                     movieCount++;
                 }
                 else{
-                    moviesPanel.add(new JPanel());
+                    moviesPanel.add(new JPanel(), constraints);
                 }
             }
         }
+
+        libraryScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        ImageIcon left = new ImageIcon(new ImageIcon("src/Images/Icons/leftArrowIcon.png").getImage()
+                .getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+        leftArrowButton.setIcon(left);
+        leftArrowButton.setText(null);
+
+        ImageIcon right = new ImageIcon(new ImageIcon("src/Images/Icons/rightArrowIcon.png").getImage()
+                .getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+        rightArrowButton.setIcon(right);
+        rightArrowButton.setText(null);
+
+        int pages;
+        if (movies.getSize() % 20 != 0){
+            pages = movies.getSize()/20 + 1;
+        }
+        else {
+            pages = movies.getSize()/20;
+        }
+        pageLabel.setText("Page " + page + "/" + pages);
+
         return movieLibraryPage;
     }
 
@@ -68,7 +175,7 @@ public class MovieLibraryPage {
             miniPoster.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    navBar.changePage(new MoviePage(movie).getGUI());
+                    navigationBar.getInstance().changePage(new MoviePage(movie).getGUI());
 
                     super.mouseClicked(e);
                 }

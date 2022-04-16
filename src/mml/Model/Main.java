@@ -36,12 +36,8 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300,300);
 
-        navigationBar persistingToolbar = new navigationBar();
-
-        MovieList testMovies = new MovieList(movies);
-        MovieLibraryPage testPage = new MovieLibraryPage(testMovies, persistingToolbar);
-        persistingToolbar.changePage(testPage.getGUI());
-        frame.setContentPane(persistingToolbar.getGUI());
+        navigationBar.getInstance().changePage(MovieLibraryPage.getInstance().getGUI());
+        frame.setContentPane(navigationBar.getInstance().getGUI());
         frame.setVisible(true);
 
         //frame.setContentPane(persistingToolbar.changeGUI(new MoviePage(movies.get(2)).getGUI()));
