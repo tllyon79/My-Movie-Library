@@ -196,4 +196,16 @@ public class Movie {
     public String getImdbRating(){
         return imdbRating;
     }
+
+    public Boolean IsSimilar(Movie o){
+        List<String> g1 = getGenre();
+        List<String> g2 = o.getGenre();
+        int sharedGenre = 0;
+        for (String genre : g2){
+            if(g1.contains(genre)){
+                sharedGenre++;
+            }
+        }
+        return sharedGenre > 1;
+    }
 }
