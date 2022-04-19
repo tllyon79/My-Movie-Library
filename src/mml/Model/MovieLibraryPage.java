@@ -19,6 +19,7 @@ public class MovieLibraryPage {
     private JTextField actorFilterTextField;
     private JTextField directorFilterTextField;
     private MovieList movies;
+    private MovieList unfilteredMovies;
     private int page = 1;
 
     private static MovieLibraryPage Instance = new MovieLibraryPage();
@@ -67,6 +68,23 @@ public class MovieLibraryPage {
             @Override
             public void mouseClicked(MouseEvent e) {
                 filterPanel.setVisible(!filterPanel.isVisible());
+
+                super.mouseClicked(e);
+            }
+        });
+
+        applyFiltersButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                unfilteredMovies = movies.DeepClone();
+                if (!actorFilterTextField.getText().isEmpty()){
+                    movies = Search.FilterList(movies, FilterType.Actor, actorFilterTextField.getText().toLowerCase());
+                }
+                if (!directorFilterTextField.getText().isEmpty()){
+                    movies = Search.FilterList(movies, FilterType.Director, directorFilterTextField.getText().toLowerCase());
+                }
+                System.out.println(movies.getSize());
+                getGUI();
 
                 super.mouseClicked(e);
             }
