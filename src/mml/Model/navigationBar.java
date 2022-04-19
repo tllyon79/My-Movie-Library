@@ -52,7 +52,7 @@ public class navigationBar {
         accountIconLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //navigationBar.getInstance().changePage()
+                changePage(AccountPage.getInstance().getGui());
 
                 super.mouseClicked(e);
             }
