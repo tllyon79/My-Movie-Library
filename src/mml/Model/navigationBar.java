@@ -72,9 +72,14 @@ public class navigationBar {
         searchIconLabel.setText(null);
 
         imageIcon = new ImageIcon(new ImageIcon("src/Images/Icons/accountIcon.png").getImage()
-                .getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+                .getScaledInstance(30, 30, Image.SCALE_SMOOTH));
         accountIconLabel.setIcon(imageIcon);
         accountIconLabel.setText(null);
+
+        ImageIcon logo = new ImageIcon(new ImageIcon("src/Images/Icons/MML_Logo.png").getImage()
+                .getScaledInstance(60, 30, Image.SCALE_SMOOTH));
+        mmlLabel.setIcon(logo);
+        mmlLabel.setText(null);
 
         return navigationBarPanel;
     }
