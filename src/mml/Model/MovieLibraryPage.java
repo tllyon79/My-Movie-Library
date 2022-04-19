@@ -167,8 +167,8 @@ public class MovieLibraryPage {
 
 
         libraryScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        if (Toolkit.getDefaultToolkit().getScreenSize().getWidth() > 1536 &&
-                Toolkit.getDefaultToolkit().getScreenSize().getHeight() > 864){
+        if (Toolkit.getDefaultToolkit().getScreenSize().getWidth() < 1536 &&
+                Toolkit.getDefaultToolkit().getScreenSize().getHeight() < 864){
             libraryScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         }
 
