@@ -1,9 +1,6 @@
 package mml.Model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Locale;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,6 +20,20 @@ public class Search {
             if(Movies.get(i).getTitle().toLowerCase().contains(searchParameter)){
                 ret.AddMovie(m.viewMovieList().get(i));
             }
+        }
+        //now fill the list with best results from fuzzy search
+        Map<Movie,Double> fuzzyResults = new HashMap<>();
+        for(int i = 0; i < Movies.size(); i++){
+            if(!ret.viewMovieList().contains(Movies.get(i))){
+                fuzzyResults.putIfAbsent(Movies.get(i),LevenshteinDistance(Movies.get(i).getTitle(),searchParameter));
+            }
+        }
+        //now for fun stream parameters
+        List<Map.Entry<Movie,Double>> sorted =
+                fuzzyResults.entrySet().stream().filter(movieDoubleEntry -> movieDoubleEntry.getValue() > 0.5d) //some really fuzzy searching
+                        .sorted(Map.Entry.comparingByValue(Collections.reverseOrder())).toList();
+        for (Map.Entry<Movie,Double> kvp : sorted){
+            ret.AddMovie(kvp.getKey());
         }
         return ret;
     }
@@ -110,5 +121,56 @@ public class Search {
         Collections.sort(movies,comparator);
         MovieList sortedList = new MovieList(movies);
         return sortedList;
+    }
+
+    public static double LevenshteinDistance(String s1, String s2){
+        s1 = s1.toLowerCase();
+        s2 = s2.toLowerCase();
+        int rows = s1.length() + 1;
+        int cols = s2.length() + 1;
+        int[][] vals = new int[rows][cols];
+        for(int i = 0; i < rows ;i++){
+            for (int j = 0; j < cols; j++){
+                vals[i][0] = i;
+                vals[0][j] = j;
+            }
+        }
+        for(int col = 1; col < cols; col++){
+            for(int row = 1; row < rows; row++){
+                int cost;
+                if(s1.charAt(row-1) == s2.charAt(col-1)){
+                    cost = 0;
+                }
+                else{
+                    cost = 2;
+                }
+                vals[row][col] = Math.min(Math.min(vals[row-1][col]+1,vals[row][col-1]+1),vals[row-1][col-1]+cost);
+            }
+        }
+
+        double num =  ((s1.length()+s2.length()) - vals[s1.length()][s2.length()]) ;
+        double dem = (s1.length()+s2.length());
+        double result =  num/dem;
+        return result;
+    }
+
+    /**
+     * Returns a MovieList comprised of movies that are "similar" (2+ shared genres) to the input movie
+     * @param m The input movie
+     * @return A MovieList comprised of movies that are similar to the input
+     */
+    public MovieList GetSimilarMovies(Movie m){
+        //the definition of a "similar movie" we are using is 2+ same genre
+        //first grab the master list's movies
+        ArrayList<Movie> Movies = MovieLibrary.GetInstance().GetMasterList().viewMovieList();
+        ArrayList<Movie> SimilarMovies = new ArrayList<>();
+        for (Movie o : Movies){
+            if(m.IsSimilar(o)){
+                if(!m.equals(o)){
+                    SimilarMovies.add(o);
+                }
+            }
+        }
+        return new MovieList(SimilarMovies);
     }
 }
