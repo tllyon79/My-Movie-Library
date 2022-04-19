@@ -35,7 +35,9 @@ public class AccountPage extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
 
-        userList = new ArrayList<WishList>();
+        //userList = new ArrayList<WishList>();
+
+
 
         wlistmodel = new DefaultListModel<>();
         wlist.setModel(wlistmodel);
@@ -72,7 +74,6 @@ public class AccountPage extends JFrame {
                         }
                     }
                 });
-
             }
         });
 
@@ -118,6 +119,11 @@ public class AccountPage extends JFrame {
     }
 
     //add specific users wishlists to userList?
+
+    public JPanel getGui(){
+
+        return mainpanel;
+    }
 
 
 
