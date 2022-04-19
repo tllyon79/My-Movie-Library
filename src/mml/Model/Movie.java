@@ -94,25 +94,46 @@ public class Movie {
     }
 
     /***
-     *
-     * @return
+     * Retrieves the age rating of the movie
+     * @return The age rating of the movie
      */
     public String getAgeRating(){
         return Rated;
     }
 
+    /***
+     * Retrieves the ID string of the movie
+     * @return The ID string of the movie
+     */
     public String getMovieId(){
         return imdbID;
     }
 
+    /***
+     * Retrieves the poster of the movie
+     * @return The poster of the movie in ImageIcon form
+     */
     public ImageIcon getPoster() {
         return posterIcon;
     }
 
+    /**
+     * Retrieves the release date of the movie
+     * @return The release date of the movie
+     */
     public String getReleased() { return Released; }
 
+    /**
+     * Retrieves the languages the movie was released in
+     * @return The list of languages the movie was released in
+     */
     public String getLanguage() { return Language; }
 
+    /**
+     * Checks to see if a file exists, and creates it if it does not
+     * @param Filepath The file to check existence
+     * @return True if the file exists, false if the file does not exist (and could not be created)
+     */
     private Boolean CheckCreateFile(String Filepath){
         try {
             File f = new File(Filepath);
@@ -127,15 +148,18 @@ public class Movie {
         }
     }
 
+    /**
+     * Populates the "posterIcon" field by either retrieving an on-disk image or downloading it
+     */
     public void createPoster(){
-        File posterFile = new File("src/Images/Posters/" + Title);
+        File posterFile = new File("src/Images/Posters/" + Title + ".jpg");
         if (posterFile.exists()){
             posterIcon = new ImageIcon(new ImageIcon(posterFile.getPath()).getImage()
                     .getScaledInstance(300, 445, Image.SCALE_DEFAULT));
         }
         else {
             try {
-                String destinationFile = "src/Images/Posters/" + Title;
+                String destinationFile = "src/Images/Posters/" + Title + ".jpg";
                 URL url = new URL(Poster);
                 InputStream is = url.openStream();
                 if(CheckCreateFile(destinationFile)) {
@@ -165,6 +189,10 @@ public class Movie {
         }
     }
 
+    /**
+     * Retrieves the rating of the movie
+     * @return The rating of the movie
+     */
     public String getImdbRating(){
         return imdbRating;
     }

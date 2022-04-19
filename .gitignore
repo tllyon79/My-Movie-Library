@@ -23,3 +23,4 @@
 hs_err_pid*
 *.json
 /src/Images/Posters/
+/out/production/My-Movie-Library/Images/Posters/
