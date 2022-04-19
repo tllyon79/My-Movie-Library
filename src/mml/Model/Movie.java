@@ -55,7 +55,7 @@ public class Movie {
      */
     public List<String> getActors(){
         if (Actors.equals("N/A")){
-            return null;
+            return new ArrayList<>();
         }
         return Arrays.asList(Actors.split("\\s*,\\s*"));
     }
@@ -66,7 +66,7 @@ public class Movie {
      */
     public List<String> getDirector(){
         if (Director.equals("N/A")){
-            return null;
+            return new ArrayList<>();
         }
         return Arrays.asList(Director.split("\\s*,\\s*"));
     }
@@ -77,7 +77,7 @@ public class Movie {
      */
     public List<String> getGenre(){
         if (Genre.equals("N/A")){
-            return null;
+            return new ArrayList<>();
         }
         return Arrays.asList(Genre.split("\\s*,\\s*"));
     }
