@@ -40,6 +40,11 @@ public class navigationBar {
                         MovieLibraryPage.getInstance().resetSortBox();
                         changePage(MovieLibraryPage.getInstance().getGUI());
                     }
+                    else {
+                        MovieLibraryPage.getInstance().changeList(MovieLibrary.GetInstance().GetMasterList());
+                        MovieLibraryPage.getInstance().resetSortBox();
+                        changePage(MovieLibraryPage.getInstance().getGUI());
+                    }
                 }
                 super.keyPressed(e);
             }
