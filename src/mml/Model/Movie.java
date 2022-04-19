@@ -2,10 +2,7 @@ package mml.Model;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -74,6 +71,10 @@ public class Movie {
         return Arrays.asList(Director.split("\\s*,\\s*"));
     }
 
+    /***
+     * Retrieves the list of genres of this movie
+     * @return The list of genres this movie is categorized with
+     */
     public List<String> getGenre(){
         if (Genre.equals("N/A")){
             return null;
@@ -81,6 +82,10 @@ public class Movie {
         return Arrays.asList(Genre.split("\\s*,\\s*"));
     }
 
+    /***
+     * Retrieves the plot summary of this movie
+     * @return The plot summary of this movie
+     */
     public String getPlot(){
         if (Plot.equals("N/A")){
             return "No Plot Summary Available";
@@ -88,6 +93,10 @@ public class Movie {
         return Plot;
     }
 
+    /***
+     *
+     * @return
+     */
     public String getAgeRating(){
         return Rated;
     }
@@ -104,6 +113,20 @@ public class Movie {
 
     public String getLanguage() { return Language; }
 
+    private Boolean CheckCreateFile(String Filepath){
+        try {
+            File f = new File(Filepath);
+            File p = f.getParentFile();
+            if (p != null) p.mkdirs();
+            if (!f.exists()) return f.createNewFile();
+            return true;
+        }
+        catch(Exception ex){
+            System.out.println(ex);
+            return false;
+        }
+    }
+
     public void createPoster(){
         File posterFile = new File("src/Images/Posters/" + Title);
         if (posterFile.exists()){
@@ -115,20 +138,25 @@ public class Movie {
                 String destinationFile = "src/Images/Posters/" + Title;
                 URL url = new URL(Poster);
                 InputStream is = url.openStream();
-                OutputStream os = new FileOutputStream(destinationFile);
+                if(CheckCreateFile(destinationFile)) {
+                    OutputStream os = new FileOutputStream(destinationFile);
 
-                byte[] b = new byte[2048];
-                int length;
+                    byte[] b = new byte[2048];
+                    int length;
 
-                while ((length = is.read(b)) != -1) {
-                    os.write(b, 0, length);
+                    while ((length = is.read(b)) != -1) {
+                        os.write(b, 0, length);
+                    }
+
+                    is.close();
+                    os.close();
+
+                    posterIcon = new ImageIcon(new ImageIcon(destinationFile).getImage()
+                            .getScaledInstance(300, 445, Image.SCALE_DEFAULT));
                 }
-
-                is.close();
-                os.close();
-
-                posterIcon = new ImageIcon(new ImageIcon(destinationFile).getImage()
-                        .getScaledInstance(300, 445, Image.SCALE_DEFAULT));
+                else{
+                    throw new FileNotFoundException();
+                }
             }
             catch (Exception e){
                 posterIcon = new ImageIcon(new ImageIcon("src/Images/defaultPoster.jpg").getImage()
