@@ -12,6 +12,11 @@ public class JSONData {
     private String Data;
     private boolean ReadOnly;
 
+    /**
+     * Creates a new JSONData object
+     * @param filename The full path of the JSONData, used for reading/writing
+     * @param readOnly Boolean that tells whether this data should be read-only
+     */
     public JSONData(String filename, boolean readOnly){
         Filename = filename;
         try {
@@ -23,10 +28,18 @@ public class JSONData {
         ReadOnly = readOnly;
     }
 
+    /**
+     * Retrieves the string data of the JSONData
+     * @return The string data of the JSONData
+     */
     public String GetData(){
         return Data;
     }
-
+    /**
+     * Checks to see if a file exists, and creates it if it does not
+     * @param Filepath The file to check existence
+     * @return True if the file exists, false if the file does not exist (and could not be created)
+     */
     private Boolean CheckCreateFile(String Filepath){
         try {
             File f = new File(Filepath);
@@ -41,6 +54,10 @@ public class JSONData {
         }
     }
 
+    /**
+     * Writes the given input to disk, and sets Data equal to that input
+     * @param input The data to write to disk, and to set as Data
+     */
     public void WriteData(String input){
         if(!ReadOnly){
             try {

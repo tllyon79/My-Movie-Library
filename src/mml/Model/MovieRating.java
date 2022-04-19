@@ -23,7 +23,12 @@ public class MovieRating {
     public String GetReview(){
         return MovieReview;
     }
-
+    public String GetMovieID(){
+        return MovieID;
+    }
+    public String GetUserID(){
+        return UserID;
+    }
     public MovieRating(String movieId, String userId){
         MovieRating = 5d;
         MovieReview = "";

@@ -17,6 +17,9 @@ public class AccountManager {
     private final String UserPassRegex = "^[A-Za-z]\\w{4,29}$";
     private static UserAccount CurrentUser = null;
 
+    /**
+     * Private constructor of the singleton object, initializing it
+     */
     private AccountManager(){
         DictType = new TypeToken<Map<String,String>>(){}.getType();
         UserType = new TypeToken<UserAccount>(){}.getType();
@@ -26,13 +29,22 @@ public class AccountManager {
         rng = new Random();
     }
 
+    /**
+     * Retrieves the static instance of the singleton object
+     * @return The instance of AccountManager
+     */
     public static AccountManager GetInstance() {
         return Instance;
     }
 
+    /**
+     * Retrieves the currently logged-in user
+     * @return
+     */
     public static UserAccount GetCurrentUser(){
         return CurrentUser;
     }
+
     public boolean CheckValidUserPass(String input){
         //check for null
         if(input == null) return false;
