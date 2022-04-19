@@ -3,6 +3,7 @@ package mml.Model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Locale;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,12 +28,29 @@ public class Search {
                 .orElse(null); //return null if former doesn't find anything
     }
 
+    public static Boolean CheckActorInMovie(String actor, Movie m){
+        for (String a : m.getActors()) {
+            if(a.toLowerCase(Locale.ROOT).contains(actor)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public static Boolean CheckDirectorInMovie(String director, Movie m){
+        for (String a : m.getDirector()) {
+            if(a.toLowerCase(Locale.ROOT).contains(director)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static MovieList FilterList(MovieList m, FilterType t, String input){
         Stream<Movie> movies = m.viewMovieList().stream();
         switch(t){
-            case Actor -> movies = movies.filter(movie -> movie.getActors().contains(input));
+            case Actor -> movies = movies.filter(movie -> CheckActorInMovie(input,movie));
             case Genre -> movies = movies.filter(movie -> movie.getGenre().contains(input));
-            case Director -> movies = movies.filter(movie -> movie.getDirector().contains(input));
+            case Director -> movies = movies.filter(movie -> CheckDirectorInMovie(input,movie));
             case AgeRating -> movies = movies.filter(movie -> input.equals(movie.getAgeRating()));
         }
         return new MovieList((ArrayList<Movie>) movies.collect(Collectors.toList()));
