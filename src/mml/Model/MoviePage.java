@@ -22,6 +22,7 @@ public class MoviePage {
     private JLabel actorLabel;
     private JLabel plotLabel;
     private JTextArea textArea1;
+    private JLabel genreLabel;
     private Movie movie;
 
     public MoviePage(Movie movie){
@@ -42,6 +43,7 @@ public class MoviePage {
         this.languageLabel.setText(languageLabel.getText() + movie.getLanguage());
         this.actorLabel.setText(actorLabel.getText() + movie.getActors());
         this.plotLabel.setText(plotLabel.getText() + movie.getPlot());
+        this.genreLabel.setText(genreLabel.getText() + movie.getGenre());
         this.textArea1.setText(movie.getPlot());
         this.movie = movie;
     }

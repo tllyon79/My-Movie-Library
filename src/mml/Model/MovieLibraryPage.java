@@ -3,6 +3,9 @@ package mml.Model;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+
+import static mml.Model.Search.SearchList;
 
 public class MovieLibraryPage {
     private JPanel movieLibraryPage;
@@ -18,9 +21,17 @@ public class MovieLibraryPage {
     private JButton applyFiltersButton;
     private JTextField actorFilterTextField;
     private JTextField directorFilterTextField;
+    private JPanel filterByGenrePanel;
+    private JScrollPane filterByGenreScrollPane;
+    private JButton removeFiltersButton;
+    private JPanel filterByAgeRatingPanel;
+    private JScrollPane filterByAgeRatingScrollPane;
     private MovieList movies;
     private MovieList unfilteredMovies;
     private int page = 1;
+    private ArrayList<String> genreFilterCriteria;
+    private ArrayList<String> ageRatingFilterCriteria;
+    private boolean filtered = false;
 
     private static MovieLibraryPage Instance = new MovieLibraryPage();
 
@@ -76,14 +87,75 @@ public class MovieLibraryPage {
         applyFiltersButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                unfilteredMovies = movies.DeepClone();
-                if (!actorFilterTextField.getText().isEmpty()){
-                    movies = Search.FilterList(movies, FilterType.Actor, actorFilterTextField.getText().toLowerCase());
+                filterMovieLibrary();
+                getGUI();
+
+                super.mouseClicked(e);
+            }
+        });
+
+        filterByGenrePanel.setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        genreFilterCriteria = new ArrayList<>();
+        for (int i = 0; i < MovieLibrary.GetInstance().getGenreList().size(); i++) {
+            constraints.gridy = i / 4;
+            JCheckBox genreCheckBox = new JCheckBox(MovieLibrary.GetInstance().getGenreList().get(i), false);
+            filterByGenrePanel.add(genreCheckBox, constraints);
+            if (constraints.gridx != 3) {
+                constraints.gridx++;
+            } else {
+                constraints.gridx = 0;
+            }
+            genreCheckBox.addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    if (genreCheckBox.isSelected()) {
+                        genreFilterCriteria.add(genreCheckBox.getText());
+                    } else {
+                        genreFilterCriteria.remove(genreCheckBox.getText());
+                    }
                 }
-                if (!directorFilterTextField.getText().isEmpty()){
-                    movies = Search.FilterList(movies, FilterType.Director, directorFilterTextField.getText().toLowerCase());
+            });
+        }
+
+        filterByAgeRatingPanel.setLayout(new GridBagLayout());
+        constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        ageRatingFilterCriteria = new ArrayList<>();
+        for (int i = 0; i < MovieLibrary.GetInstance().getAgeRatingList().size(); i++) {
+            constraints.gridy = i / 4;
+            JCheckBox ageRatingCheckBox = new JCheckBox(MovieLibrary.GetInstance().getAgeRatingList().get(i), false);
+            filterByAgeRatingPanel.add(ageRatingCheckBox, constraints);
+            if (constraints.gridx != 3) {
+                constraints.gridx++;
+            } else {
+                constraints.gridx = 0;
+            }
+            ageRatingCheckBox.addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    if (ageRatingCheckBox.isSelected()) {
+                        ageRatingFilterCriteria.add(ageRatingCheckBox.getText());
+                    } else {
+                        ageRatingFilterCriteria.remove(ageRatingCheckBox.getText());
+                    }
                 }
-                System.out.println(movies.getSize());
+            });
+        }
+
+        removeFiltersButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                removeFilters();
+                removeFiltersButton.setEnabled(false);
+                if (!navigationBar.getInstance().getSearchBarContents().isEmpty()){
+                    movies = SearchList(MovieLibrary.GetInstance().GetMasterList(),
+                            navigationBar.getInstance().getSearchBarContents().toLowerCase());
+                    resetSortBox();
+                    navigationBar.getInstance().changePage(getGUI());
+                }
+                else { movies = unfilteredMovies; }
                 getGUI();
 
                 super.mouseClicked(e);
@@ -131,6 +203,43 @@ public class MovieLibraryPage {
             page--;
             getGUI();
         }
+    }
+
+    public void removeFilters(){
+        actorFilterTextField.setText(null);
+        directorFilterTextField.setText(null);
+        for (int i = 0; i < filterByGenrePanel.getComponentCount(); i++){
+            JCheckBox genreClear = (JCheckBox) filterByGenrePanel.getComponent(i);
+            genreClear.setSelected(false);
+        }
+        for (int i = 0; i < filterByAgeRatingPanel.getComponentCount(); i++){
+            JCheckBox ageRatingClear = (JCheckBox) filterByAgeRatingPanel.getComponent(i);
+            ageRatingClear.setSelected(false);
+        }
+    }
+
+    public void filterMovieLibrary(){
+        if (filtered == false){
+            unfilteredMovies = movies.DeepClone();
+        }
+        if (!actorFilterTextField.getText().isEmpty()){
+            movies = Search.FilterList(movies, FilterType.Actor, actorFilterTextField.getText().toLowerCase());
+        }
+        if (!directorFilterTextField.getText().isEmpty()){
+            movies = Search.FilterList(movies, FilterType.Director, directorFilterTextField.getText().toLowerCase());
+        }
+        if (!genreFilterCriteria.isEmpty()){
+            for (int i = 0; i < genreFilterCriteria.size(); i++){
+                movies = Search.FilterList(movies, FilterType.Genre, genreFilterCriteria.get(i));
+            }
+        }
+        if (!ageRatingFilterCriteria.isEmpty()){
+            for (int i = 0; i < ageRatingFilterCriteria.size(); i++){
+                movies = Search.FilterList(movies, FilterType.AgeRating, ageRatingFilterCriteria.get(i));
+            }
+        }
+        removeFiltersButton.setEnabled(true);
+        filtered = true;
     }
 
     public JPanel getGUI(){

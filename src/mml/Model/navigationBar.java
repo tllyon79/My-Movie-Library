@@ -38,11 +38,13 @@ public class navigationBar {
                                 searchBarTextField.getText().toLowerCase());
                         MovieLibraryPage.getInstance().changeList(searchResults);
                         MovieLibraryPage.getInstance().resetSortBox();
+                        MovieLibraryPage.getInstance().filterMovieLibrary();
                         changePage(MovieLibraryPage.getInstance().getGUI());
                     }
                     else {
                         MovieLibraryPage.getInstance().changeList(MovieLibrary.GetInstance().GetMasterList());
                         MovieLibraryPage.getInstance().resetSortBox();
+                        MovieLibraryPage.getInstance().filterMovieLibrary();
                         changePage(MovieLibraryPage.getInstance().getGUI());
                     }
                 }
@@ -57,6 +59,10 @@ public class navigationBar {
                 super.mouseClicked(e);
             }
         });
+    }
+
+    public String getSearchBarContents(){
+        return searchBarTextField.getText();
     }
 
     public JComponent getGUI(){

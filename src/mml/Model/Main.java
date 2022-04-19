@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Main {
@@ -39,6 +40,8 @@ public class Main {
         navigationBar.getInstance().changePage(MovieLibraryPage.getInstance().getGUI());
         frame.setContentPane(navigationBar.getInstance().getGUI());
         frame.setVisible(true);
+
+        System.out.println(MovieLibrary.GetInstance().getAgeRatingList());
 
         if(IsTestingModel){
             ModelTesting.MainFunction();
