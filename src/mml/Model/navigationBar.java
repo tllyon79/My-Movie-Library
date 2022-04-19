@@ -49,6 +49,14 @@ public class navigationBar {
                 super.keyPressed(e);
             }
         });
+        accountIconLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                //navigationBar.getInstance().changePage()
+
+                super.mouseClicked(e);
+            }
+        });
     }
 
     public JComponent getGUI(){
