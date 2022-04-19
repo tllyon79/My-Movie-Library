@@ -155,7 +155,7 @@ public class MovieLibraryPage {
                     resetSortBox();
                     navigationBar.getInstance().changePage(getGUI());
                 }
-                else { movies = unfilteredMovies; }
+                else if (!(unfilteredMovies == null)){ movies = unfilteredMovies; }
                 getGUI();
 
                 super.mouseClicked(e);
