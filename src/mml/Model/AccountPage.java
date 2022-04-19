@@ -29,13 +29,21 @@ public class AccountPage extends JFrame {
     private DefaultListModel mlistmodel;
     private UserAccount user;
 
+    private static AccountPage Instance = new AccountPage();
+
+    public static AccountPage getInstance(){
+        return Instance;
+    }
+
     AccountPage(){
         super("Account Page");
         this.setContentPane(this.mainpanel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
 
-        userList = new ArrayList<WishList>();
+        //userList = new ArrayList<WishList>();
+
+
 
         wlistmodel = new DefaultListModel<>();
         wlist.setModel(wlistmodel);
@@ -72,7 +80,6 @@ public class AccountPage extends JFrame {
                         }
                     }
                 });
-
             }
         });
 
@@ -119,9 +126,14 @@ public class AccountPage extends JFrame {
 
     //add specific users wishlists to userList?
 
+    public JPanel getGui(){
+
+        return mainpanel;
+    }
 
 
-    public static void main(String[] args) {
+
+    /*public static void main(String[] args) {
         AccountPage screen = new AccountPage();
         screen.setVisible(true);
 
@@ -130,7 +142,6 @@ public class AccountPage extends JFrame {
 
         screen.adduserList(test);
         screen.adduserList(test2);
-
-    }
+    }*/
 
 }
