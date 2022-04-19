@@ -36,11 +36,10 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300,300);
 
-        MovieList testMovies = new MovieList(movies);
-        MovieLibraryPage testPage = new MovieLibraryPage(testMovies);
-        frame.setContentPane(testPage.getGUI());
+        navigationBar.getInstance().changePage(MovieLibraryPage.getInstance().getGUI());
+        frame.setContentPane(navigationBar.getInstance().getGUI());
         frame.setVisible(true);
-      
+
         if(IsTestingModel){
             ModelTesting.MainFunction();
         }

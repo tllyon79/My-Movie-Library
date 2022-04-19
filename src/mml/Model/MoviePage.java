@@ -23,12 +23,14 @@ public class MoviePage {
     private JLabel plotLabel;
     private JTextArea textArea1;
     private Movie movie;
-    private String posterURL;
 
     public MoviePage(Movie movie){
         this.movieTitle.setText(movie.getTitle());
-        this.movieScore.setText("5.0");
-        this.posterURL = movie.getPoster();
+        this.movieTitle.setFont(new Font(Font.SERIF, Font.BOLD, 40));
+
+        this.movieScore.setText(movie.getImdbRating() + "/10");
+        this.movieScore.setFont(new Font(Font.SERIF, Font.BOLD, 20));
+
         this.directorLabel.setText(directorLabel.getText() + movie.getDirector());
         if (movie.getReleased() != "N/A"){
             this.releasedLabel.setText(releasedLabel.getText() + movie.getReleased());
@@ -42,15 +44,17 @@ public class MoviePage {
         this.plotLabel.setText(plotLabel.getText() + movie.getPlot());
         this.textArea1.setText(movie.getPlot());
         this.movie = movie;
-        this.posterURL = movie.getPoster();
     }
 
-    public JComponent getGUI(){
-        ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/star.png").getImage()
+    public JPanel getGUI(){
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Images/Icons/star.png").getImage()
                 .getScaledInstance(20, 20, Image.SCALE_SMOOTH));
         starIcon.setIcon(imageIcon);
 
-        moviePoster.setIcon(movie.createPoster(posterURL));
+        moviePoster.setIcon(new ImageIcon(movie.getPoster().getImage()
+                .getScaledInstance(800, 1200, Image.SCALE_SMOOTH)));
+        moviePoster.setSize(new Dimension(800, 1200));
+        moviePoster.setIcon(movie.getPoster());
         moviePoster.setText("");
 
         textArea1.setEditable(false);

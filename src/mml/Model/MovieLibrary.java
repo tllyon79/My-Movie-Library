@@ -33,6 +33,11 @@ public class MovieLibrary{
                 }
             }
         }
+
+        for (int i = 0; i < movies.size(); i++) {
+            movies.get(i).createPoster();
+        }
+
         MasterList = new MovieList(movies);
     }
 

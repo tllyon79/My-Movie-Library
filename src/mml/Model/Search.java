@@ -3,6 +3,7 @@ package mml.Model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Locale;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -13,7 +14,7 @@ public class Search {
         MovieList ret = new MovieList();
         ArrayList<Movie> Movies = m.viewMovieList();
         for(int i = 0; i < Movies.size(); i++){
-            if(Movies.get(i).getTitle().contains(searchParameter)){
+            if(Movies.get(i).getTitle().toLowerCase().contains(searchParameter)){
                 ret.AddMovie(m.viewMovieList().get(i));
             }
         }

@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Comparator;
 
+import static java.lang.Math.signum;
+
 class SortByGenre implements Comparator<Movie> {
 
     @Override
@@ -40,42 +42,22 @@ class SortByRating implements Comparator<Movie> {
 
     @Override
     public int compare(Movie o1, Movie o2) {
-        double num1 = 0;
-        double den1 = 0;
-        double num2 = 0;
-        double den2 = 0;
-        for (WebsiteRating website : o1.getWebsiteRatings()) {
-            num1 += website.GetValueAsDouble();
-            den1++;
-        }
-        for (WebsiteRating website : o2.getWebsiteRatings()) {
-            num2 += website.GetValueAsDouble();
-            den2++;
-        }
-        if(den1 == 0) return -1;
-        if(den2 == 0) return 1;
-        return (int)((num1/den1) - (num2/den2));
+        Double r1 = Double.parseDouble(o1.getImdbRating());
+        Double r2 = Double.parseDouble(o2.getImdbRating());
+        double retVal = ( r1 - r2 );
+        int checkVal = (int) signum(retVal);
+        return checkVal;
     }
 }
 class SortByRatingInverse implements Comparator<Movie> {
 
     @Override
     public int compare(Movie o1, Movie o2) {
-        double num1 = 0;
-        double den1 = 0;
-        double num2 = 0;
-        double den2 = 0;
-        for (WebsiteRating website : o1.getWebsiteRatings()) {
-            num1 += website.GetValueAsDouble();
-            den1++;
-        }
-        for (WebsiteRating website : o2.getWebsiteRatings()) {
-            num2 += website.GetValueAsDouble();
-            den2++;
-        }
-        if(den1 == 0) return -1;
-        if(den2 == 0) return 1;
-        return -(int)((num1/den1) - (num2/den2));
+        Double r1 = Double.parseDouble(o1.getImdbRating());
+        Double r2 = Double.parseDouble(o2.getImdbRating());
+        double retVal = ( r1 - r2 );
+        int checkVal = (int) signum(retVal);
+        return -checkVal;
     }
 }
 
