@@ -16,40 +16,57 @@ public class Movie {
     private String Year;
     private String Rated;
     private String Released;
-    private String Runtime;
     private String Genre;
     private String Director;
     private String Actors;
     private String Plot;
     private String Language;
-    private String Country;
-    private String Awards;
     private String Poster;
-    private ArrayList<WebsiteRating> Ratings;
-    private String Metascore;
     private String imdbRating;
-    private String imdbVotes;
     private String imdbID;
-    private String Type;
-    private String DVD;
-    private String BoxOffice;
-    private String Production;
-    private String Website;
 
     transient private ImageIcon posterIcon;
 
+
+    /***
+     * Retrieves the movie's title
+     * @return The title of the movie
+     */
     public String getTitle(){
         return Title;
     }
-    public void setTitle(String input){
+
+    /***
+     * Sets the title of the movie, intended to be used only by MovieLibrary
+     * @param input The new title of the movie
+     */
+    void setTitle(String input){
         Title = input;
     }
+
+    /***
+     * Retrieves the year the movie was released
+     * @return The year the movie was released
+     */
     public String getYear(){
         return Year;
     }
 
-    public String getActors() { return Actors; };
+    /***
+     * Retrieves the list of actors starring within the movie
+     * @return The list of actors within the movie
+     */
+    public List<String> getActors(){
+        if (Actors.equals("N/A")){
+            return null;
+        }
+        return Arrays.asList(Actors.split("\\s*,\\s*"));
+    }
 
+    /***
+     * Retrieves the list of directors who directed the movie
+     * @return
+     */
     public List<String> getDirector(){
         if (Director.equals("N/A")){
             return null;
@@ -77,10 +94,6 @@ public class Movie {
 
     public String getMovieId(){
         return imdbID;
-    }
-
-    public ArrayList<WebsiteRating> getWebsiteRatings(){
-        return Ratings;
     }
 
     public ImageIcon getPoster() {
