@@ -165,7 +165,12 @@ public class MovieLibraryPage {
             }
         }
 
+
         libraryScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        if (Toolkit.getDefaultToolkit().getScreenSize().getWidth() < 1536 &&
+                Toolkit.getDefaultToolkit().getScreenSize().getHeight() < 864){
+            libraryScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        }
 
         ImageIcon left = new ImageIcon(new ImageIcon("src/Images/Icons/leftArrowIcon.png").getImage()
                 .getScaledInstance(20, 20, Image.SCALE_SMOOTH));
