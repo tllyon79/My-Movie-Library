@@ -40,8 +40,6 @@ public class Main {
         frame.setContentPane(navigationBar.getInstance().getGUI());
         frame.setVisible(true);
 
-        //frame.setContentPane(persistingToolbar.changeGUI(new MoviePage(movies.get(2)).getGUI()));
-      
         if(IsTestingModel){
             ModelTesting.MainFunction();
         }

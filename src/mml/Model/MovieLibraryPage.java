@@ -3,7 +3,6 @@ package mml.Model;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 public class MovieLibraryPage {
     private JPanel movieLibraryPage;
@@ -15,6 +14,10 @@ public class MovieLibraryPage {
     private JButton leftArrowButton;
     private JButton rightArrowButton;
     private JLabel pageLabel;
+    private JPanel filterPanel;
+    private JButton applyFiltersButton;
+    private JTextField actorFilterTextField;
+    private JTextField directorFilterTextField;
     private MovieList movies;
     private int page = 1;
 
@@ -42,35 +45,42 @@ public class MovieLibraryPage {
             }
         });
 
-        ItemListener itemListener = new ItemListener() {
-            public void itemStateChanged(ItemEvent event) {
-                /*int state = itemEvent.getStateChange();
-                System.out.println((state == ItemEvent.SELECTED) ? "Selected" : "Deselected");
-                System.out.println("Item: " + itemEvent.getItem());
-                ItemSelectable is = itemEvent.getItemSelectable();
-                System.out.println(is);*/
-                if (event.getItem().equals("Alphabetically")){
-                    movies = Search.SortList(movies, SortType.Alphabetical);
-                }
-                if (event.getItem().equals("Rating: High to Low")){
-                    movies = Search.SortList(movies, SortType.RatingHigh);
-                }
-                if (event.getItem().equals("Rating: Low to High")){
-                    movies = Search.SortList(movies, SortType.RatingLow);
-                }
-                if (event.getItem().equals("Year")){
-                    movies = Search.SortList(movies, SortType.Year);
-                }
-                getGUI();
+        ItemListener itemListener = event -> {
+            if (event.getItem().equals("Alphabetically")){
+                movies = Search.SortList(movies, SortType.Alphabetical);
             }
+            if (event.getItem().equals("Rating: High to Low")){
+                movies = Search.SortList(movies, SortType.RatingHigh);
+            }
+            if (event.getItem().equals("Rating: Low to High")){
+                movies = Search.SortList(movies, SortType.RatingLow);
+            }
+            if (event.getItem().equals("Year")){
+                movies = Search.SortList(movies, SortType.Year);
+            }
+            getGUI();
         };
+
         sortBox.addItemListener(itemListener);
+
+        filterButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                filterPanel.setVisible(!filterPanel.isVisible());
+
+                super.mouseClicked(e);
+            }
+        });
     }
 
     public JComponent changeList(MovieList newList){
         movies = newList;
         page = 1;
         return getGUI();
+    }
+
+    public void resetSortBox(){
+        sortBox.setSelectedItem(sortBox.getItemAt(0));
     }
 
     public MovieList createPageList(){
@@ -105,7 +115,7 @@ public class MovieLibraryPage {
         }
     }
 
-    public JComponent getGUI(){
+    public JPanel getGUI(){
         int i;
         MovieList visibleMovies = createPageList();
         if (visibleMovies.getSize() == 20) { i = 4; }
@@ -148,6 +158,8 @@ public class MovieLibraryPage {
                 .getScaledInstance(20, 20, Image.SCALE_SMOOTH));
         rightArrowButton.setIcon(right);
         rightArrowButton.setText(null);
+
+        filterPanel.setVisible(false);
 
         int pages;
         if (movies.getSize() % 20 != 0){

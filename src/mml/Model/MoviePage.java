@@ -26,7 +26,11 @@ public class MoviePage {
 
     public MoviePage(Movie movie){
         this.movieTitle.setText(movie.getTitle());
-        this.movieScore.setText("5.0");
+        this.movieTitle.setFont(new Font(Font.SERIF, Font.BOLD, 40));
+
+        this.movieScore.setText(movie.getImdbRating() + "/10");
+        this.movieScore.setFont(new Font(Font.SERIF, Font.BOLD, 20));
+
         this.directorLabel.setText(directorLabel.getText() + movie.getDirector());
         if (movie.getReleased() != "N/A"){
             this.releasedLabel.setText(releasedLabel.getText() + movie.getReleased());
@@ -42,11 +46,14 @@ public class MoviePage {
         this.movie = movie;
     }
 
-    public JComponent getGUI(){
+    public JPanel getGUI(){
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Images/Icons/star.png").getImage()
                 .getScaledInstance(20, 20, Image.SCALE_SMOOTH));
         starIcon.setIcon(imageIcon);
 
+        moviePoster.setIcon(new ImageIcon(movie.getPoster().getImage()
+                .getScaledInstance(800, 1200, Image.SCALE_SMOOTH)));
+        moviePoster.setSize(new Dimension(800, 1200));
         moviePoster.setIcon(movie.getPoster());
         moviePoster.setText("");
 

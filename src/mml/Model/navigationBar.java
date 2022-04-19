@@ -21,11 +21,10 @@ public class navigationBar {
     }
 
     private navigationBar(){
-        //this.pagePanel.add(page);
         mmlLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                changePage(new MovieLibraryPage().getGUI());
+                changePage(MovieLibraryPage.getInstance().getGUI());
 
                 super.mouseClicked(e);
             }
@@ -35,8 +34,10 @@ public class navigationBar {
             public void keyPressed(KeyEvent e) {
                 if (searchBarTextField.hasFocus() && e.getKeyCode() == KeyEvent.VK_ENTER){
                     if (!searchBarTextField.getText().isEmpty()){
-                        MovieList searchResults = SearchList(MovieLibrary.GetInstance().GetMasterList(), searchBarTextField.getText());
+                        MovieList searchResults = SearchList(MovieLibrary.GetInstance().GetMasterList(),
+                                searchBarTextField.getText().toLowerCase());
                         MovieLibraryPage.getInstance().changeList(searchResults);
+                        MovieLibraryPage.getInstance().resetSortBox();
                         changePage(MovieLibraryPage.getInstance().getGUI());
                     }
                 }
@@ -59,14 +60,19 @@ public class navigationBar {
         return navigationBarPanel;
     }
 
-    public JComponent changePage(JComponent page){
-        try {
-            this.pagePanel.remove(0);
-        }
-        catch (ArrayIndexOutOfBoundsException e){
+    public JPanel changePage(JPanel page){
+        try{
+            pagePanel.remove(0);
 
         }
-        this.pagePanel.add(page);
+        catch (Exception e){
+
+        }
+        page.revalidate();
+        page.repaint();
+        pagePanel.add(page, 0);
+        navigationBarPanel.revalidate();
+        navigationBarPanel.repaint();
 
         return navigationBarPanel;
     }
