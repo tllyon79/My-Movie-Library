@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import static mml.Model.Search.SearchList;
 
@@ -224,19 +225,19 @@ public class MovieLibraryPage {
     public void filterMovieLibrary(){
         MovieList temp = unfilteredMovies.DeepClone();
         if (!actorFilterTextField.getText().isEmpty()){
-            temp = Search.FilterList(temp, FilterType.Actor, actorFilterTextField.getText().toLowerCase());
+            //temp = Search.FilterList(temp, Pair<FilterType.Actor, actorFilterTextField.getText()>);
         }
         if (!directorFilterTextField.getText().isEmpty()){
-            temp = Search.FilterList(temp, FilterType.Director, directorFilterTextField.getText().toLowerCase());
+            //temp = Search.FilterList(temp, FilterType.Director, directorFilterTextField.getText().toLowerCase());
         }
         if (!genreFilterCriteria.isEmpty()){
             for (int i = 0; i < genreFilterCriteria.size(); i++){
-                temp = Search.FilterList(temp, FilterType.Genre, genreFilterCriteria.get(i));
+                //temp = Search.FilterList(temp, FilterType.Genre, genreFilterCriteria.get(i));
             }
         }
         if (!ageRatingFilterCriteria.isEmpty()){
             for (int i = 0; i < ageRatingFilterCriteria.size(); i++){
-                temp = Search.FilterList(temp, FilterType.AgeRating, ageRatingFilterCriteria.get(i));
+                //temp = Search.FilterList(temp, FilterType.AgeRating, ageRatingFilterCriteria.get(i));
             }
         }
         if (!actorFilterTextField.getText().isEmpty() ||
