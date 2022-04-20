@@ -227,26 +227,34 @@ public class MovieLibraryPage {
         ArrayList<Pair<FilterType,String>> filterParameters = new ArrayList<>();
         if (!actorFilterTextField.getText().isEmpty()){
             filterParameters.add(new GenericPair<>(FilterType.Actor, actorFilterTextField.getText()));
+            temp = Search.FilterList(temp, filterParameters);
+            filterParameters.remove(0);
         }
         if (!directorFilterTextField.getText().isEmpty()){
             filterParameters.add(new GenericPair<>(FilterType.Director, directorFilterTextField.getText()));
+            temp = Search.FilterList(temp, filterParameters);
+            filterParameters.remove(0);
         }
         if (!genreFilterCriteria.isEmpty()){
             for (int i = 0; i < genreFilterCriteria.size(); i++){
                 filterParameters.add(new GenericPair<>(FilterType.Genre, genreFilterCriteria.get(i)));
             }
+            temp = Search.FilterList(temp, filterParameters);
+            for (int i = 0; i < filterParameters.size(); i++){ filterParameters.remove(i); }
         }
         if (!ageRatingFilterCriteria.isEmpty()){
             for (int i = 0; i < ageRatingFilterCriteria.size(); i++){
                 filterParameters.add(new GenericPair<>(FilterType.AgeRating, ageRatingFilterCriteria.get(i)));
             }
+            temp = Search.FilterList(temp, filterParameters);
+            for (int i = 0; i < filterParameters.size(); i++){ filterParameters.remove(i); }
         }
         if (!actorFilterTextField.getText().isEmpty() ||
                 !directorFilterTextField.getText().isEmpty() ||
                 !genreFilterCriteria.isEmpty() ||
                 !ageRatingFilterCriteria.isEmpty())
         {
-                movies = Search.FilterList(temp, filterParameters);
+                movies = temp;
                 removeFiltersButton.setEnabled(true);
         }
         else {
