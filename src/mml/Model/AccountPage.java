@@ -167,7 +167,7 @@ public class AccountPage extends JFrame {
     }
 
 
-
+/*main for testing account page
     public static void main(String[] args) {
         AccountPage screen = new AccountPage();
         screen.setVisible(true);
@@ -190,5 +190,7 @@ public class AccountPage extends JFrame {
 
         screen.getInstance();
     }
+
+ */
 
 }
