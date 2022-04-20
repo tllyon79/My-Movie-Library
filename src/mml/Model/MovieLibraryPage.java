@@ -224,20 +224,21 @@ public class MovieLibraryPage {
 
     public void filterMovieLibrary(){
         MovieList temp = unfilteredMovies.DeepClone();
+        ArrayList<Pair<FilterType,String>> filterParameters = new ArrayList<>();
         if (!actorFilterTextField.getText().isEmpty()){
-            //temp = Search.FilterList(temp, Pair<FilterType.Actor, actorFilterTextField.getText()>);
+            filterParameters.add(new GenericPair<>(FilterType.Actor, actorFilterTextField.getText()));
         }
         if (!directorFilterTextField.getText().isEmpty()){
-            //temp = Search.FilterList(temp, FilterType.Director, directorFilterTextField.getText().toLowerCase());
+            filterParameters.add(new GenericPair<>(FilterType.Director, directorFilterTextField.getText()));
         }
         if (!genreFilterCriteria.isEmpty()){
             for (int i = 0; i < genreFilterCriteria.size(); i++){
-                //temp = Search.FilterList(temp, FilterType.Genre, genreFilterCriteria.get(i));
+                filterParameters.add(new GenericPair<>(FilterType.Genre, genreFilterCriteria.get(i)));
             }
         }
         if (!ageRatingFilterCriteria.isEmpty()){
             for (int i = 0; i < ageRatingFilterCriteria.size(); i++){
-                //temp = Search.FilterList(temp, FilterType.AgeRating, ageRatingFilterCriteria.get(i));
+                filterParameters.add(new GenericPair<>(FilterType.AgeRating, ageRatingFilterCriteria.get(i)));
             }
         }
         if (!actorFilterTextField.getText().isEmpty() ||
@@ -245,7 +246,7 @@ public class MovieLibraryPage {
                 !genreFilterCriteria.isEmpty() ||
                 !ageRatingFilterCriteria.isEmpty())
         {
-                movies = temp;
+                movies = Search.FilterList(temp, filterParameters);
                 removeFiltersButton.setEnabled(true);
         }
         else {
