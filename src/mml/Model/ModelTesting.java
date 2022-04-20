@@ -1,6 +1,9 @@
 package mml.Model;
 
 public class ModelTesting {
+    /**
+     * A test function for the Model package
+     */
     public static void MainFunction(){
         MovieList MasterList = MovieLibrary.GetInstance().GetMasterList();
         for (int i = 0; i < MasterList.getSize(); i++) {

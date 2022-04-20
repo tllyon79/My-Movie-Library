@@ -6,6 +6,9 @@ import java.util.Comparator;
 
 import static java.lang.Math.signum;
 
+/**
+ * Compares Movies by their Genre
+ */
 class SortByGenre implements Comparator<Movie> {
 
     @Override
@@ -23,6 +26,10 @@ class SortByGenre implements Comparator<Movie> {
         return 0;
     }
 }
+
+/**
+ * Compares Movies by their Title
+ */
 class SortByTitle implements Comparator<Movie> {
 
     @Override
@@ -30,6 +37,10 @@ class SortByTitle implements Comparator<Movie> {
         return o1.getTitle().compareTo(o2.getTitle());
     }
 }
+
+/**
+ * Compares Movies by their Title, in the reverse order
+ */
 class SortByTitleInverse implements Comparator<Movie> {
 
     @Override
@@ -38,6 +49,10 @@ class SortByTitleInverse implements Comparator<Movie> {
     }
 }
 //user rating? website rating?
+
+/**
+ * Compares Movies by the IMDB rating in the data provided
+ */
 class SortByRating implements Comparator<Movie> {
 
     @Override
@@ -49,6 +64,9 @@ class SortByRating implements Comparator<Movie> {
         return checkVal;
     }
 }
+/**
+ * Compares Movies by the IMDB rating in the data provided, in the reverse order
+ */
 class SortByRatingInverse implements Comparator<Movie> {
 
     @Override
@@ -61,10 +79,35 @@ class SortByRatingInverse implements Comparator<Movie> {
     }
 }
 
+/**
+ * Compares Movies by their release year
+ */
 class SortByYear implements Comparator<Movie> {
 
     @Override
     public int compare(Movie o1, Movie o2) {
         return o1.getYear().compareTo(o2.getYear());
+    }
+}
+
+/**
+ * Compares Pairs by their keys
+ */
+class SortPairsByKey implements Comparator<Pair>{
+
+    @Override
+    public int compare(Pair o1, Pair o2) {
+        return o1.compareKey(o2);
+    }
+}
+
+/**
+ * Compares Pairs by their values
+ */
+class SortPairsByValue implements Comparator<Pair>{
+
+    @Override
+    public int compare(Pair o1, Pair o2) {
+        return o1.compareValue(o2);
     }
 }

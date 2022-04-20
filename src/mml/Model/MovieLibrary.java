@@ -10,12 +10,18 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Singleton object that holds the MasterList of Movies as well as function to retrieve any particular movie.
+ */
 public class MovieLibrary{
     private static MovieLibrary Instance = new MovieLibrary();
     private MovieList MasterList;
     private ArrayList<String> genreMasterList;
     private ArrayList<String> ageRatingMasterList;
 
+    /**
+     * Private constructor of the singleton object, initializing it
+     */
     private MovieLibrary(){
         JSONData json = new JSONData("SampleMovieFile.json",true);
         ArrayList<Movie> movies = GsonHolder.GetInstance().Gson.fromJson(json.GetData(),new TypeToken<ArrayList<Movie>>(){}.getType());
@@ -55,19 +61,44 @@ public class MovieLibrary{
         MasterList = new MovieList(movies);
     }
 
+    /**
+     * Retrieves a particular movie given its ID
+     * @param movieID The ID of the movie
+     * @return The instantiated Movie if it exists; otherwise null
+     */
     public Movie GetMovie(String movieID){
         return Search.FindMovieInList(MasterList, movieID);
     }
 
-    public List<String> getGenreList(){ return genreMasterList; }
+    /**
+     * Retrieves the instantiated list of genres encompassing the master list
+     * @return The list of Genres
+     */
+    public List<String> getGenreList(){
+        return genreMasterList;
+    }
 
-    public List<String> getAgeRatingList(){ return ageRatingMasterList; }
+    /**
+     * Retrieves the instantiated list of age ratings encompassing the master list
+     * @return The list of Age Ratings
+     */
+    public List<String> getAgeRatingList(){
+        return ageRatingMasterList;
+    }
 
+    /**
+     * Retrieves a copy of the master list of movies
+     * @return A clone of the master list of movies
+     */
     public MovieList GetMasterList(){
         //we go ahead and clone here to ensure no "data loss"
         return MasterList.DeepClone();
     }
 
+    /**
+     * Retrieves the static instance of the singleton object
+     * @return The instance of MovieLibrary
+     */
     public static MovieLibrary GetInstance() {
         return Instance;
     }

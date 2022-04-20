@@ -6,6 +6,9 @@ import java.lang.reflect.Type;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * Singleton manager for UserAccounts. Handles logins and user data.
+ */
 public class AccountManager {
     private static AccountManager Instance = new AccountManager();
     private static Type DictType;
@@ -45,14 +48,25 @@ public class AccountManager {
         return CurrentUser;
     }
 
+    /**
+     * Check if the inputted string is a valid username/password
+     * @param input The input string to test
+     * @return False if the input is null or otherwise does not match criteria, True otherwise
+     */
     public boolean CheckValidUserPass(String input){
         //check for null
         if(input == null) return false;
+        if(input.equals("")) return false;
         //this is honestly a really nice Regex, gotten online
         Pattern p = Pattern.compile(UserPassRegex);
         if(p.matcher(input).matches()) return true;
         else return false;
     }
+
+    /**
+     * Generates a unique user ID for user creation
+     * @return A 9-character unique user ID
+     */
     private String GenerateUniqueUserID(){
         String out = "";
         for(int i = 0; i < 9; i++){
@@ -65,6 +79,11 @@ public class AccountManager {
             return out;
         }
     }
+
+    /**
+     * Logs in a user, deserializing their data and setting them as the value of CurrentUser
+     * @param user
+     */
     private void LogInUser(String user){
         JSONData userData = new JSONData(new StringBuilder("Users/").append(user).append(".json").toString(),false);
         UserAccount userA = GsonHolder.GetInstance().Gson.fromJson(userData.GetData(),UserType);
@@ -72,12 +91,23 @@ public class AccountManager {
             CurrentUser = userA;
         }
     }
+
+    /**
+     * Logs out a user, serializing their data and setting CurrentUser to null
+     */
     private void LogOutUser(){
         UserAccount user = CurrentUser;
         CurrentUser = null;
         JSONData userData = new JSONData(new StringBuilder("Users/").append(user.UserID).append(".json").toString(),false);
         userData.WriteData(GsonHolder.GetInstance().Gson.toJson(user));
     }
+
+    /**
+     * Attempts to log in a user,
+     * @param username
+     * @param password
+     * @return LoginStatus.Complete if the login is successful;\n LoginStatus.Failed_AccountExistError if the account does not exist;\n LoginStatus.Failed_IncorrectPassword if the password is incorrect
+     */
     public LoginStatus AttemptLogIn(String username, String password){
         //first "log in" and confirm login based on user account
         String id = UserIDs.getOrDefault(username,"");
@@ -88,8 +118,16 @@ public class AccountManager {
         if(!(CurrentUser.CheckPassword(password))) { LogOutUser(); return LoginStatus.Failed_IncorrectPassword;}
         return LoginStatus.Complete;
     }
+
+    /**
+     * Attempts to create an account with the provided username and password
+     * @param username The username to create the account with
+     * @param password The password to create the account with
+     * @return True if the account was created, false if it was not (by an error or if the account already exists)
+     */
     public boolean CreateUser(String username, String password){
         try {
+            if(UserIDs.containsKey(username)) return false;
             UserAccount user = new UserAccount(username, password, GenerateUniqueUserID(), new ArrayList<>(), new HashMap<>());
             UserIDs.putIfAbsent(user.Username,user.UserID);
             JSONData userData = new JSONData(new StringBuilder("Users/").append(user.UserID).append(".json").toString(), false);
@@ -100,6 +138,13 @@ public class AccountManager {
             return false;
         }
     }
+
+    /**
+     * Gets a MovieRating of a specified movie from a specified user if it exists
+     * @param movieId The ID of the movie to check for reviews
+     * @param userId The ID of the user to check for reviews
+     * @return MovieRating from the user if it exists; otherwise null
+     */
     public MovieRating GetRatingFromUser(String movieId, String userId){
         JSONData userData = new JSONData(new StringBuilder("Users/").append(userId).append(".json").toString(),false);
         UserAccount userA = GsonHolder.GetInstance().Gson.fromJson(userData.GetData(),UserType);
@@ -109,10 +154,18 @@ public class AccountManager {
         }
         else return null;
     }
+
+    /**
+     * Exit function, to be called on program exit
+     */
     public void OnExit(){
         LogOutUser();
         SaveToJson();
     }
+
+    /**
+     * Write UserIDs to file
+     */
     private void SaveToJson(){
         JsonFile.WriteData(GsonHolder.GetInstance().Gson.toJson(UserIDs));
     }

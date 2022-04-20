@@ -8,7 +8,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Movie {
+/**
+ * A data class to represent a singular movie.
+ */
+public class Movie implements Comparable<Movie> {
     private String Title;
     private String Year;
     private String Rated;
@@ -197,6 +200,11 @@ public class Movie {
         return imdbRating;
     }
 
+    /**
+     * Checks to see if two movies are "similar" (2+ shared genres)
+     * @param o The other movie to compare to
+     * @return True if the two movies are "similar", false otherwise
+     */
     public Boolean IsSimilar(Movie o){
         List<String> g1 = getGenre();
         List<String> g2 = o.getGenre();
@@ -207,5 +215,16 @@ public class Movie {
             }
         }
         return sharedGenre > 1;
+    }
+
+    /**
+     * Compares the IDs of the movie to another given movie
+     * @param o The movie to compare to
+     * @return -1 if this ID is less; 1 if this ID is greater; 0 if they are equal
+     */
+    @Override
+    public int compareTo(Movie o) {
+        //for generic just compare ID, we have comparators for everything else now
+        return getMovieId().compareTo(o.getMovieId());
     }
 }

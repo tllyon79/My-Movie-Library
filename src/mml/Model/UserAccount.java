@@ -3,6 +3,9 @@ package mml.Model;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Data class that represents a User. Contains functions for checking and changing passwords, and accessing the wishlists and ratings of a user.
+ */
 public class UserAccount {
     public String UserID;
     public String Username;

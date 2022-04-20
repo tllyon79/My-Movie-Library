@@ -5,6 +5,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Static class that provides functions for searching, filtering, and sorting MovieLists
+ */
 public class Search {
     /**
      * Searches a list for movies whose title contains a specific search parameter
@@ -22,17 +25,16 @@ public class Search {
             }
         }
         //now fill the list with best results from fuzzy search
-        Map<Movie,Double> fuzzyResults = new HashMap<>();
+        List<Pair<Movie,Double>> fuzzyResults = new ArrayList<>();
         for(int i = 0; i < Movies.size(); i++){
             if(!ret.viewMovieList().contains(Movies.get(i))){
-                fuzzyResults.putIfAbsent(Movies.get(i),LevenshteinDistance(Movies.get(i).getTitle(),searchParameter));
+                fuzzyResults.add(new GenericPair<>(Movies.get(i),LevenshteinDistance(Movies.get(i).getTitle(),searchParameter)));
             }
         }
         //now for fun stream parameters
-        List<Map.Entry<Movie,Double>> sorted =
-                fuzzyResults.entrySet().stream().filter(movieDoubleEntry -> movieDoubleEntry.getValue() > 0.5d) //some really fuzzy searching
-                        .sorted(Map.Entry.comparingByValue(Collections.reverseOrder())).toList();
-        for (Map.Entry<Movie,Double> kvp : sorted){
+        //now replaced with a simple sort
+        Collections.sort(fuzzyResults, new SortPairsByValue());
+        for (Pair<Movie,Double> kvp : fuzzyResults){
             ret.AddMovie(kvp.getKey());
         }
         return ret;
@@ -84,19 +86,22 @@ public class Search {
     /**
      * Filters a MovieList based on given parameters
      * @param m The MovieList to filter
-     * @param t The type of filtering to occur
-     * @param input The value to compare to for filtering
+     * @param filterParameters
      * @return A new filtered MovieList
      */
-    public static MovieList FilterList(MovieList m, FilterType t, String input){
-        Stream<Movie> movies = m.viewMovieList().stream();
-        switch(t){
-            case Actor -> movies = movies.filter(movie -> CheckActorInMovie(input,movie));
-            case Genre -> movies = movies.filter(movie -> movie.getGenre().contains(input));
-            case Director -> movies = movies.filter(movie -> CheckDirectorInMovie(input,movie));
-            case AgeRating -> movies = movies.filter(movie -> input.equals(movie.getAgeRating()));
+    public static MovieList FilterList(MovieList m, List<Pair<FilterType,String>> filterParameters){
+        MovieList ret = new MovieList();
+        for (Pair<FilterType,String> pair: filterParameters) {
+            Stream<Movie> movies = m.viewMovieList().stream();
+            switch(pair.getKey()){
+                case Actor -> movies = movies.filter(movie -> CheckActorInMovie(pair.getValue(),movie));
+                case Genre -> movies = movies.filter(movie -> movie.getGenre().contains(pair.getValue()));
+                case Director -> movies = movies.filter(movie -> CheckDirectorInMovie(pair.getValue(),movie));
+                case AgeRating -> movies = movies.filter(movie -> pair.getValue().equals(movie.getAgeRating()));
+            }
+            ret.MergeList(new MovieList((ArrayList<Movie>) movies.collect(Collectors.toList())));
         }
-        return new MovieList((ArrayList<Movie>) movies.collect(Collectors.toList()));
+        return ret;
     }
 
     /**
@@ -123,6 +128,12 @@ public class Search {
         return sortedList;
     }
 
+    /**
+     * Calculates the Levenshtein Distance between two strings, used for fuzzy search
+     * @param s1 The first string
+     * @param s2 The second string
+     * @return The normalized Levenshtein distance between two strings (from 0 to 1)
+     */
     public static double LevenshteinDistance(String s1, String s2){
         s1 = s1.toLowerCase();
         s2 = s2.toLowerCase();

@@ -6,7 +6,9 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-
+/**
+ * Data class that holds file info and data of a JSON file, for reading and writing.
+ */
 public class JSONData {
     private String Filename;
     private String Data;
