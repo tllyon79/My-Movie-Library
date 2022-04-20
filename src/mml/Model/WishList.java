@@ -23,6 +23,10 @@ public class WishList { // model for wishlist
         Movies = new MovieList();  //creates empty list that contains movie objects
     }
 
+    public MovieList GetMovies(){
+       return Movies;
+    }
+
     /**
      * Retrieves the title of the Wishlist
      * @return The Title of the Wishlist
