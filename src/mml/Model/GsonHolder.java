@@ -2,6 +2,9 @@ package mml.Model;
 
 import com.google.gson.Gson;
 
+/**
+ * Singleton object to hold an instance of Gson for Gson functions
+ */
 public class GsonHolder {
     private static GsonHolder Instance = new GsonHolder();
     public Gson Gson;

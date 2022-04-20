@@ -24,15 +24,6 @@ public class Main {
 
         }
 
-        System.out.println("Hello World");
-        for (int i = 0; i < args.length; i++) {
-            System.out.println(args[i]);
-        }
-      
-        Gson gson = new Gson();
-        JSONData json = new JSONData("SampleMovieFile.json",true);
-        ArrayList<Movie> movies = gson.fromJson(json.GetData(),new TypeToken<ArrayList<Movie>>(){}.getType());
-
         JFrame frame = new JFrame("MyMovieLibrary");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300,300);
