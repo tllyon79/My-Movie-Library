@@ -31,7 +31,6 @@ public class MovieLibraryPage {
     private int page = 1;
     private ArrayList<String> genreFilterCriteria;
     private ArrayList<String> ageRatingFilterCriteria;
-    private boolean filtered = false;
 
     private static MovieLibraryPage Instance = new MovieLibraryPage();
 
@@ -56,6 +55,8 @@ public class MovieLibraryPage {
                 super.mouseClicked(e);
             }
         });
+
+        unfilteredMovies = MovieLibrary.GetInstance().GetMasterList();
 
         ItemListener itemListener = event -> {
             if (event.getItem().equals("Alphabetically")){
@@ -155,7 +156,7 @@ public class MovieLibraryPage {
                     resetSortBox();
                     navigationBar.getInstance().changePage(getGUI());
                 }
-                else if (!(unfilteredMovies == null)){ movies = unfilteredMovies; }
+                else { movies = MovieLibrary.GetInstance().GetMasterList(); }
                 getGUI();
 
                 super.mouseClicked(e);
@@ -172,6 +173,8 @@ public class MovieLibraryPage {
     public void resetSortBox(){
         sortBox.setSelectedItem(sortBox.getItemAt(0));
     }
+
+    public void setUnfilteredMovies(MovieList unfiltered){ unfilteredMovies = unfiltered; }
 
     public MovieList createPageList(){
         MovieList shortenedList = new MovieList();
@@ -219,27 +222,38 @@ public class MovieLibraryPage {
     }
 
     public void filterMovieLibrary(){
-        if (filtered == false){
-            unfilteredMovies = movies.DeepClone();
-        }
+        MovieList temp = unfilteredMovies.DeepClone();
         if (!actorFilterTextField.getText().isEmpty()){
-            movies = Search.FilterList(movies, FilterType.Actor, actorFilterTextField.getText().toLowerCase());
+            temp = Search.FilterList(temp, FilterType.Actor, actorFilterTextField.getText().toLowerCase());
         }
         if (!directorFilterTextField.getText().isEmpty()){
-            movies = Search.FilterList(movies, FilterType.Director, directorFilterTextField.getText().toLowerCase());
+            temp = Search.FilterList(temp, FilterType.Director, directorFilterTextField.getText().toLowerCase());
         }
         if (!genreFilterCriteria.isEmpty()){
             for (int i = 0; i < genreFilterCriteria.size(); i++){
-                movies = Search.FilterList(movies, FilterType.Genre, genreFilterCriteria.get(i));
+                temp = Search.FilterList(temp, FilterType.Genre, genreFilterCriteria.get(i));
             }
         }
         if (!ageRatingFilterCriteria.isEmpty()){
             for (int i = 0; i < ageRatingFilterCriteria.size(); i++){
-                movies = Search.FilterList(movies, FilterType.AgeRating, ageRatingFilterCriteria.get(i));
+                temp = Search.FilterList(temp, FilterType.AgeRating, ageRatingFilterCriteria.get(i));
             }
         }
-        removeFiltersButton.setEnabled(true);
-        filtered = true;
+        if (!actorFilterTextField.getText().isEmpty() ||
+                !directorFilterTextField.getText().isEmpty() ||
+                !genreFilterCriteria.isEmpty() ||
+                !ageRatingFilterCriteria.isEmpty())
+        {
+                movies = temp;
+                removeFiltersButton.setEnabled(true);
+        }
+        else {
+            if (navigationBar.getInstance().getSearchBarContents().isEmpty()){
+                movies = MovieLibrary.GetInstance().GetMasterList();
+            }
+            else { movies = unfilteredMovies; }
+            removeFiltersButton.setEnabled(false);
+        }
     }
 
     public JPanel getGUI(){

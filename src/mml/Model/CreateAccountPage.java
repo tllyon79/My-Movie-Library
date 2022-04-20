@@ -11,19 +11,17 @@ public class CreateAccountPage extends JFrame {
     private JButton cabutton;
     private JPanel mainpanel;
 
+    private static CreateAccountPage Instance = new CreateAccountPage();
+
+    public static CreateAccountPage getInstance(){
+        return Instance;
+    }
+
     CreateAccountPage(){
-        super("Create Account Page");
-        this.setContentPane(this.mainpanel);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.pack();
-
 
     }
 
-
-    public static void main(String[] args) {
-        CreateAccountPage screen = new CreateAccountPage();
-        screen.setVisible(true);
+    public JPanel getGUI(){
+        return mainpanel;
     }
-
 }

@@ -37,12 +37,14 @@ public class navigationBar {
                         MovieList searchResults = SearchList(MovieLibrary.GetInstance().GetMasterList(),
                                 searchBarTextField.getText().toLowerCase());
                         MovieLibraryPage.getInstance().changeList(searchResults);
+                        MovieLibraryPage.getInstance().setUnfilteredMovies(searchResults);
                         MovieLibraryPage.getInstance().resetSortBox();
                         MovieLibraryPage.getInstance().filterMovieLibrary();
                         changePage(MovieLibraryPage.getInstance().getGUI());
                     }
                     else {
                         MovieLibraryPage.getInstance().changeList(MovieLibrary.GetInstance().GetMasterList());
+                        MovieLibraryPage.getInstance().setUnfilteredMovies(MovieLibrary.GetInstance().GetMasterList());
                         MovieLibraryPage.getInstance().resetSortBox();
                         MovieLibraryPage.getInstance().filterMovieLibrary();
                         changePage(MovieLibraryPage.getInstance().getGUI());
@@ -54,7 +56,12 @@ public class navigationBar {
         accountIconLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                changePage(AccountPage.getInstance().getGui());
+                if (AccountManager.GetCurrentUser() != null){
+                    changePage(AccountPage.getInstance().getGui());
+                }
+                else{
+                    changePage(LoginPage.getInstance().getGUI());
+                }
 
                 super.mouseClicked(e);
             }
@@ -71,10 +78,16 @@ public class navigationBar {
         searchIconLabel.setIcon(imageIcon);
         searchIconLabel.setText(null);
 
-        imageIcon = new ImageIcon(new ImageIcon("src/Images/Icons/accountIcon.png").getImage()
-                .getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        accountIconLabel.setIcon(imageIcon);
-        accountIconLabel.setText(null);
+        if (AccountManager.GetCurrentUser() != null){
+            imageIcon = new ImageIcon(new ImageIcon("src/Images/Icons/accountIcon.png").getImage()
+                    .getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+            accountIconLabel.setIcon(imageIcon);
+            accountIconLabel.setText(null);
+        }
+        else{
+            accountIconLabel.setText("Sign In");
+            accountIconLabel.setFont(new Font(Font.SERIF, Font.BOLD, 14));
+        }
 
         ImageIcon logo = new ImageIcon(new ImageIcon("src/Images/Icons/MML_Logo.png").getImage()
                 .getScaledInstance(60, 30, Image.SCALE_SMOOTH));
@@ -84,10 +97,9 @@ public class navigationBar {
         return navigationBarPanel;
     }
 
-    public JPanel changePage(JPanel page){
+    public void changePage(JPanel page){
         try{
             pagePanel.remove(0);
-
         }
         catch (Exception e){
 
@@ -97,7 +109,5 @@ public class navigationBar {
         pagePanel.add(page, 0);
         navigationBarPanel.revalidate();
         navigationBarPanel.repaint();
-
-        return navigationBarPanel;
     }
 }

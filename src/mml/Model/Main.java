@@ -41,8 +41,6 @@ public class Main {
         frame.setContentPane(navigationBar.getInstance().getGUI());
         frame.setVisible(true);
 
-        System.out.println(MovieLibrary.GetInstance().getAgeRatingList());
-
         if(IsTestingModel){
             ModelTesting.MainFunction();
         }
