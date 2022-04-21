@@ -32,6 +32,8 @@ public class Search {
             }
         }
         //now for fun stream parameters
+        Stream<Pair<Movie,Double>> stream = fuzzyResults.stream().filter(movieDoublePair -> movieDoublePair.getValue() > 0.5d);
+        fuzzyResults = stream.collect(Collectors.toList());
         //now replaced with a simple sort
         Collections.sort(fuzzyResults, new SortPairsByValue());
         for (Pair<Movie,Double> kvp : fuzzyResults){
