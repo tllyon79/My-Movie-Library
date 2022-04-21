@@ -29,7 +29,8 @@ public class LoginPage {
         invalidEntryTextArea.setForeground(Color.RED);
         invalidEntryTextArea.setLineWrap(false);
         invalidEntryTextArea.setWrapStyleWord(true);
-        invalidEntryTextArea.setVisible(false);
+        invalidEntryTextArea.setVisible(true);
+        invalidEntryTextArea.setText("");
 
         showPasswordRadioButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -48,7 +49,7 @@ public class LoginPage {
         logInButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                invalidEntryTextArea.setVisible(!invalidEntryTextArea.isVisible());
+                LogInUser();
 
                 super.mouseClicked(e);
             }
@@ -62,6 +63,22 @@ public class LoginPage {
                 super.mouseClicked(e);
             }
         });
+    }
+
+    public void LogInUser(){
+        LoginStatus status = AccountManager.GetInstance().AttemptLogIn(textField1.getText(),String.valueOf(passwordField1.getPassword()));
+        if(status == LoginStatus.Failed_AccountExistError){
+            invalidEntryTextArea.setText("No account with that username could be found.");
+            return;
+        }
+        else if (status == LoginStatus.Failed_IncorrectPassword){
+            invalidEntryTextArea.setText("The password is incorrect.");
+            return;
+        }
+        else if(status == LoginStatus.Complete){
+            //it really should be if it made it past the first two, but this is effectively a failsafe
+            navigationBar.getInstance().changePage(MovieLibraryPage.getInstance().getGUI());
+        }
     }
 
     public JPanel getGUI(){

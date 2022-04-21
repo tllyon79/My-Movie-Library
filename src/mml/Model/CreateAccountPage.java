@@ -28,7 +28,8 @@ public class CreateAccountPage {
         errorTextArea.setForeground(Color.RED);
         errorTextArea.setLineWrap(false);
         errorTextArea.setWrapStyleWord(true);
-        errorTextArea.setVisible(false);
+        errorTextArea.setVisible(true);
+        errorTextArea.setText("");
 
         showPasswordRadioButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -50,10 +51,41 @@ public class CreateAccountPage {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-
+                CreateAccount();
                 super.mouseClicked(e);
             }
         });
+    }
+
+    public void CreateAccount() {
+        errorTextArea.setText("");
+        if (!AccountManager.GetInstance().CheckValidUserPass(textField1.getText())) {
+            errorTextArea.setText("Username must consist of the following:\n" +
+                    "5-30 alphanumeric characters (including _)");
+            return;
+        }
+        //we pass username check
+        if (!AccountManager.GetInstance().CheckValidUserPass(String.valueOf(passwordField.getPassword()))) {
+            errorTextArea.setText("Password must consist of the following:\n" +
+                    "5-30 alphanumeric characters (including _)");
+            return;
+        }
+        //valid password, check confirm
+        if(!(String.valueOf(passwordField.getPassword()).equals(String.valueOf(confirmPasswordField.getPassword())))){
+            errorTextArea.setText("Passwords do not match.");
+            return;
+        }
+        Boolean userCreated = AccountManager.GetInstance().CreateUser(textField1.getText(), String.valueOf(passwordField.getPassword()));
+        if(!userCreated){
+            errorTextArea.setText("User with the specified username already exists.");
+            return;
+        }
+        LoginStatus status = AccountManager.GetInstance().AttemptLogIn(textField1.getText(), String.valueOf(passwordField.getPassword()));
+        if (status == LoginStatus.Complete)
+            navigationBar.getInstance().changePage(MovieLibraryPage.getInstance().getGUI());
+        else{
+            errorTextArea.setText("Failed to log in new account.");
+        }
     }
 
     public JPanel getGUI(){

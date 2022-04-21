@@ -96,10 +96,12 @@ public class AccountManager {
      * Logs out a user, serializing their data and setting CurrentUser to null
      */
     private void LogOutUser(){
-        UserAccount user = CurrentUser;
-        CurrentUser = null;
-        JSONData userData = new JSONData(new StringBuilder("Users/").append(user.UserID).append(".json").toString(),false);
-        userData.WriteData(GsonHolder.GetInstance().Gson.toJson(user));
+        if(CurrentUser != null) {
+            UserAccount user = CurrentUser;
+            CurrentUser = null;
+            JSONData userData = new JSONData(new StringBuilder("Users/").append(user.UserID).append(".json").toString(), false);
+            userData.WriteData(GsonHolder.GetInstance().Gson.toJson(user));
+        }
     }
 
     /**
@@ -170,4 +172,11 @@ public class AccountManager {
         JsonFile.WriteData(GsonHolder.GetInstance().Gson.toJson(UserIDs));
     }
 
+    /**
+     * Checks to see if a user is logged in
+     * @return True if a user is logged in, otherwise false
+     */
+    public Boolean IsUserLoggedIn(){
+        return (CurrentUser != null);
+    }
 }

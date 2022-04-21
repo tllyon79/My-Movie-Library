@@ -4,12 +4,21 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Main {
     public static final boolean IsTestingModel = false;
+
+    public static void OnExit(){
+        AccountManager.GetInstance().OnExit();
+        RatingManager.GetInstance().OnExit();
+        System.exit(0);
+    }
+
     public static void main(String[] args) {
 	// write your code here
         // Changes style of UI elements to possibly look better, can keep or get rid of
@@ -25,7 +34,14 @@ public class Main {
         }
 
         JFrame frame = new JFrame("MyMovieLibrary");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                OnExit();
+                super.windowClosing(e);
+            }
+        });
         frame.setSize(300,300);
 
         navigationBar.getInstance().changePage(MovieLibraryPage.getInstance().getGUI());
