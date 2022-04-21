@@ -1,6 +1,7 @@
 package mml.Model;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -15,12 +16,19 @@ public class CreateAccountPage {
     //private JRadioButton confirmShowPasswordRadioButton;
     private JPasswordField confirmPasswordField;
     private JButton createAccountButton;
+    private JTextArea errorTextArea;
 
     private static CreateAccountPage Instance = new CreateAccountPage();
 
     public static CreateAccountPage getInstance(){ return Instance; }
 
     CreateAccountPage(){
+        errorTextArea.setBorder(null);
+        errorTextArea.setBackground(new Color(214,217,223));
+        errorTextArea.setForeground(Color.RED);
+        errorTextArea.setLineWrap(false);
+        errorTextArea.setWrapStyleWord(true);
+        errorTextArea.setVisible(false);
 
         showPasswordRadioButton.addMouseListener(new MouseAdapter() {
             @Override
