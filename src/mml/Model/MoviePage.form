@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="mml.Model.MoviePage">
   <grid id="27dc6" binding="moviePage" layout-manager="GridBagLayout">
     <constraints>
-      <xy x="20" y="20" width="588" height="315"/>
+      <xy x="20" y="20" width="588" height="429"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -170,7 +170,7 @@
       </component>
       <vspacer id="2e276">
         <constraints>
-          <grid row="7" column="1" row-span="1" col-span="8" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+          <grid row="9" column="1" row-span="1" col-span="8" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="10.0"/>
         </constraints>
       </vspacer>
@@ -186,6 +186,28 @@
           <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
       </hspacer>
+      <vspacer id="fd1bc">
+        <constraints>
+          <grid row="7" column="5" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+      </vspacer>
+      <scrollpane id="daca8">
+        <constraints>
+          <grid row="8" column="1" row-span="1" col-span="8" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="7.0"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="8f459" binding="ratingsPanel" layout-manager="GridBagLayout">
+            <constraints/>
+            <properties/>
+            <border type="none"/>
+            <children/>
+          </grid>
+        </children>
+      </scrollpane>
     </children>
   </grid>
 </form>
