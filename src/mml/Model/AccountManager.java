@@ -179,4 +179,13 @@ public class AccountManager {
     public Boolean IsUserLoggedIn(){
         return (CurrentUser != null);
     }
+
+    /**
+     * Checks to see if the given username is already in use
+     * @param username The username to look for
+     * @return True if the username is not in use, otherwise false
+     */
+    public Boolean UsernameAvailable(String username){
+        return !UserIDs.containsKey(username);
+    }
 }

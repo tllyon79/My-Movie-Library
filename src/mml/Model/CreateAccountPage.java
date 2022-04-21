@@ -89,9 +89,13 @@ public class CreateAccountPage {
             errorTextArea.setText("Passwords do not match.");
             return;
         }
+        if(!AccountManager.GetInstance().UsernameAvailable(textField1.getText())){
+            errorTextArea.setText("User with the specified username already exists.");
+            return;
+        }
         Boolean userCreated = AccountManager.GetInstance().CreateUser(textField1.getText(), String.valueOf(passwordField.getPassword()));
         if(!userCreated){
-            errorTextArea.setText("User with the specified username already exists.");
+            errorTextArea.setText("User was unable to be created.");
             return;
         }
         LoginStatus status = AccountManager.GetInstance().AttemptLogIn(textField1.getText(), String.valueOf(passwordField.getPassword()));
