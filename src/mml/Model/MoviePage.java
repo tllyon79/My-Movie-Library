@@ -2,10 +2,7 @@ package mml.Model;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
+import java.util.ArrayList;
 
 public class MoviePage {
     private JPanel moviePage;
@@ -23,6 +20,7 @@ public class MoviePage {
     private JLabel plotLabel;
     private JTextArea textArea1;
     private JLabel genreLabel;
+    private JPanel ratingsPanel;
     private Movie movie;
 
     public MoviePage(Movie movie){
@@ -62,6 +60,46 @@ public class MoviePage {
         textArea1.setEditable(false);
         textArea1.setLineWrap(true);
 
+        ArrayList<MovieRating> ratings = RatingManager.GetInstance().GetRatingsByMovie(movie.getMovieId());
+        ratingsPanel.removeAll();
+        ratingsPanel.setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(0,30,0,100);
+        constraints.gridx = 0;
+        for (int i = 0; i < ratings.size(); i++){
+            constraints.gridy = i;
+            ratingsPanel.add(new UserReviewGUI(ratings.get(i)).getGUI(), constraints);
+        }
+
         return moviePage;
+    }
+
+    public static class UserReviewGUI {
+        private JPanel userReviewPanel;
+        private JTextArea textArea1;
+        private JLabel userIDLabel;
+        private JLabel userRatingStarIconLabel;
+        private JLabel userRatingValueLabel;
+
+        public UserReviewGUI(MovieRating rating){
+            userIDLabel.setText(rating.GetUserID());
+
+            ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Images/Icons/star.png").getImage()
+                    .getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+            userRatingStarIconLabel.setIcon(imageIcon);
+            userRatingStarIconLabel.setText(null);
+
+            userRatingValueLabel.setText(rating.GetRating() + "/10");
+
+            textArea1.setText(rating.GetReview());
+            textArea1.setFocusable(false);
+            textArea1.setBorder(null);
+            textArea1.setOpaque(false);
+            textArea1.setBackground(new Color(214,217,223));
+        }
+
+        public JPanel getGUI(){
+            return userReviewPanel;
+        }
     }
 }
