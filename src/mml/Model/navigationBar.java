@@ -78,8 +78,19 @@ public class navigationBar {
         searchIconLabel.setIcon(imageIcon);
         searchIconLabel.setText(null);
 
+        loggedInLogo();
+
+        ImageIcon logo = new ImageIcon(new ImageIcon("src/Images/Icons/MML_Logo.png").getImage()
+                .getScaledInstance(60, 30, Image.SCALE_SMOOTH));
+        mmlLabel.setIcon(logo);
+        mmlLabel.setText(null);
+
+        return navigationBarPanel;
+    }
+
+    public void loggedInLogo(){
         if (AccountManager.GetCurrentUser() != null){
-            imageIcon = new ImageIcon(new ImageIcon("src/Images/Icons/accountIcon.png").getImage()
+            ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Images/Icons/accountIcon.png").getImage()
                     .getScaledInstance(30, 30, Image.SCALE_SMOOTH));
             accountIconLabel.setIcon(imageIcon);
             accountIconLabel.setText(null);
@@ -88,13 +99,6 @@ public class navigationBar {
             accountIconLabel.setText("Sign In");
             accountIconLabel.setFont(new Font(Font.SERIF, Font.BOLD, 14));
         }
-
-        ImageIcon logo = new ImageIcon(new ImageIcon("src/Images/Icons/MML_Logo.png").getImage()
-                .getScaledInstance(60, 30, Image.SCALE_SMOOTH));
-        mmlLabel.setIcon(logo);
-        mmlLabel.setText(null);
-
-        return navigationBarPanel;
     }
 
     public void changePage(JPanel page){

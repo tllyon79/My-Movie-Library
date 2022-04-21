@@ -60,6 +60,7 @@ public class LoginPage {
             @Override
             public void mouseClicked(MouseEvent e) {
                 LogInUser();
+                if (AccountManager.GetInstance().IsUserLoggedIn()){ navigationBar.getInstance().loggedInLogo(); }
 
                 super.mouseClicked(e);
             }

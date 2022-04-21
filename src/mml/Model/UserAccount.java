@@ -57,6 +57,16 @@ public class UserAccount {
         return Wishlists;
     }
 
+    public WishList findWishlist(String title) {
+        WishList w = null;
+
+        for (int i = 0; i < Wishlists.size(); i++){
+            if (Wishlists.get(i).GetWishlistTitle().equals(title)){ w = Wishlists.get(i); }
+        }
+
+        return w;
+    }
+
     /**
      * Adds a wishlist to the user's wishlists
      * @param w The Wishlist to be added

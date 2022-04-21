@@ -60,8 +60,9 @@ public class CreateAccountPage {
         createAccountButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
                 CreateAccount();
+                if (AccountManager.GetInstance().IsUserLoggedIn()){ navigationBar.getInstance().loggedInLogo(); }
+
                 super.mouseClicked(e);
             }
         });
