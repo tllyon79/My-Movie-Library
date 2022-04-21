@@ -24,10 +24,13 @@ public class AccountPage extends JFrame {
     private JButton deletewlbutton;
     private JLabel createlabel;
     private JTextField nametext;
+    private JLabel mposter;
+    private JTextArea wlistdesc;
     private ArrayList<WishList> userList;
     private DefaultListModel wlistmodel;
     private DefaultListModel mlistmodel;
     private UserAccount user;
+    private Movie postergetter;
 
     private static AccountPage Instance = new AccountPage();
 
@@ -61,8 +64,14 @@ public class AccountPage extends JFrame {
         mlistmodel = new DefaultListModel<>();
         mlist.setModel(mlistmodel);
 
+        //default poster
+        //ImageIcon mini = new ImageIcon(postergetter.getPoster();
 
-        //shows wlist contents when selected hopefully
+
+
+
+
+                //shows wlist contents when selected hopefully
         wlist.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -72,9 +81,29 @@ public class AccountPage extends JFrame {
                 if (wishlistnum >= 0) {
                     mlistmodel.removeAllElements(); //clear list with each click (so they don't pile up eternally)
                     WishList w = userList.get(wishlistnum);
-
+                    MovieList m = w.GetMovies();
+                    String test = "outside loop";
+                    String test2 = "inside loop";
                     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!may need work!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
-                    mlistmodel.addElement(w.GetMovies().viewMovieList());  //hopefully shows indv movies
+
+                    //for loop to get through array list
+                    mlistmodel.addElement(test);
+
+                    for(int i = 0; i <= m.viewMovieList().size(); i++)
+                    {
+                        mlistmodel.addElement(test2);
+                       Movie movie = m.viewMovieList().get(i);
+                        System.out.println(movie.toString());
+                        mlistmodel.addElement(movie.toString()); } //hopefully shows indv movies
+
+                    wlistdesc.setText(w.GetWishlistDescription());
+
+
+
+                   // for(int i = 0; i < w.getSize(); i++)
+
+
+
 
                     //populates side list with contents of selected wishlist
                 }
@@ -84,31 +113,46 @@ public class AccountPage extends JFrame {
                 //and it works!
                 deletewlbutton.addActionListener(new ActionListener() {
                     @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (wishlistnum >= 0) {
-                            WishList w = userList.get(wishlistnum);
-                            deletewishlist(w);
-                        }
+                    public void actionPerformed(ActionEvent e){
+                    if (wishlistnum >= 0) {
+                        WishList w = userList.get(wishlistnum);
+                        deletewishlist(w);
                     }
+                }
                 });
-            }
+
+        };
         });
 
         //button creates wishlist with given title and adds it to user list
         // and baby it works
         addwlbutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+                @Override
+                public void actionPerformed (ActionEvent e){
 
-                String wlname = nametext.getText().trim();
-                WishList created = new WishList();
-                created.SetWishlistTitle(wlname);
-                adduserList(created);
-            }
-        });
+                    String wlname = nametext.getText().trim();
+                    WishList created = new WishList();
+                    created.SetWishlistTitle(wlname);
+                    adduserList(created);
+                }
+            });
+
+        //show selected movies poster
+
+
 
     }
 
+
+
+
+
+
+
+
+
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!here!!!!!!!!!!!!!!!!!
 
 
 
@@ -148,6 +192,15 @@ public class AccountPage extends JFrame {
         }
 
         //precious methods :: wishlist content related
+
+    //public void postGet(WishList m){}
+
+
+
+
+
+
+
 /*
     public void deletemovie(Movie m){
         //i foresee problems here, because i believe im returning entire movielists into the right panel
@@ -166,11 +219,17 @@ public class AccountPage extends JFrame {
         return mainpanel;
     }
 
+    //ImageIcon mini = new ImageIcon(movie.getPoster()
 
-/*main for testing account page
+
+
+//main for testing account page
     public static void main(String[] args) {
         AccountPage screen = new AccountPage();
         screen.setVisible(true);
+        Movie m = MovieLibrary.GetInstance().GetMasterList().viewMovieList().get(2);
+
+
 
         WishList test = new WishList();
         WishList test2 = new WishList();
@@ -182,7 +241,7 @@ public class AccountPage extends JFrame {
 
 
 
-        //test.AddMovie("tt4154796");
+        //test.AddMovie(m);
         //test2.AddMovie("10");        breaks it lol
 
         screen.adduserList(test);
@@ -190,7 +249,9 @@ public class AccountPage extends JFrame {
 
         screen.getInstance();
     }
+    }
 
- */
 
-}
+
+
+
