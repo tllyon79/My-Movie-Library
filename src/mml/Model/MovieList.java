@@ -37,6 +37,15 @@ public class MovieList {
      */
     public ArrayList<Movie> viewMovieList()
     {
+        if(Movies.size() != MovieIDs.size()){
+            for(String id : MovieIDs){
+                AddMovie(MovieLibrary.GetInstance().GetMovie(id));
+            }
+            MovieIDs.clear();
+            for(Movie m : Movies){
+                MovieIDs.add(m.getMovieId());
+            }
+        }
         return Movies;
     }
 
@@ -45,8 +54,8 @@ public class MovieList {
      * @param m Movie to add to the MovieList
      */
     public void AddMovie(Movie m){
-        MovieIDs.add(m.getMovieId());
-        Movies.add(m);
+        if(!MovieIDs.contains(m.getMovieId())) MovieIDs.add(m.getMovieId());
+        if(!Movies.contains(m)) Movies.add(m);
     }
 
     /**

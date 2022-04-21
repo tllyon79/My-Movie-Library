@@ -27,6 +27,8 @@ public class WishList { // model for wishlist
        return Movies;
     }
 
+
+
     /**
      * Retrieves the title of the Wishlist
      * @return The Title of the Wishlist
