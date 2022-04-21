@@ -10,12 +10,11 @@ public class ModelTesting {
             System.out.println(MasterList.viewMovieList().get(i).getTitle());
         }
         LoginStatus LoginAttempt = AccountManager.GetInstance().AttemptLogIn("user","pass");
-        while(LoginAttempt != LoginStatus.Complete){
-            if(LoginAttempt == LoginStatus.Failed_AccountExistError) {
+        while(LoginAttempt != LoginStatus.Complete) {
+            if (LoginAttempt == LoginStatus.Failed_AccountExistError) {
                 AccountManager.GetInstance().CreateUser("user", "pass");
-                LoginAttempt = AccountManager.GetInstance().AttemptLogIn("user","pass");
-            }
-            else if (LoginAttempt == LoginStatus.Failed_IncorrectPassword){
+                LoginAttempt = AccountManager.GetInstance().AttemptLogIn("user", "pass");
+            } else if (LoginAttempt == LoginStatus.Failed_IncorrectPassword) {
                 break;
             }
         }

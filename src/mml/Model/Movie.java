@@ -227,4 +227,9 @@ public class Movie implements Comparable<Movie> {
         //for generic just compare ID, we have comparators for everything else now
         return getMovieId().compareTo(o.getMovieId());
     }
+
+    @Override
+    public String toString(){
+        return getTitle();
+    }
 }

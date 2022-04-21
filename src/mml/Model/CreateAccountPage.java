@@ -5,6 +5,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * GUI Page that allows a user to create a new account
+ */
 public class CreateAccountPage {
     private JPanel centerPanel;
     private JTextField textField1;
@@ -22,7 +25,10 @@ public class CreateAccountPage {
 
     public static CreateAccountPage getInstance(){ return Instance; }
 
-    CreateAccountPage(){
+    /**
+     * Default constructor for the singleton page
+     */
+    private CreateAccountPage(){
         errorTextArea.setBorder(null);
         errorTextArea.setBackground(new Color(214,217,223));
         errorTextArea.setForeground(Color.RED);
