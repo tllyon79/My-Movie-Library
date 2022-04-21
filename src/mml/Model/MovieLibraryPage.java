@@ -31,7 +31,7 @@ public class MovieLibraryPage {
     private int page = 1;
     private ArrayList<String> genreFilterCriteria;
     private ArrayList<String> ageRatingFilterCriteria;
-    private JDialog d = new JDialog();
+    private JDialog d;
 
     private static MovieLibraryPage Instance = new MovieLibraryPage();
 
@@ -146,23 +146,6 @@ public class MovieLibraryPage {
             });
         }
 
-        /*removeFiltersButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                removeFilters();
-                removeFiltersButton.setEnabled(false);
-                if (!navigationBar.getInstance().getSearchBarContents().isEmpty()){
-                    movies = SearchList(MovieLibrary.GetInstance().GetMasterList(),
-                            navigationBar.getInstance().getSearchBarContents().toLowerCase());
-                    resetSortBox();
-                    navigationBar.getInstance().changePage(getGUI());
-                }
-                else { movies = MovieLibrary.GetInstance().GetMasterList(); }
-                getGUI();
-
-                super.mouseClicked(e);
-            }
-        });*/
         removeFiltersButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -366,6 +349,7 @@ public class MovieLibraryPage {
             wishlistButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    d = new JDialog();
                     d.setTitle("Add to Wishlist");
                     d.setLocation(navigationBar.getInstance().getGUI().getWidth()/2 - 250,
                             navigationBar.getInstance().getGUI().getHeight()/2 - 175);
@@ -373,8 +357,6 @@ public class MovieLibraryPage {
                     d.add(new MLPAddtoWishlistGUI(movie).getGUI());
                     d.setSize(new Dimension(500, 350));
                     d.setVisible(true);
-
-                    System.out.println(AccountManager.GetCurrentUser().GetWishlists().get(0).getSize());
                 }
             });
         }
@@ -418,19 +400,15 @@ public class MovieLibraryPage {
         private JPanel wishlistsPanel;
         private JButton confirmButton;
         private JButton cancelButton;
+        private Movie wishlistMovie;
 
         public MLPAddtoWishlistGUI(Movie movie){
+            wishlistMovie = movie;
+
             cancelButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    d.setVisible(false);
-                    d.dispose();
-
-                    JCheckBox temp;
-                    for (int i = 0; i < wishlistsPanel.getComponentCount(); i++){
-                        temp = (JCheckBox) wishlistsPanel.getComponent(i);
-                        temp.setSelected(false);
-                    }
+                    closeDialog();
                 }
             });
 
@@ -439,7 +417,7 @@ public class MovieLibraryPage {
                 public void actionPerformed(ActionEvent e) {
                     AccountManager.GetCurrentUser().AddWishlist(new WishList());
                     d.remove(0);
-                    d.add(new MLPAddtoWishlistGUI(movie).getGUI());
+                    d.add(new MLPAddtoWishlistGUI(wishlistMovie).getGUI());
                     d.repaint();
                 }
             });
@@ -448,26 +426,51 @@ public class MovieLibraryPage {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     JCheckBox temp;
-                    WishList w;
-                    temp = (JCheckBox) wishlistsPanel.getComponent(0);
-                    if (temp.isSelected()){
-                        AccountManager.GetCurrentUser().findWishlist(temp.getText()).AddMovie(movie.getMovieId());
-                        AccountManager.GetCurrentUser().GetWishlists().get(0).AddMovie(movie.getMovieId());
-                        System.out.println("Selected");
+                    for (int i = 0; i < wishlistsPanel.getComponentCount(); i++){
+                        if (!(wishlistsPanel.getComponent(i) instanceof JLabel)) {
+                            temp = (JCheckBox) wishlistsPanel.getComponent(i);
+                            if (temp.isSelected()) {
+                                AccountManager.GetCurrentUser().GetWishlists().get(i).AddMovie(wishlistMovie.getMovieId());
+                            }
+                        }
                     }
-                    System.out.println(AccountManager.GetCurrentUser().GetWishlists().get(0).GetMovies().viewMovieList());
-                    System.out.println(AccountManager.GetCurrentUser().GetWishlists().get(1).GetMovies().viewMovieList());
+
+                    closeDialog();
                 }
             });
         }
 
         public JPanel getGUI(){
+            wishlistsPanel.setLayout(new GridBagLayout());
+            GridBagConstraints wishlistConstraints = new GridBagConstraints();
+            wishlistConstraints.gridx = 0;
+
             ArrayList<WishList> wishlists = AccountManager.GetCurrentUser().GetWishlists();
             for (int i = 0; i < wishlists.size(); i++){
-                wishlistsPanel.add(new JCheckBox(wishlists.get(i).GetWishlistTitle()));
+                wishlistConstraints.gridy = i;
+                wishlistsPanel.add(new JCheckBox(wishlists.get(i).GetWishlistTitle()), wishlistConstraints);
             }
 
+            wishlistConstraints.gridx = 1;
+            wishlistConstraints.gridy++;
+            wishlistConstraints.weightx = 1;
+            wishlistConstraints.weighty = 1;
+            wishlistsPanel.add(new JLabel(), wishlistConstraints);
+
             return addToWishlistPanel;
+        }
+
+        private void closeDialog(){
+            d.setVisible(false);
+            d.dispose();
+
+            JCheckBox temp;
+            for (int i = 0; i < wishlistsPanel.getComponentCount(); i++){
+                if (!(wishlistsPanel.getComponent(i) instanceof JLabel)) {
+                    temp = (JCheckBox) wishlistsPanel.getComponent(i);
+                    temp.setSelected(false);
+                }
+            }
         }
     }
 }
