@@ -6,6 +6,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * GUI Page that allows a user to log into their personal account
+ */
 public class LoginPage {
     private JPanel loginPagePanel;
     private JLabel signInLabel;
@@ -20,9 +23,16 @@ public class LoginPage {
 
     private static LoginPage Instance = new LoginPage();
 
+    /**
+     * Retrieves the instance of the singleton page
+     * @return The instance of the LoginPage
+     */
     public static LoginPage getInstance(){ return Instance; }
 
-    LoginPage(){
+    /**
+     * Default constructor for the singleton page
+     */
+    private LoginPage(){
         invalidEntryTextArea.setText("Invalid username or password. Please try again.");
         invalidEntryTextArea.setBorder(null);
         invalidEntryTextArea.setBackground(new Color(214,217,223));
@@ -65,6 +75,10 @@ public class LoginPage {
         });
     }
 
+    /**
+     * Attempts to log into an account with the current specified values within the username/password fields
+     * If successful, will automatically return user to the library, logged in
+     */
     public void LogInUser(){
         LoginStatus status = AccountManager.GetInstance().AttemptLogIn(textField1.getText(),String.valueOf(passwordField1.getPassword()));
         if(status == LoginStatus.Failed_AccountExistError){
@@ -81,6 +95,10 @@ public class LoginPage {
         }
     }
 
+    /**
+     * Retrieves the GUI panel component
+     * @return The root JPanel
+     */
     public JPanel getGUI(){
         return loginPagePanel;
     }

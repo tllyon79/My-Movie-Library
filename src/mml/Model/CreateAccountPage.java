@@ -23,6 +23,10 @@ public class CreateAccountPage {
 
     private static CreateAccountPage Instance = new CreateAccountPage();
 
+    /**
+     * Retrieves the instance of the singleton page
+     * @return The instance of the CreateAccountPage
+     */
     public static CreateAccountPage getInstance(){ return Instance; }
 
     /**
@@ -63,7 +67,11 @@ public class CreateAccountPage {
         });
     }
 
-    public void CreateAccount() {
+    /**
+     * Attempts to create an account with the current specified values within the username/password fields
+     * If successful, will automatically return user to the library, logged in
+     */
+    private void CreateAccount() {
         errorTextArea.setText("");
         if (!AccountManager.GetInstance().CheckValidUserPass(textField1.getText())) {
             errorTextArea.setText("Username must consist of the following:\n" +
@@ -94,6 +102,10 @@ public class CreateAccountPage {
         }
     }
 
+    /**
+     * Retrieves the GUI panel component
+     * @return The root JPanel
+     */
     public JPanel getGUI(){
         return createAccountPagePanel;
     }

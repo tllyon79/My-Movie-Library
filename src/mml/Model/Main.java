@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public class Main {
-    public static final boolean IsTestingModel = false;
+    public static final boolean IsTestingModel = true;
 
     public static void OnExit(){
         AccountManager.GetInstance().OnExit();

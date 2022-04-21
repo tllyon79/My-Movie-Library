@@ -56,7 +56,7 @@ public class RatingManager {
         //pretty much all you have to do here is register with RatingManager that this user has a unique rating
         if(RatingsDict.containsKey(movieId)){
             List<String> users = RatingsDict.get(movieId);
-            users.add(userId);
+            if(!users.contains(userId)) users.add(userId);
         }
         else{
             List<String> users = new ArrayList<>();
