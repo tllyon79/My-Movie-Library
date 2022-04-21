@@ -370,6 +370,21 @@ public class MovieLibraryPage {
             miniPoster.setIcon(mini);
             miniPoster.setText("");
 
+            wishlistButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    //JWindow w = new JWindow();
+                    JDialog d = new JDialog();
+                    d.setTitle("Add to Wishlist");
+                    d.setSize(new Dimension(100, 100));
+                    d.setLocation(navigationBar.getInstance().getGUI().getWidth()/2, navigationBar.getInstance().getGUI().getHeight()/2);
+                    d.add(new JButton("test"));
+                    d.setVisible(true);
+
+                    super.mouseClicked(e);
+                }
+            });
+
             return miniPanel;
         }
     }
