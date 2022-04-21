@@ -20,9 +20,7 @@ public class LoginPage {
 
     private static LoginPage Instance = new LoginPage();
 
-    public static LoginPage getInstance(){
-        return Instance;
-    }
+    public static LoginPage getInstance(){ return Instance; }
 
     LoginPage(){
         invalidEntryTextArea.setText("Invalid username or password. Please try again.");
@@ -55,6 +53,7 @@ public class LoginPage {
                 super.mouseClicked(e);
             }
         });
+
         createAccountButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
