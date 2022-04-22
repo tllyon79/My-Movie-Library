@@ -24,10 +24,25 @@ public class newWishlistGUI {
                     w.SetWishlistTitle(wTitleTextArea.getText());
                 }
                 else {
-                    w.SetWishlistDescription(null);
+                    w.SetWishlistDescription("");
                 }
 
                 AccountManager.GetCurrentUser().AddWishlist(w);
+
+                try {
+                    AccountPage.getInstance().closeDialog();
+                    navigationBar.getInstance().changePage(AccountPage.getInstance().getGUI());
+                }
+                catch (NullPointerException a){
+                    // Do nothing
+                }
+
+                try {
+                    MovieLibraryPage.getInstance().closeDialog2();
+                }
+                catch (NullPointerException a){
+                    // Do nothing
+                }
             }
         });
     }

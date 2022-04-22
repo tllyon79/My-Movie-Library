@@ -32,6 +32,7 @@ public class MovieLibraryPage {
     private ArrayList<String> genreFilterCriteria;
     private ArrayList<String> ageRatingFilterCriteria;
     private JDialog d;
+    private JDialog d2;
 
     private static MovieLibraryPage Instance = new MovieLibraryPage();
 
@@ -220,6 +221,11 @@ public class MovieLibraryPage {
         }
     }
 
+    public void closeDialog2(){
+        d2.setVisible(false);
+        d2.dispose();
+    }
+
     public void filterMovieLibrary(){
         MovieList temp = unfilteredMovies.DeepClone();
         ArrayList<Pair<FilterType,String>> filterParameters = new ArrayList<>();
@@ -400,6 +406,7 @@ public class MovieLibraryPage {
         private JPanel wishlistsPanel;
         private JButton confirmButton;
         private JButton cancelButton;
+        private JButton refreshButton;
         private Movie wishlistMovie;
 
         public MLPAddtoWishlistGUI(Movie movie){
@@ -415,10 +422,14 @@ public class MovieLibraryPage {
             newWishlistButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    AccountManager.GetCurrentUser().AddWishlist(new WishList());
-                    d.remove(0);
-                    d.add(new MLPAddtoWishlistGUI(wishlistMovie).getGUI());
-                    d.repaint();
+                    d2 = new JDialog();
+                    d2.setTitle("Add to Wishlist");
+                    d2.setLocation(navigationBar.getInstance().getGUI().getWidth()/2 - 250,
+                            navigationBar.getInstance().getGUI().getHeight()/2 - 175);
+                    d2.setModal(true);
+                    d2.add(new newWishlistGUI().getGUI());
+                    d2.setSize(new Dimension(500, 350));
+                    d2.setVisible(true);
                 }
             });
 
@@ -429,6 +440,8 @@ public class MovieLibraryPage {
                     for (int i = 0; i < wishlistsPanel.getComponentCount(); i++){
                         if (!(wishlistsPanel.getComponent(i) instanceof JLabel)) {
                             temp = (JCheckBox) wishlistsPanel.getComponent(i);
+                            temp.setHorizontalTextPosition(SwingConstants.LEFT);
+                            temp.setHorizontalAlignment(SwingConstants.LEFT);
                             if (temp.isSelected()) {
                                 AccountManager.GetCurrentUser().GetWishlists().get(i).AddMovie(wishlistMovie.getMovieId());
                             }
@@ -436,6 +449,20 @@ public class MovieLibraryPage {
                     }
 
                     closeDialog();
+                }
+            });
+            refreshButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    closeDialog();
+                    d = new JDialog();
+                    d.setTitle("Add to Wishlist");
+                    d.setLocation(navigationBar.getInstance().getGUI().getWidth()/2 - 250,
+                            navigationBar.getInstance().getGUI().getHeight()/2 - 175);
+                    d.setModal(true);
+                    d.add(new MLPAddtoWishlistGUI(movie).getGUI());
+                    d.setSize(new Dimension(500, 350));
+                    d.setVisible(true);
                 }
             });
         }

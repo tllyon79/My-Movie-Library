@@ -53,6 +53,11 @@ public class AccountPage {
         });
     }
 
+    public void closeDialog(){
+        d.setVisible(false);
+        d.dispose();
+    }
+
     public JPanel getGUI() {
         usernameLabel.setText("Username: " + AccountManager.GetCurrentUser().Username);
 
@@ -77,6 +82,7 @@ public class AccountPage {
         private JPanel wishlistMoviesPanel;
         private JButton editWishlistButton;
         private JTextArea wishlistTitleTextArea;
+        private JButton removeWishlistButton;
         private WishList shownWishlist;
         private boolean editWishlist = false;
 
@@ -84,6 +90,8 @@ public class AccountPage {
             shownWishlist = wishlist;
             wishlistTitleTextArea.setText(wishlist.GetWishlistTitle());
             wishlistTitleTextArea.setLineWrap(false);
+            removeWishlistButton.setEnabled(false);
+            removeWishlistButton.setVisible(false);
             if (wishlist.GetWishlistDescription().isEmpty()){
                 wishlistDescriptionTextArea.setText("No Description");
             }
@@ -112,6 +120,9 @@ public class AccountPage {
                         wishlistTitleTextArea.setEditable(true);
                         wishlistTitleTextArea.setFocusable(true);
 
+                        removeWishlistButton.setEnabled(true);
+                        removeWishlistButton.setVisible(true);
+
                         editWishlist = true;
                     }
                     else {
@@ -123,6 +134,10 @@ public class AccountPage {
                         wishlistTitleTextArea.setBackground(new Color(214,217,223));
                         wishlistTitleTextArea.setEditable(false);
                         wishlistTitleTextArea.setFocusable(false);
+
+                        removeWishlistButton.setEnabled(false);
+                        removeWishlistButton.setVisible(false);
+
                         editWishlist = false;
 
                         shownWishlist.SetWishlistDescription(wishlistDescriptionTextArea.getText());
@@ -130,6 +145,13 @@ public class AccountPage {
                     }
                     wishlistTemplatePanel = getGUI();
                     wishlistTemplatePanel.revalidate();
+                }
+            });
+            removeWishlistButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    AccountManager.GetCurrentUser().RemoveWishlist(shownWishlist);
+                    navigationBar.getInstance().changePage(AccountPage.getInstance().getGUI());
                 }
             });
         }
@@ -213,6 +235,3 @@ public class AccountPage {
         }
     }
 }
-
-
-
