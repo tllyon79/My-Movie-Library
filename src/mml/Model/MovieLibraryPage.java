@@ -7,6 +7,9 @@ import java.util.ArrayList;
 
 import static mml.Model.Search.SearchList;
 
+/**
+ * GUI Page that shows the MovieLibrary and any searched/filtered MovieLists
+ */
 public class MovieLibraryPage {
     private JPanel movieLibraryPage;
     private JButton filterButton;
@@ -36,11 +39,18 @@ public class MovieLibraryPage {
 
     private static MovieLibraryPage Instance = new MovieLibraryPage();
 
+    /**
+     * Retrieves the instance of the singleton page
+     * @return The instance of the MovieLibraryPage
+     */
     public static MovieLibraryPage getInstance(){
         return Instance;
     }
 
-    public MovieLibraryPage(){
+    /**
+     * Default constructor for the singleton page
+     */
+    private MovieLibraryPage(){
         movies = MovieLibrary.GetInstance().GetMasterList();
 
         leftArrowButton.addMouseListener(new MouseAdapter() {
@@ -110,6 +120,10 @@ public class MovieLibraryPage {
             } else {
                 constraints.gridx = 0;
             }
+
+            /**
+             * Listens for checkboxes in genre filter field, and add them to a filter list if checked
+             */
             genreCheckBox.addItemListener(new ItemListener() {
                 @Override
                 public void itemStateChanged(ItemEvent e) {
@@ -135,6 +149,10 @@ public class MovieLibraryPage {
             } else {
                 constraints.gridx = 0;
             }
+
+            /**
+             * Listens for checkboxes in age rating filter field, and add them to a filter list if checked
+             */
             ageRatingCheckBox.addItemListener(new ItemListener() {
                 @Override
                 public void itemStateChanged(ItemEvent e) {
@@ -147,6 +165,9 @@ public class MovieLibraryPage {
             });
         }
 
+        /**
+         * On button push, resets filled out filter fields and unfilters list
+         */
         removeFiltersButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -164,18 +185,34 @@ public class MovieLibraryPage {
         });
     }
 
+    /**
+     * Changes the MovieList to be shown in the MovieLibraryPage
+     * @param newList new MovieList to be shown
+     * @return the updated MovieLibraryPage GUI
+     */
     public JComponent changeList(MovieList newList){
         movies = newList;
         page = 1;
         return getGUI();
     }
 
+    /**
+     * resets the selection of the sort box
+     */
     public void resetSortBox(){
         sortBox.setSelectedItem(sortBox.getItemAt(0));
     }
 
+    /**
+     * Sets the unfiltered MovieList
+     * @param unfiltered the unfiltered MovieList
+     */
     public void setUnfilteredMovies(MovieList unfiltered){ unfilteredMovies = unfiltered; }
 
+    /**
+     * Handles limiting the shown MovieList to only 20 movies
+     * @return limited MovieList
+     */
     public MovieList createPageList(){
         MovieList shortenedList = new MovieList();
         for (int i = 20 * (page - 1); i < 20 * page; i++){
@@ -187,6 +224,9 @@ public class MovieLibraryPage {
         return shortenedList;
     }
 
+    /**
+     * Handles getting current page, and swapping to the next one if available
+     */
     public void nextPage(){
         int pages;
         if (movies.getSize() % 20 != 0){
@@ -201,6 +241,9 @@ public class MovieLibraryPage {
         }
     }
 
+    /**
+     * Handles getting current page, and swapping to the previous one if available
+     */
     public void previousPage(){
         if (page > 1){
             page--;
@@ -208,6 +251,9 @@ public class MovieLibraryPage {
         }
     }
 
+    /**
+     * Handles emptying the filled out filter fields
+     */
     public void removeFilters(){
         actorFilterTextField.setText(null);
         directorFilterTextField.setText(null);
@@ -221,11 +267,17 @@ public class MovieLibraryPage {
         }
     }
 
+    /**
+     * Closes the inner dialog, the one for adding a new wishlist from MovieLibraryPage
+     */
     public void closeDialog2(){
         d2.setVisible(false);
         d2.dispose();
     }
 
+    /**
+     * Handles filtering the movie list based on which filter fields are selected
+     */
     public void filterMovieLibrary(){
         MovieList temp = unfilteredMovies.DeepClone();
         ArrayList<Pair<FilterType,String>> filterParameters = new ArrayList<>();
@@ -270,6 +322,10 @@ public class MovieLibraryPage {
         }
     }
 
+    /**
+     * Retrieves GUI panel component
+     * @return the root panel
+     */
     public JPanel getGUI(){
         int i;
         MovieList visibleMovies = createPageList();
@@ -333,6 +389,9 @@ public class MovieLibraryPage {
         return movieLibraryPage;
     }
 
+    /**
+     * GUI object that handles the creation of the small movie representation in the library
+     */
     public class miniMovies {
         private JPanel miniPanel;
         private JLabel miniPoster;
@@ -342,6 +401,10 @@ public class MovieLibraryPage {
         private JLabel miniStar;
         private Movie movie;
 
+        /**
+         * Parameterized constructor for the object
+         * @param givenMovie the movie to be shown in the mini format
+         */
         public miniMovies(Movie givenMovie) {
             this.movie = givenMovie;
             miniPoster.addMouseListener(new MouseAdapter() {
@@ -367,6 +430,10 @@ public class MovieLibraryPage {
             });
         }
 
+        /**
+         * Retrieves the GUI panel component
+         * @return The root JPanel
+         */
         public JComponent getMiniMovieGUI(){
             miniTitle.setText(movie.getTitle());
             miniTitle.setFocusable(false);
@@ -400,6 +467,9 @@ public class MovieLibraryPage {
         }
     }
 
+    /**
+     * GUI object that handles the creation of the add to wishlist GUI in MovieLibraryPage
+     */
     public class MLPAddtoWishlistGUI {
         private JPanel addToWishlistPanel;
         private JButton newWishlistButton;
@@ -409,9 +479,16 @@ public class MovieLibraryPage {
         private JButton refreshButton;
         private Movie wishlistMovie;
 
+        /**
+         * Parameterized constructor for the object
+         * @param movie the movie to be added to selected wishlist
+         */
         public MLPAddtoWishlistGUI(Movie movie){
             wishlistMovie = movie;
 
+            /**
+             * Closes the dialog when clicked
+             */
             cancelButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -419,6 +496,9 @@ public class MovieLibraryPage {
                 }
             });
 
+            /**
+             * Button to add new wishlist from within dialog
+             */
             newWishlistButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -433,6 +513,9 @@ public class MovieLibraryPage {
                 }
             });
 
+            /**
+             * Button that handles adding the selected movie to the selected wishlists
+             */
             confirmButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -451,6 +534,10 @@ public class MovieLibraryPage {
                     closeDialog();
                 }
             });
+
+            /**
+             * Refreshes the view to show a newly added wishlist
+             */
             refreshButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -467,6 +554,10 @@ public class MovieLibraryPage {
             });
         }
 
+        /**
+         * Retrieves the GUI panel component
+         * @return The root JPanel
+         */
         public JPanel getGUI(){
             wishlistsPanel.setLayout(new GridBagLayout());
             GridBagConstraints wishlistConstraints = new GridBagConstraints();
@@ -487,6 +578,9 @@ public class MovieLibraryPage {
             return addToWishlistPanel;
         }
 
+        /**
+         * Closes the main dialog for adding movie to wishlist
+         */
         private void closeDialog(){
             d.setVisible(false);
             d.dispose();

@@ -8,6 +8,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+/**
+ * Singleton object that holds and handles the GUI for an AccountPage
+ */
 public class AccountPage {
     private JPanel accountPagePanel;
     private JPanel signInBarPanel;
@@ -26,10 +29,16 @@ public class AccountPage {
         return Instance;
     }
 
+    /**
+     * Private constructor of the singleton object, initializing it
+     */
     private AccountPage() {
         outerScrollPane.setBorder(null);
         outerScrollPane.setViewportBorder(null);
 
+        /**
+         * Button that handles user logout
+         */
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -38,6 +47,10 @@ public class AccountPage {
                 navigationBar.getInstance().loggedInLogo();
             }
         });
+
+        /**
+         * Button that handles adding a new wishlist within the account page
+         */
         newWishlistButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -53,11 +66,18 @@ public class AccountPage {
         });
     }
 
+    /**
+     * Closes the dialog created when using newWishlistButton
+     */
     public void closeDialog(){
         d.setVisible(false);
         d.dispose();
     }
 
+    /**
+     * Builds and gets the AccountPage GUI
+     * @return AccountPage outermost JPanel to put in navigationBar component
+     */
     public JPanel getGUI() {
         usernameLabel.setText("Username: " + AccountManager.GetCurrentUser().Username);
 
@@ -76,6 +96,9 @@ public class AccountPage {
         return accountPagePanel;
     }
 
+    /**
+     * Object that holds and handles the GUI for the list of wishlists in AccountPage
+     */
     public static class wishlistTemplate {
         private JPanel wishlistTemplatePanel;
         private JTextArea wishlistDescriptionTextArea;
@@ -86,6 +109,10 @@ public class AccountPage {
         private WishList shownWishlist;
         private boolean editWishlist = false;
 
+        /**
+         * Constructor for the wishlistTemplate object
+         * @param wishlist the wishlist to be shown in the GUI
+         */
         public wishlistTemplate(WishList wishlist){
             shownWishlist = wishlist;
             wishlistTitleTextArea.setText(wishlist.GetWishlistTitle());
@@ -156,6 +183,10 @@ public class AccountPage {
             });
         }
 
+        /**
+         * Builds and gets the wishlistTemplate GUI
+         * @return outermost JPanel to be put in AccountPage GUI
+         */
         public JPanel getGUI(){
             wishlistMoviesPanel.removeAll();
             wishlistMoviesPanel.setLayout(new GridBagLayout());
@@ -175,6 +206,9 @@ public class AccountPage {
         }
     }
 
+    /**
+     * Object that holds and handles the GUI for the mini posters and movie info in the wishlistTemplate
+     */
     public static class wishlistMiniMovies {
         private JPanel miniPanel;
         private JLabel miniPoster;
@@ -184,6 +218,11 @@ public class AccountPage {
         private WishList miniWishlist;
         private boolean showEditWishlist = false;
 
+        /**
+         * Parameterized constructor for the wishlistMiniMovies object
+         * @param givenMovie used to update the MoviePage
+         * @param wishList the wishlist to get the movies from
+         */
         public wishlistMiniMovies(Movie givenMovie, WishList wishList) {
             movie = givenMovie;
             miniWishlist = wishList;
@@ -205,10 +244,17 @@ public class AccountPage {
             });
         }
 
+        /**
+         * Used to set boolean for check to show edit wishlist GUI options
+         */
         public void showEditWishlist(){
             showEditWishlist = true;
         }
 
+        /**
+         * Builds and gets the wishlistMiniMovieGUI
+         * @return outermost JComponent to show in wishlistTemplate
+         */
         public JComponent getWishlistMiniMovieGUI(){
             if (showEditWishlist){
                 removeMovieButton.setEnabled(true);

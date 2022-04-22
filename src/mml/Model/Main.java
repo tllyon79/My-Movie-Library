@@ -9,19 +9,27 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ *  Class that runs the Main Program
+ */
 public class Main {
     public static final boolean IsTestingModel = false;
 
+    /**
+     * Handles program termination
+     */
     public static void OnExit(){
         AccountManager.GetInstance().OnExit();
         RatingManager.GetInstance().OnExit();
         System.exit(0);
     }
 
+    /**
+     * Main function, sets look and feel, starts GUI, and starts testing if needed
+     * @param args
+     */
     public static void main(String[] args) {
-	// write your code here
-        // Changes style of UI elements to possibly look better, can keep or get rid of
+
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -30,7 +38,7 @@ public class Main {
                 }
             }
         } catch (Exception e) {
-
+            // No code needed, Look and Feel will revert to default
         }
 
         JFrame frame = new JFrame("MyMovieLibrary");
