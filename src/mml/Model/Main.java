@@ -1,8 +1,5 @@
 package mml.Model;
 
-import mml.Model.AccountManager;
-import mml.Model.ModelTesting;
-import mml.Model.RatingManager;
 import mml.View.MovieLibraryPage;
 import mml.View.navigationBar;
 

@@ -7,12 +7,18 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * GUI Page that handles the new wishlist popup GUI
+ */
 public class newWishlistGUI {
     private JPanel newWishlistPanel;
     private JTextArea wTitleTextArea;
     private JTextArea wDescriptionTextArea;
     private JButton createWishlistButton;
 
+    /**
+     * Default constructor for the object
+     */
     public newWishlistGUI(){
         createWishlistButton.addActionListener(new ActionListener() {
             @Override
@@ -50,6 +56,10 @@ public class newWishlistGUI {
         });
     }
 
+    /**
+     * Retrieves GUI panel component
+     * @return the root panel
+     */
     public JPanel getGUI(){
         return newWishlistPanel;
     }

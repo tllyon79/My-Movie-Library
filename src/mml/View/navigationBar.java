@@ -10,6 +10,9 @@ import java.awt.event.*;
 
 import static mml.Model.Search.SearchList;
 
+/**
+ * GUI Page that handles the persisting toolbar and changing the shown pages
+ */
 public class navigationBar {
     private JPanel navigationBarPanel;
     private JLabel mmlLabel;
@@ -20,10 +23,17 @@ public class navigationBar {
 
     private static navigationBar Instance = new navigationBar();
 
+    /**
+     * Retrieves the instance of the singleton page
+     * @return The instance of the navigationBar
+     */
     public static navigationBar getInstance(){
         return Instance;
     }
 
+    /**
+     * Default constructor for the singleton page
+     */
     private navigationBar(){
         mmlLabel.addMouseListener(new MouseAdapter() {
             @Override
@@ -72,10 +82,18 @@ public class navigationBar {
         });
     }
 
+    /**
+     * Gets the contents of the search bar
+     * @return text in search bar
+     */
     public String getSearchBarContents(){
         return searchBarTextField.getText();
     }
 
+    /**
+     * Retrieves GUI panel component
+     * @return the root panel
+     */
     public JComponent getGUI(){
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Images/Icons/searchIcon.png").getImage()
                 .getScaledInstance(25, 25, Image.SCALE_SMOOTH));
@@ -92,6 +110,9 @@ public class navigationBar {
         return navigationBarPanel;
     }
 
+    /**
+     * Changes the top right logo depending on whether the user is logged in or not
+     */
     public void loggedInLogo(){
         if (AccountManager.GetCurrentUser() != null){
             ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Images/Icons/accountIcon.png").getImage()
@@ -106,6 +127,10 @@ public class navigationBar {
         }
     }
 
+    /**
+     * Handles changing the shown page, when it is a JPanel
+     * @param page the page to be changed to
+     */
     public void changePage(JPanel page){
         try{
             pagePanel.remove(0);
@@ -120,6 +145,10 @@ public class navigationBar {
         navigationBarPanel.repaint();
     }
 
+    /**
+     * Handles changing the shown page, when it is a JScrollPane
+     * @param page the page to be changed to
+     */
     public void changePage(JScrollPane page){
         try{
             pagePanel.remove(0);

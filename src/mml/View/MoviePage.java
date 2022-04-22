@@ -12,6 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+/**
+ * GUI Page that shows a Movie and its data
+ */
 public class MoviePage {
     private JPanel moviePage;
     private JLabel starIcon;
@@ -34,6 +37,10 @@ public class MoviePage {
     private JDialog d;
     private MoviePage mP;
 
+    /**
+     * Parameterized constructor
+     * @param movie the movie to be shown
+     */
     public MoviePage(Movie movie){
         mP = this;
         myReviewPanel.setVisible(false);
@@ -89,6 +96,10 @@ public class MoviePage {
         }
         this.plotTextArea.setText(" " + movie.getPlot());
         this.movie = movie;
+
+        /**
+         * Creates a dialog for leaving a movie review on button press
+         */
         reviewMovieButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -106,11 +117,18 @@ public class MoviePage {
         });
     }
 
+    /**
+     * Closes the dialog for reviewing a movie
+     */
     public void closeDialog(){
         d.setVisible(false);
         d.dispose();
     }
 
+    /**
+     * Retrieves GUI panel component
+     * @return the root panel
+     */
     public JScrollPane getGUI(){
         myReviewPanel.setVisible(false);
         myReviewLabel.setVisible(false);
@@ -193,6 +211,9 @@ public class MoviePage {
         return j;
     }
 
+    /**
+     * GUI object that handles the creation of user reviews
+     */
     public static class UserReviewGUI {
         private JPanel userReviewPanel;
         private JTextArea textArea1;
@@ -203,6 +224,10 @@ public class MoviePage {
         private JButton confirmButton;
         private JLabel entryInvalidTextArea;
 
+        /**
+         * Parameterized constructor for when there is a user rating
+         * @param rating the rating to be shown
+         */
         public UserReviewGUI(MovieRating rating){
             userIDLabel.setText(rating.GetUserID());
 
@@ -228,6 +253,11 @@ public class MoviePage {
             textArea1.setBackground(new Color(214,217,223));
         }
 
+        /**
+         * Parameterized constructor for when there is not yet a rating
+         * @param m movie to be rated
+         * @param mp movie page of movie, used for updating GUI
+         */
         public UserReviewGUI(Movie m, MoviePage mp){
             userIDLabel.setText(AccountManager.GetCurrentUser().UserID);
 
@@ -255,6 +285,9 @@ public class MoviePage {
             textArea1.setOpaque(false);
             textArea1.setBackground(Color.WHITE);
 
+            /**
+             * Handles adding the review to the database and GUI on click
+             */
             confirmButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -273,6 +306,10 @@ public class MoviePage {
             });
         }
 
+        /**
+         * Retrieves GUI panel component
+         * @return the root panel
+         */
         public JPanel getGUI(){
             return userReviewPanel;
         }
