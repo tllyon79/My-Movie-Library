@@ -85,7 +85,6 @@ public class AccountPage extends JFrame {
                     String test = "outside loop";
                     String test2 = "inside loop";
                     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!may need work!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
-
                     //for loop to get through array list
                     mlistmodel.addElement(test);
 
@@ -98,28 +97,21 @@ public class AccountPage extends JFrame {
 
                     wlistdesc.setText(w.GetWishlistDescription());
 
-
-
-                   // for(int i = 0; i < w.getSize(); i++)
-
-
-
-
-                    //populates side list with contents of selected wishlist
-                }
-
-
                 //button should delete wishlist currently selected on list
-                //and it works!
+                //and it works! xx broken now
                 deletewlbutton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e){
                     if (wishlistnum >= 0) {
-                        WishList w = userList.get(wishlistnum);
-                        deletewishlist(w);
+                      //  WishList w = user.GetWishlists().get(wishlistnum);
+                        deletewishlist(user.GetWishlists().get(wishlistnum));
+                        refreshuserList();
+
                     }
-                }
-                });
+                        refreshuserList();
+
+                    }
+                });}
 
         };
         });
@@ -164,31 +156,28 @@ public class AccountPage extends JFrame {
             wlistmodel.removeAllElements();
             System.out.println("clearing list");
 
-            for (WishList w : userList) {
+            for (WishList w : user.GetWishlists()) {
                 System.out.println("adding wishlist " + w.GetWishlistTitle());
                 wlistmodel.addElement(w.GetWishlistTitle());
-                getGui();
+
             }
         }
 
         //deletes from user list and then refreshes
         public void deletewishlist (WishList w){
-            userList.remove(w);
+            //userList.remove(w);
             if (user != null) {
                 user.RemoveWishlist(w);    //permanent delete from users wishlists
             }
             refreshuserList();
-            getGui();
         }
 
         // adds to user list and then refreshes
         public void adduserList (WishList w){
-            userList.add(w);
             if (user != null) {
                 user.AddWishlist(w);  //permanent add to users wishlists
             }
             refreshuserList();
-            getGui();
         }
 
         //precious methods :: wishlist content related
