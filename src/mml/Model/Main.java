@@ -1,13 +1,14 @@
 package mml.Model;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import mml.Model.AccountManager;
+import mml.Model.ModelTesting;
+import mml.Model.RatingManager;
+import mml.View.MovieLibraryPage;
+import mml.View.navigationBar;
+
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class Main {

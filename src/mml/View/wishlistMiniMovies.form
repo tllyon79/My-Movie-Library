@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="mml.Model.AccountPage.wishlistMiniMovies">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="mml.View.AccountPage.wishlistMiniMovies">
   <grid id="27dc6" layout-manager="GridBagLayout">
     <constraints>
       <xy x="20" y="20" width="654" height="444"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="mml.Model.CreateAccountPage">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="mml.View.CreateAccountPage">
   <grid id="27dc6" binding="createAccountPagePanel" layout-manager="GridBagLayout">
     <constraints>
       <xy x="20" y="20" width="575" height="513"/>
