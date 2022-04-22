@@ -148,13 +148,20 @@ public class AccountManager {
      * @return MovieRating from the user if it exists; otherwise null
      */
     public MovieRating GetRatingFromUser(String movieId, String userId){
-        JSONData userData = new JSONData(new StringBuilder("Users/").append(userId).append(".json").toString(),false);
-        UserAccount userA = GsonHolder.GetInstance().Gson.fromJson(userData.GetData(),UserType);
-        if(userA != null){
-            MovieRating rating = userA.GetRating(movieId);
-            return rating; //can return a valid MovieRating or null
+        if(CurrentUser != null && userId.equals(CurrentUser.UserID))
+        {
+            MovieRating rating = CurrentUser.GetRating(movieId);
+            return rating;
         }
-        else return null;
+        else {
+            JSONData userData = new JSONData(new StringBuilder("Users/").append(userId).append(".json").toString(), false);
+            UserAccount userA = GsonHolder.GetInstance().Gson.fromJson(userData.GetData(), UserType);
+            if (userA != null) {
+                MovieRating rating = userA.GetRating(movieId);
+                return rating; //can return a valid MovieRating or null
+            }
+            else return null;
+        }
     }
 
     /**
