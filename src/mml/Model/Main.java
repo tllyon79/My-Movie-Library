@@ -24,7 +24,7 @@ public class Main {
 
     /**
      * Main function, sets look and feel, starts GUI, and starts testing if needed
-     * @param args
+     * @param args Unused
      */
     public static void main(String[] args) {
 
