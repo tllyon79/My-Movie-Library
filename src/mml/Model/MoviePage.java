@@ -1,12 +1,12 @@
 package mml.Model;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class MoviePage {
     private JPanel moviePage;
-    private JLabel movieTitle;
     private JLabel starIcon;
     private JLabel movieScore;
     private JLabel moviePoster;
@@ -15,22 +15,44 @@ public class MoviePage {
     private JLabel releasedLabel;
     private JLabel ageRatingLabel;
     private JLabel languageLabel;
-    private JScrollBar scrollBar1;
     private JLabel actorLabel;
-    private JLabel plotLabel;
-    private JTextArea textArea1;
+    private JTextArea plotTextArea;
     private JLabel genreLabel;
     private JPanel ratingsPanel;
+    private JTextArea movieTitleTextArea;
+    private JLabel myReviewLabel;
+    private JPanel myReviewPanel;
+    private JButton reviewMovieButton;
     private Movie movie;
 
     public MoviePage(Movie movie){
-        this.movieTitle.setText(movie.getTitle());
-        this.movieTitle.setFont(new Font(Font.SERIF, Font.BOLD, 40));
+        myReviewPanel.setVisible(false);
+        myReviewLabel.setVisible(false);
+        this.movieTitleTextArea.setText(movie.getTitle());
+        this.movieTitleTextArea.setFont(new Font(Font.SERIF, Font.BOLD, 40));
+        movieTitleTextArea.setFocusable(false);
+        movieTitleTextArea.setEditable(false);
+        movieTitleTextArea.setBorder(null);
+        movieTitleTextArea.setOpaque(false);
+        movieTitleTextArea.setBackground(new Color(214,217,223));
+        movieTitleTextArea.setLineWrap(false);
+        movieTitleTextArea.setWrapStyleWord(false);
 
-        this.movieScore.setText(movie.getImdbRating() + "/10");
+        plotTextArea.setFocusable(false);
+        plotTextArea.setBorder(new LineBorder(Color.BLACK));
+        plotTextArea.setOpaque(false);
+        plotTextArea.setBackground(new Color(214,217,223));
+
+        this.movieScore.setText(" " + movie.getImdbRating() + "/10");
         this.movieScore.setFont(new Font(Font.SERIF, Font.BOLD, 20));
 
-        this.directorLabel.setText(directorLabel.getText() + movie.getDirector());
+        if (movie.getDirector().isEmpty()){
+            directorLabel.setText(directorLabel.getText() + "N/A");
+        }
+        else {
+            this.directorLabel.setText(directorLabel.getText() + movie.getDirector().toString()
+                    .substring(1, movie.getDirector().toString().length() - 1));
+        }
         if (movie.getReleased() != "N/A"){
             this.releasedLabel.setText(releasedLabel.getText() + movie.getReleased());
         }
@@ -39,17 +61,32 @@ public class MoviePage {
         }
         this.ageRatingLabel.setText(ageRatingLabel.getText() + movie.getAgeRating());
         this.languageLabel.setText(languageLabel.getText() + movie.getLanguage());
-        this.actorLabel.setText(actorLabel.getText() + movie.getActors());
-        this.plotLabel.setText(plotLabel.getText() + movie.getPlot());
-        this.genreLabel.setText(genreLabel.getText() + movie.getGenre());
-        this.textArea1.setText(movie.getPlot());
+        if (movie.getActors().isEmpty()){
+            actorLabel.setText(actorLabel.getText() + "N/A");
+        }
+        else {
+            this.actorLabel.setText(actorLabel.getText() + movie.getActors().toString()
+                    .substring(1, movie.getActors().toString().length() - 1));
+        }
+        if (movie.getGenre().isEmpty()){
+            genreLabel.setText(genreLabel.getText() + "N/A");
+        }
+        else {
+            this.genreLabel.setText(genreLabel.getText() + movie.getGenre().toString()
+                    .substring(1, movie.getGenre().toString().length() - 1));
+        }
+        this.plotTextArea.setText(" " + movie.getPlot());
         this.movie = movie;
     }
 
-    public JPanel getGUI(){
+    public JScrollPane getGUI(){
+        myReviewPanel.setVisible(false);
+        myReviewLabel.setVisible(false);
+
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Images/Icons/star.png").getImage()
                 .getScaledInstance(20, 20, Image.SCALE_SMOOTH));
         starIcon.setIcon(imageIcon);
+        starIcon.setText(null);
 
         moviePoster.setIcon(new ImageIcon(movie.getPoster().getImage()
                 .getScaledInstance(800, 1200, Image.SCALE_SMOOTH)));
@@ -57,21 +94,63 @@ public class MoviePage {
         moviePoster.setIcon(movie.getPoster());
         moviePoster.setText("");
 
-        textArea1.setEditable(false);
-        textArea1.setLineWrap(true);
+        plotTextArea.setEditable(false);
+        plotTextArea.setLineWrap(true);
 
         ArrayList<MovieRating> ratings = RatingManager.GetInstance().GetRatingsByMovie(movie.getMovieId());
         ratingsPanel.removeAll();
         ratingsPanel.setLayout(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.insets = new Insets(0,30,0,100);
-        constraints.gridx = 0;
-        for (int i = 0; i < ratings.size(); i++){
-            constraints.gridy = i;
-            ratingsPanel.add(new UserReviewGUI(ratings.get(i)).getGUI(), constraints);
+        if (!ratings.isEmpty()) {
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.insets = new Insets(12, 12, 0, 12);
+            constraints.gridx = 0;
+            for (int i = 0; i < ratings.size(); i++) {
+                constraints.gridy = i;
+                if (i == ratings.size() - 1) {
+                    constraints.insets = new Insets(12, 12, 12, 12);
+                }
+                ratingsPanel.add(new UserReviewGUI(ratings.get(i)).getGUI(), constraints);
+            }
+            constraints.gridx = 1;
+            constraints.weightx = 100;
+            constraints.weighty = 100;
+            constraints.insets.set(0, 0, 0, 0);
+            ratingsPanel.add(new JLabel(), constraints);
+        }
+        else {
+            ratingsPanel.add(new JLabel("No Reviews Available"));
         }
 
-        return moviePage;
+
+        myReviewPanel.removeAll();
+        myReviewPanel.setLayout(new GridBagLayout());
+        myReviewPanel.setBorder(new LineBorder(Color.BLACK));
+        if (AccountManager.GetInstance().IsUserLoggedIn()) {
+            if (AccountManager.GetCurrentUser().GetRating(movie.getMovieId()) != null) {
+                GridBagConstraints constraints = new GridBagConstraints();
+                constraints.insets = new Insets(12, 12, 12, 12);
+                constraints.gridx = 0;
+                constraints.gridy = 0;
+                myReviewPanel.add(new UserReviewGUI(AccountManager.GetCurrentUser()
+                        .GetRating(movie.getMovieId())).getGUI(), constraints);
+                constraints.gridx = 1;
+                constraints.weightx = 100;
+                constraints.weighty = 100;
+                constraints.insets.set(0, 0, 0, 0);
+                myReviewPanel.add(new JLabel(), constraints);
+            } else {
+                myReviewPanel.add(new JLabel("No Review Available"));
+            }
+            myReviewPanel.setVisible(true);
+            myReviewLabel.setVisible(true);
+        }
+
+        JScrollPane j = new JScrollPane();
+        j.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        j.setVerticalScrollBar(new JScrollBar(Adjustable.VERTICAL));
+        j.setViewportView(moviePage);
+
+        return j;
     }
 
     public static class UserReviewGUI {
@@ -89,7 +168,7 @@ public class MoviePage {
             userRatingStarIconLabel.setIcon(imageIcon);
             userRatingStarIconLabel.setText(null);
 
-            userRatingValueLabel.setText(rating.GetRating() + "/10");
+            userRatingValueLabel.setText(" " + rating.GetRating() + "/10");
 
             textArea1.setText(rating.GetReview());
             textArea1.setFocusable(false);

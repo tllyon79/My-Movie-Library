@@ -115,4 +115,18 @@ public class navigationBar {
         navigationBarPanel.revalidate();
         navigationBarPanel.repaint();
     }
+
+    public void changePage(JScrollPane page){
+        try{
+            pagePanel.remove(0);
+        }
+        catch (Exception e){
+
+        }
+        page.revalidate();
+        page.repaint();
+        pagePanel.add(page, 0);
+        navigationBarPanel.revalidate();
+        navigationBarPanel.repaint();
+    }
 }
