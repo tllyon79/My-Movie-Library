@@ -3,6 +3,8 @@ package mml.Model;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class MoviePage {
@@ -24,10 +26,15 @@ public class MoviePage {
     private JPanel myReviewPanel;
     private JButton reviewMovieButton;
     private Movie movie;
+    private JDialog d;
+    private MoviePage mP;
 
     public MoviePage(Movie movie){
+        mP = this;
         myReviewPanel.setVisible(false);
         myReviewLabel.setVisible(false);
+        reviewMovieButton.setEnabled(false);
+        reviewMovieButton.setVisible(false);
         this.movieTitleTextArea.setText(movie.getTitle());
         this.movieTitleTextArea.setFont(new Font(Font.SERIF, Font.BOLD, 40));
         movieTitleTextArea.setFocusable(false);
@@ -77,11 +84,33 @@ public class MoviePage {
         }
         this.plotTextArea.setText(" " + movie.getPlot());
         this.movie = movie;
+        reviewMovieButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                d = new JDialog();
+                d.setTitle("Review Movie");
+                d.setLocation(navigationBar.getInstance().getGUI().getWidth()/2 - 250,
+                        navigationBar.getInstance().getGUI().getHeight()/2 - 175);
+                d.setModal(true);
+                d.add(new UserReviewGUI(movie, mP).getGUI());
+                d.setSize(new Dimension(500, 350));
+                d.setVisible(true);
+
+                navigationBar.getInstance().changePage(mP.getGUI());
+            }
+        });
+    }
+
+    public void closeDialog(){
+        d.setVisible(false);
+        d.dispose();
     }
 
     public JScrollPane getGUI(){
         myReviewPanel.setVisible(false);
         myReviewLabel.setVisible(false);
+        reviewMovieButton.setEnabled(false);
+        reviewMovieButton.setVisible(false);
 
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Images/Icons/star.png").getImage()
                 .getScaledInstance(20, 20, Image.SCALE_SMOOTH));
@@ -138,11 +167,17 @@ public class MoviePage {
                 constraints.weighty = 100;
                 constraints.insets.set(0, 0, 0, 0);
                 myReviewPanel.add(new JLabel(), constraints);
+
+                reviewMovieButton.setText("Edit Review");
             } else {
                 myReviewPanel.add(new JLabel("No Review Available"));
+
+                reviewMovieButton.setText("Review Movie");
             }
             myReviewPanel.setVisible(true);
             myReviewLabel.setVisible(true);
+            reviewMovieButton.setEnabled(true);
+            reviewMovieButton.setVisible(true);
         }
 
         JScrollPane j = new JScrollPane();
@@ -159,9 +194,20 @@ public class MoviePage {
         private JLabel userIDLabel;
         private JLabel userRatingStarIconLabel;
         private JLabel userRatingValueLabel;
+        private JTextArea enterRatingHereTextArea;
+        private JButton confirmButton;
+        private JLabel entryInvalidTextArea;
 
         public UserReviewGUI(MovieRating rating){
             userIDLabel.setText(rating.GetUserID());
+
+            entryInvalidTextArea.setVisible(false);
+
+            enterRatingHereTextArea.setEnabled(false);
+            enterRatingHereTextArea.setVisible(false);
+
+            confirmButton.setEnabled(false);
+            confirmButton.setVisible(false);
 
             ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Images/Icons/star.png").getImage()
                     .getScaledInstance(20, 20, Image.SCALE_SMOOTH));
@@ -175,6 +221,51 @@ public class MoviePage {
             textArea1.setBorder(null);
             textArea1.setOpaque(false);
             textArea1.setBackground(new Color(214,217,223));
+        }
+
+        public UserReviewGUI(Movie m, MoviePage mp){
+            userIDLabel.setText(AccountManager.GetCurrentUser().UserID);
+
+            entryInvalidTextArea.setVisible(false);
+
+            confirmButton.setEnabled(true);
+            confirmButton.setVisible(true);
+
+            ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Images/Icons/star.png").getImage()
+                    .getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+            userRatingStarIconLabel.setIcon(imageIcon);
+            userRatingStarIconLabel.setText(null);
+
+            userRatingValueLabel.setEnabled(false);
+            userRatingValueLabel.setVisible(false);
+
+            enterRatingHereTextArea.setEnabled(true);
+            enterRatingHereTextArea.setText("Enter Star Rating Here");
+            enterRatingHereTextArea.setVisible(true);
+
+            textArea1.setText("Enter Review Here");
+            textArea1.setFocusable(true);
+            textArea1.setEditable(true);
+            textArea1.setBorder(null);
+            textArea1.setOpaque(false);
+            textArea1.setBackground(Color.WHITE);
+
+            confirmButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    MovieRating r = new MovieRating(m.getMovieId(), AccountManager.GetCurrentUser().UserID);
+                    try {
+                        r.SetRating(Double.parseDouble(enterRatingHereTextArea.getText()));
+                        r.SetReview(textArea1.getText());
+                        AccountManager.GetCurrentUser().SetRating(r, m.getMovieId());
+                        RatingManager.GetInstance().UpdateRatings(m.getMovieId(), AccountManager.GetCurrentUser().UserID);
+                        mp.closeDialog();
+                    }
+                    catch (NumberFormatException ne){
+                        entryInvalidTextArea.setVisible(true);
+                    }
+                }
+            });
         }
 
         public JPanel getGUI(){
