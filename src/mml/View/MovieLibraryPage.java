@@ -1,4 +1,6 @@
-package mml.Model;
+package mml.View;
+
+import mml.Model.*;
 
 import javax.swing.*;
 import java.awt.*;

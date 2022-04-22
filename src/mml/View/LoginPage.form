@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="mml.Model.LoginPage">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="mml.View.LoginPage">
   <grid id="27dc6" binding="loginPagePanel" layout-manager="GridBagLayout">
     <constraints>
       <xy x="21" y="19" width="545" height="615"/>

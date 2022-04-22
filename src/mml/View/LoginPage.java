@@ -1,8 +1,10 @@
-package mml.Model;
+package mml.View;
+
+import mml.Model.AccountManager;
+import mml.Model.LoginStatus;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 

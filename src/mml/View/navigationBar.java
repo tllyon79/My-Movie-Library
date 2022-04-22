@@ -1,4 +1,8 @@
-package mml.Model;
+package mml.View;
+
+import mml.Model.AccountManager;
+import mml.Model.MovieLibrary;
+import mml.Model.MovieList;
 
 import javax.swing.*;
 import java.awt.*;

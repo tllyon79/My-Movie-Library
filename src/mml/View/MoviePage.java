@@ -1,4 +1,9 @@
-package mml.Model;
+package mml.View;
+
+import mml.Model.AccountManager;
+import mml.Model.Movie;
+import mml.Model.MovieRating;
+import mml.Model.RatingManager;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
