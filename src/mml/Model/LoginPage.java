@@ -39,7 +39,7 @@ public class LoginPage {
         invalidEntryTextArea.setForeground(Color.RED);
         invalidEntryTextArea.setLineWrap(false);
         invalidEntryTextArea.setWrapStyleWord(true);
-        invalidEntryTextArea.setVisible(true);
+        invalidEntryTextArea.setVisible(false);
         invalidEntryTextArea.setText("");
 
         showPasswordRadioButton.addMouseListener(new MouseAdapter() {
@@ -84,10 +84,12 @@ public class LoginPage {
         LoginStatus status = AccountManager.GetInstance().AttemptLogIn(textField1.getText(),String.valueOf(passwordField1.getPassword()));
         if(status == LoginStatus.Failed_AccountExistError){
             invalidEntryTextArea.setText("No account with that username could be found.");
+            invalidEntryTextArea.setVisible(true);
             return;
         }
         else if (status == LoginStatus.Failed_IncorrectPassword){
             invalidEntryTextArea.setText("The password is incorrect.");
+            invalidEntryTextArea.setVisible(true);
             return;
         }
         else if(status == LoginStatus.Complete){
@@ -101,6 +103,11 @@ public class LoginPage {
      * @return The root JPanel
      */
     public JPanel getGUI(){
+        textField1.setText(null);
+        passwordField1.setText(null);
+        invalidEntryTextArea.setVisible(false);
+        invalidEntryTextArea.setText("");
+
         return loginPagePanel;
     }
 

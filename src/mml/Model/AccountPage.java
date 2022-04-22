@@ -1,36 +1,24 @@
 package mml.Model;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class AccountPage extends JFrame {
-    private JPanel mainpanel;
-    private JPanel toppanel;
-    private JPanel leftpanel;
-    private JLabel toplabel;
-    private JLabel leftlabel;
-    private JPanel rightpanel;
-    private JLabel rightlabel;
-    private JList wlist;
-    private JLabel movielabel;
-    private JList mlist;
-    private JLabel wlistlabel;
-    private JButton deletebutton;
-    private JButton addwlbutton;
-    private JButton deletewlbutton;
-    private JLabel createlabel;
-    private JTextField nametext;
-    private JLabel mposter;
-    private JTextArea wlistdesc;
-    private ArrayList<WishList> userList;
-    private DefaultListModel wlistmodel;
-    private DefaultListModel mlistmodel;
-    private UserAccount user;
-    private Movie postergetter;
+public class AccountPage {
+    private JPanel accountPagePanel;
+    private JPanel signInBarPanel;
+    private JLabel signInLabel;
+    private JPanel accountInfoPanel;
+    private JLabel usernameLabel;
+    private JScrollPane outerScrollPane;
+    private JButton logOutButton;
+    private JPanel wishlistMoviesPanel;
+    private JButton newWishlistButton;
+    private JDialog d;
 
     private static AccountPage Instance = new AccountPage();
 
@@ -38,220 +26,193 @@ public class AccountPage extends JFrame {
         return Instance;
     }
 
-    AccountPage() {
+    private AccountPage() {
+        outerScrollPane.setBorder(null);
+        outerScrollPane.setViewportBorder(null);
 
+        logOutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AccountManager.GetInstance().LogOutUser();
+                navigationBar.getInstance().changePage(MovieLibraryPage.getInstance().getGUI());
+                navigationBar.getInstance().loggedInLogo();
+            }
+        });
+        newWishlistButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                d = new JDialog();
+                d.setTitle("New Wishlist");
+                d.setLocation(navigationBar.getInstance().getGUI().getWidth()/2 - 250,
+                        navigationBar.getInstance().getGUI().getHeight()/2 - 175);
+                d.setModal(true);
+                d.add(new newWishlistGUI().getGUI());
+                d.setSize(new Dimension(500, 350));
+                d.setVisible(true);
+            }
+        });
+    }
 
-        super("Account Page");
-        this.setContentPane(this.mainpanel);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.pack();
+    public JPanel getGUI() {
+        usernameLabel.setText("Username: " + AccountManager.GetCurrentUser().Username);
 
-
-        //returns current user and adds their wishlists to model
-        user = AccountManager.GetCurrentUser();
-        if (user != null && user.GetWishlists() != null) {
-            userList = user.GetWishlists();
-        } else {
-            userList = new ArrayList<WishList>();
+        wishlistMoviesPanel.setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        wishlistMoviesPanel.removeAll();
+        ArrayList<WishList> wishListList = AccountManager.GetCurrentUser().Wishlists;
+        constraints.insets.set(24, 12, 0, 12);
+        for (int i = 0; i < wishListList.size(); i++){
+            constraints.gridy = i;
+            if (i == wishListList.size() - 1){ constraints.insets.set(24, 12, 24, 12); }
+            wishlistMoviesPanel.add(new wishlistTemplate(AccountManager.GetCurrentUser().Wishlists.get(i)).getGUI(), constraints);
         }
 
+        return accountPagePanel;
+    }
 
-        wlistmodel = new DefaultListModel<>();
-        wlist.setModel(wlistmodel);
+    public static class wishlistTemplate {
+        private JPanel wishlistTemplatePanel;
+        private JTextArea wishlistDescriptionTextArea;
+        private JPanel wishlistMoviesPanel;
+        private JButton editWishlistButton;
+        private JTextArea wishlistTitleTextArea;
+        private WishList shownWishlist;
+        private boolean editWishlist = false;
 
-        //not sure of the best way to access the movies in the wishlists
-        // xx created getter hopefully works
-        mlistmodel = new DefaultListModel<>();
-        mlist.setModel(mlistmodel);
-
-        //default poster
-        //ImageIcon mini = new ImageIcon(postergetter.getPoster();
-
-
-
-
-
-                //shows wlist contents when selected hopefully
-        wlist.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-
-                int wishlistnum = wlist.getSelectedIndex();
-
-                if (wishlistnum >= 0) {
-                    mlistmodel.removeAllElements(); //clear list with each click (so they don't pile up eternally)
-                    WishList w = userList.get(wishlistnum);
-                    MovieList m = w.GetMovies();
-                    String test = "outside loop";
-                    String test2 = "inside loop";
-                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!may need work!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
-
-                    //for loop to get through array list
-                    mlistmodel.addElement(test);
-
-                    for(int i = 0; i <= m.viewMovieList().size(); i++)
-                    {
-                        mlistmodel.addElement(test2);
-                       Movie movie = m.viewMovieList().get(i);
-                        System.out.println(movie.toString());
-                        mlistmodel.addElement(movie.toString()); } //hopefully shows indv movies
-
-                    wlistdesc.setText(w.GetWishlistDescription());
-
-
-
-                   // for(int i = 0; i < w.getSize(); i++)
-
-
-
-
-                    //populates side list with contents of selected wishlist
-                }
-
-
-                //button should delete wishlist currently selected on list
-                //and it works!
-                deletewlbutton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e){
-                    if (wishlistnum >= 0) {
-                        WishList w = userList.get(wishlistnum);
-                        deletewishlist(w);
-                    }
-                }
-                });
-
-        };
-        });
-
-        //button creates wishlist with given title and adds it to user list
-        // and baby it works
-        addwlbutton.addActionListener(new ActionListener() {
+        public wishlistTemplate(WishList wishlist){
+            shownWishlist = wishlist;
+            wishlistTitleTextArea.setText(wishlist.GetWishlistTitle());
+            wishlistTitleTextArea.setLineWrap(false);
+            if (wishlist.GetWishlistDescription().isEmpty()){
+                wishlistDescriptionTextArea.setText("No Description");
+            }
+            else {
+                wishlistDescriptionTextArea.setText(wishlist.GetWishlistDescription());
+            }
+            wishlistDescriptionTextArea.setFocusable(false);
+            wishlistDescriptionTextArea.setBorder(null);
+            wishlistDescriptionTextArea.setOpaque(false);
+            wishlistDescriptionTextArea.setBackground(new Color(214,217,223));
+            wishlistDescriptionTextArea.setFont(new Font(Font.SERIF, Font.BOLD, 14));
+            wishlistTitleTextArea.setFocusable(false);
+            wishlistTitleTextArea.setBorder(null);
+            wishlistTitleTextArea.setOpaque(false);
+            wishlistTitleTextArea.setBackground(new Color(214,217,223));
+            editWishlistButton.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed (ActionEvent e){
+                public void actionPerformed(ActionEvent e) {
+                    if (editWishlistButton.getText().equals("Edit Wishlist")){
+                        editWishlistButton.setText("Save Changes");
+                        wishlistDescriptionTextArea.setBackground(Color.WHITE);
+                        wishlistDescriptionTextArea.setEditable(true);
+                        wishlistDescriptionTextArea.setFocusable(true);
 
-                    String wlname = nametext.getText().trim();
-                    WishList created = new WishList();
-                    created.SetWishlistTitle(wlname);
-                    adduserList(created);
+                        wishlistTitleTextArea.setBackground(Color.WHITE);
+                        wishlistTitleTextArea.setEditable(true);
+                        wishlistTitleTextArea.setFocusable(true);
+
+                        editWishlist = true;
+                    }
+                    else {
+                        editWishlistButton.setText("Edit Wishlist");
+                        wishlistDescriptionTextArea.setBackground(new Color(214,217,223));
+                        wishlistDescriptionTextArea.setEditable(false);
+                        wishlistDescriptionTextArea.setFocusable(false);
+
+                        wishlistTitleTextArea.setBackground(new Color(214,217,223));
+                        wishlistTitleTextArea.setEditable(false);
+                        wishlistTitleTextArea.setFocusable(false);
+                        editWishlist = false;
+
+                        shownWishlist.SetWishlistDescription(wishlistDescriptionTextArea.getText());
+                        shownWishlist.SetWishlistTitle(wishlistTitleTextArea.getText());
+                    }
+                    wishlistTemplatePanel = getGUI();
+                    wishlistTemplatePanel.revalidate();
                 }
             });
-
-        //show selected movies poster
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!here!!!!!!!!!!!!!!!!!
-
-
-
-
-        //precious methods :: wish list related
-
-        //refreshes the model to display the current userlist
-        public void refreshuserList () {
-            wlistmodel.removeAllElements();
-            System.out.println("clearing list");
-
-            for (WishList w : userList) {
-                System.out.println("adding wishlist " + w.GetWishlistTitle());
-                wlistmodel.addElement(w.GetWishlistTitle());
-                getGui();
-            }
         }
 
-        //deletes from user list and then refreshes
-        public void deletewishlist (WishList w){
-            userList.remove(w);
-            if (user != null) {
-                user.RemoveWishlist(w);    //permanent delete from users wishlists
+        public JPanel getGUI(){
+            wishlistMoviesPanel.removeAll();
+            wishlistMoviesPanel.setLayout(new GridBagLayout());
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.gridy = 0;
+            shownWishlist.GetMovies().viewMovieList();
+
+            for (int i = 0; i < shownWishlist.getSize(); i++){
+                constraints.gridx = i;
+                wishlistMiniMovies temp = new wishlistMiniMovies(shownWishlist.GetMovies()
+                        .viewMovieList().get(i), shownWishlist);
+                if (editWishlist){ temp.showEditWishlist(); }
+                wishlistMoviesPanel.add(temp.getWishlistMiniMovieGUI(), constraints);
             }
-            refreshuserList();
-            getGui();
+
+            return wishlistTemplatePanel;
+        }
+    }
+
+    public static class wishlistMiniMovies {
+        private JPanel miniPanel;
+        private JLabel miniPoster;
+        private JButton removeMovieButton;
+        private JTextArea miniTitle;
+        private Movie movie;
+        private WishList miniWishlist;
+        private boolean showEditWishlist = false;
+
+        public wishlistMiniMovies(Movie givenMovie, WishList wishList) {
+            movie = givenMovie;
+            miniWishlist = wishList;
+            miniPoster.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    navigationBar.getInstance().changePage(new MoviePage(movie).getGUI());
+
+                    super.mouseClicked(e);
+                }
+            });
+            removeMovieButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    removeMovieButton.setText("Removed");
+                    removeMovieButton.setEnabled(false);
+                    miniWishlist.RemoveMovie(movie);
+                }
+            });
         }
 
-        // adds to user list and then refreshes
-        public void adduserList (WishList w){
-            userList.add(w);
-            if (user != null) {
-                user.AddWishlist(w);  //permanent add to users wishlists
-            }
-            refreshuserList();
-            getGui();
+        public void showEditWishlist(){
+            showEditWishlist = true;
         }
 
-        //precious methods :: wishlist content related
+        public JComponent getWishlistMiniMovieGUI(){
+            if (showEditWishlist){
+                removeMovieButton.setEnabled(true);
+                removeMovieButton.setVisible(true);
+            }
+            else {
+                removeMovieButton.setEnabled(false);
+                removeMovieButton.setVisible(false);
+            }
 
-    //public void postGet(WishList m){}
+            miniTitle.setText(movie.getTitle());
+            miniTitle.setFocusable(false);
+            miniTitle.setBorder(null);
+            miniTitle.setOpaque(false);
+            miniTitle.setBackground(new Color(214,217,223));
+            miniTitle.setFont(new Font(Font.SERIF, Font.BOLD, 20));
 
+            ImageIcon mini = new ImageIcon(movie.getPoster()
+                    .getImage().getScaledInstance(150,200, Image.SCALE_SMOOTH));
+            miniPoster.setIcon(mini);
+            miniPoster.setText("");
 
-
-
-
-
-
-/*
-    public void deletemovie(Movie m){
-        //i foresee problems here, because i believe im returning entire movielists into the right panel
-
-        WishList w = userList.get(wishlistnum);
-        w.GetMovies().viewMovieList();
-
-
+            return miniPanel;
+        }
     }
-
- */
-
-
-
-    public JPanel getGui(){
-        return mainpanel;
-    }
-
-    //ImageIcon mini = new ImageIcon(movie.getPoster()
-
-
-
-//main for testing account page
-    public static void main(String[] args) {
-        AccountPage screen = new AccountPage();
-        screen.setVisible(true);
-        Movie m = MovieLibrary.GetInstance().GetMasterList().viewMovieList().get(2);
-
-
-
-        WishList test = new WishList();
-        WishList test2 = new WishList();
-
-        test.SetWishlistTitle("test 1");
-        test2.SetWishlistTitle("test 2");
-        test.SetWishlistDescription("this is a public broadcasting test");
-        test2.SetWishlistDescription("national emergency");
-
-
-
-        //test.AddMovie(m);
-        //test2.AddMovie("10");        breaks it lol
-
-        screen.adduserList(test);
-        screen.adduserList(test2);
-
-        screen.getInstance();
-    }
-    }
-
-
+}
 
 
 

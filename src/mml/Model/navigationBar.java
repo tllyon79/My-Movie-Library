@@ -57,7 +57,7 @@ public class navigationBar {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (AccountManager.GetCurrentUser() != null){
-                    changePage(AccountPage.getInstance().getGui());
+                    changePage(AccountPage.getInstance().getGUI());
                 }
                 else{
                     changePage(LoginPage.getInstance().getGUI());
@@ -98,6 +98,7 @@ public class navigationBar {
         else{
             accountIconLabel.setText("Sign In");
             accountIconLabel.setFont(new Font(Font.SERIF, Font.BOLD, 14));
+            accountIconLabel.setIcon(null);
         }
     }
 

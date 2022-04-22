@@ -95,7 +95,7 @@ public class AccountManager {
     /**
      * Logs out a user, serializing their data and setting CurrentUser to null
      */
-    private void LogOutUser(){
+    public void LogOutUser(){
         if(CurrentUser != null) {
             UserAccount user = CurrentUser;
             CurrentUser = null;
